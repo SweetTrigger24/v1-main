@@ -1,0 +1,3 @@
+-r requirements-inference.txt
+# Tùy chọn; không cần TensorFlow để monitor/dự báo chu kỳ/dashboard tự khởi động.
+matplotlib>=3.8,<4

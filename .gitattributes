@@ -1,0 +1,4 @@
+* text=auto eol=lf
+deploy/frontend/** -text
+data/** -text
+model/** -text

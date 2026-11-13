@@ -1,0 +1,4 @@
+{
+  "request_url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VVNB&data=tmpf&data=relh&year1=2026&month1=11&day1=9&year2=2026&month2=11&day2=11&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=no&missing=M&trace=T&direct=no&report_type=3",
+  "use": "Independent regional check only; Noi Bai is not Ha Dong"
+}

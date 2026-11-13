@@ -1,0 +1,3 @@
+-r requirements.txt
+# Chỉ bộ máy suy luận, không cài thêm gói vẽ biểu đồ/huấn luyện trên Pi.
+tensorflow>=2.16,<2.22

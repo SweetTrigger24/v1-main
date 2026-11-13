@@ -1,0 +1,5 @@
+-r requirements.txt
+# Debian Bookworm/Trixie cung cấp 0.7.1a4 qua apt trong venv --system-site-packages.
+RPi.GPIO>=0.7.1a4,<0.8
+gpiozero>=2.0,<3
+adafruit-circuitpython-dht>=4.0,<5
