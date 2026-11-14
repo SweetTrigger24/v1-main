@@ -385,14 +385,14 @@ Sau lần đo kế tiếp, khoảng 60 giây, cần thấy `pi/sensor` kèm JSON
 
 Ghi lại ngưỡng đang dùng trước khi thử. Ví dụ nhiệt độ hiện tại khoảng 27°C, tạm đặt vàng cao 25°C và đỏ cao 26°C rồi lưu. Vẫn giữ đúng thứ tự đỏ thấp < vàng thấp < vàng cao < đỏ cao.
 
-Sau ba số đo đỏ liên tiếp, khoảng ba phút, kiểm tra LED đỏ, còi và email cảnh báo. Nhấn nút để xác nhận còi tắt trong khi LED đỏ phản ánh trạng thái. Nếu còn đỏ sau năm phút, còi tự kêu lại. Khôi phục ngưỡng đã ghi sau khi thử.
+Ngay số đo hợp lệ đầu tiên chạm ngưỡng đỏ, kiểm tra LED đỏ, còi và email cảnh báo. Monitor đọc mỗi 60 giây nên cần chờ tới lần đo kế tiếp. Email cần bật trong Cài đặt và tuân theo thời gian chống gửi lặp. Nhấn nút để xác nhận còi tắt trong khi LED đỏ phản ánh trạng thái. Nếu còn đỏ sau năm phút, còi tự kêu lại. Khôi phục ngưỡng đã ghi sau khi thử.
 
 | Đại lượng | Đỏ thấp mặc định | Vàng thấp | Vàng cao | Đỏ cao |
 | --- | --- | --- | --- | --- |
 | Nhiệt độ | 10°C | 15°C | 30°C | 35°C |
 | Độ ẩm | 25% | 35% | 75% | 85% |
 
-Lỗi đọc cảm biến làm sáng LED vàng và ngắt chuỗi xác nhận đỏ. Dashboard đánh dấu mất cập nhật khi số đo quá ba phút và ẩn dự báo mất dữ liệu đầu vào.
+Lỗi đọc cảm biến làm sáng LED vàng và tắt còi. Dashboard đánh dấu mất cập nhật khi số đo quá ba phút và ẩn dự báo mất dữ liệu đầu vào.
 
 ## Bước 11 — Pi, kiểm tra tự chạy và RAM
 

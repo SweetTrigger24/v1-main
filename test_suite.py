@@ -52,14 +52,11 @@ def test_classify_low_high_boundaries(temp, hum, expected):
 
 def test_confirmation_recovery_and_sensor_gap():
     machine = AlertMachine()
-    assert machine.update(36, 60, [])[0] == "VANG"
-    assert machine.update(36, 60, [])[0] == "VANG"
     assert machine.update(36, 60, [])[0] == "DO"
     assert machine.update(26, 60, [])[0] == "XANH"
-    machine.update(36, 60, [])
-    machine.update(36, 60, [])
+    assert machine.update(30, 60, [])[0] == "VANG"
     machine.sensor_failed()
-    assert machine.update(36, 60, [])[0] == "VANG"
+    assert machine.update(36, 60, [])[0] == "DO"
 
 
 def test_future_low_humidity_yellow_and_red_priority():
@@ -68,8 +65,7 @@ def test_future_low_humidity_yellow_and_red_priority():
     assert first_red(points) == points[-1]
     assert machine.update(26, 50, points)[0] == "XANH"
     assert machine.update(26, 50, points)[0] == "VANG"
-    for _ in range(3):
-        result = machine.update(36, 50, points)
+    result = machine.update(36, 50, points)
     assert result[0] == "DO"
 
 
@@ -233,19 +229,23 @@ def test_monitor_sensor_failure_does_not_create_fake_reading(store):
     assert hw.state == "ERROR" and not store.get("monitor")["ok"]
 
 
-def test_monitor_full_pipeline_and_low_alarm(store, monkeypatch):
-    monkeypatch.setattr(config, "EMAIL_ENABLED", False)
+@pytest.mark.parametrize("temp,hum", [(12, 20), (10, 60), (35, 60), (26, 25), (26, 85)])
+def test_monitor_first_red_reading_updates_outputs_dashboard_and_email(store, monkeypatch, temp, hum):
+    monkeypatch.setattr(config, "EMAIL_ENABLED", True)
     class Sensor:
-        def read(self, stop): return 12, 20
+        def read(self, stop): return temp, hum
         def set_outputs(self, state): self.state = state
     hw = Sensor()
     monitor = Monitor(store, hw, write_csv=False)
-    for minute in range(3):
-        monitor.step(threading.Event(), NOW + timedelta(minutes=minute))
-    assert hw.state == "DO" and len(store.frame()) == 3
+    sent = []
+    monitor.notifier = EmailNotifier(store, lambda subject, body: sent.append((subject, body)))
+    monitor.step(threading.Event(), NOW)
+    assert hw.state == "DO" and len(store.frame()) == 1
     assert len(store.get("forecast")["points"]) == 72
-    payload = dashboard_payload(store, now=NOW + timedelta(minutes=2))
+    payload = dashboard_payload(store, now=NOW)
     assert payload["ok"] and payload["state"] == "DO" and payload["red_expected"]
+    assert len(sent) == 1
+    assert store.get("email_status")["kind"] == "current_red"
 
 
 def test_existing_csv_generated_prefix_is_tagged(store):
@@ -461,15 +461,14 @@ def test_settings_conflict_keeps_newer_browser_values(store):
     assert load_settings(store)["thresholds"]["temp_red_high"] == 40
 
 
-def test_monitor_applies_threshold_change_without_restart_and_resets_count(store, monkeypatch):
+def test_monitor_applies_threshold_change_without_restart(store, monkeypatch):
     monkeypatch.setattr(config, "EMAIL_ENABLED", False)
     class Sensor:
         def read(self, stop): return 36, 60
         def set_outputs(self, state): self.state = state
     hw = Sensor()
     monitor = Monitor(store, hw, write_csv=False)
-    for minute in range(3):
-        monitor.step(threading.Event(), NOW + timedelta(minutes=minute))
+    monitor.step(threading.Event(), NOW)
     assert hw.state == "DO"
     values = load_settings(store)
     values["thresholds"].update(temp_yellow_high=40, temp_red_high=45)
@@ -480,10 +479,6 @@ def test_monitor_applies_threshold_change_without_restart_and_resets_count(store
     values["thresholds"].update(temp_yellow_high=30, temp_red_high=35)
     save_settings(store, values, 1)
     monitor.step(threading.Event(), NOW + timedelta(minutes=4))
-    assert hw.state == "VANG"
-    monitor.step(threading.Event(), NOW + timedelta(minutes=5))
-    assert hw.state == "VANG"
-    monitor.step(threading.Event(), NOW + timedelta(minutes=6))
     assert hw.state == "DO"
 
 
@@ -814,11 +809,10 @@ def test_csv_failure_keeps_monitor_alerts_and_notifications(store, tmp_path, mon
     notified = []
     monitor.notifier = SimpleNamespace(evaluate=lambda *args: notified.append(args[1]))
     monitor.mqtt = SimpleNamespace(publish=lambda *args, **kwargs: published.append(args))
-    for minute in range(3):
-        monitor.step(threading.Event(), NOW + timedelta(minutes=minute))
-    assert states == ["VANG", "VANG", "DO"]
-    assert notified == states and len(published) == 6
-    assert len(store.frame()) == 3 and store.get("monitor")["ok"]
+    monitor.step(threading.Event(), NOW)
+    assert states == ["DO"]
+    assert notified == states and len(published) == 2
+    assert len(store.frame()) == 1 and store.get("monitor")["ok"]
 
 
 def test_monitor_closes_mqtt_when_hardware_cleanup_fails(store, monkeypatch):

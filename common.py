@@ -68,7 +68,7 @@ HORIZON     = 10             # dự đoán trước bao nhiêu bước (10 phút
 # ---------- Ngưỡng cảnh báo ----------
 TEMP_HIGH          = 32.0   # °C
 HUM_HIGH           = 90.0   # %
-RED_CONSECUTIVE    = 3      # số lần đo liên tiếp vượt ngưỡng → đỏ + còi
+RED_CONSECUTIVE    = 1      # một số đo hợp lệ chạm ngưỡng đỏ → đỏ + còi
 YELLOW_CONSECUTIVE = 2      # số lần dự báo liên tiếp vượt ngưỡng → vàng
 MUTE_SEC           = 300    # bấm nút tắt còi trong 5 phút
 

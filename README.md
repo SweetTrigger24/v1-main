@@ -101,7 +101,7 @@ Các mức sau là **ngưỡng vận hành khởi đầu cho môi trường phò
 Đỏ được ưu tiên hơn vàng; chỉ cần **một** đại lượng vượt ngưỡng. Mức thấp và mức cao dùng cùng cách xác nhận:
 
 - Chạm ngưỡng vàng: đèn vàng.
-- Chạm ngưỡng đỏ: vàng trong lúc chờ; đủ **3 số đo đỏ liên tiếp hợp lệ** thì đèn đỏ + còi và email đỏ hiện tại. Đọc lỗi sẽ ngắt chuỗi xác nhận.
+- Chạm ngưỡng đỏ: ngay **số đo hợp lệ đầu tiên**, đèn đỏ + còi và email đỏ hiện tại được xử lý. Email cần bật trong Cài đặt và tuân theo thời gian chống gửi lặp. Cảm biến được đọc mỗi 60 giây.
 - Dự báo có mốc đỏ trong 12 giờ: sau 2 lần đọc liên tiếp thấy nguy cơ, đèn vàng. Email dự báo gửi ngay khi đường dự báo mới cho thấy mốc đỏ; không đợi hai lần đọc và không bật còi chỉ vì dự báo.
 - Trở về bình thường: xóa cảnh báo hiện tại. Nút bấm tắt tiếng 5 phút, đèn đỏ vẫn phản ánh trạng thái; còi tự bật lại nếu còn đỏ sau 5 phút.
 - Lỗi cảm biến: đèn vàng, tắt còi; dashboard ghi rõ lỗi thay vì coi là bình thường.
