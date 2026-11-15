@@ -19,7 +19,7 @@ from alerts import AlertMachine
 from forecasting import Forecaster
 from hardware import DemoHardware, PiHardware
 from notifications import EmailNotifier
-from storage import Store
+from storage import Store, readings_with_origins_sql
 from runtime_settings import load_settings
 
 LOG = logging.getLogger("iot")
@@ -35,7 +35,7 @@ def validate_demo_database(path):
     try:
         with closing(sqlite3.connect(target.as_uri() + "?mode=ro", uri=True)) as db:
             tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-            if "readings" in tables and db.execute("SELECT 1 FROM readings WHERE source='sensor' LIMIT 1").fetchone():
+            if "readings" in tables and db.execute("SELECT 1 FROM (" + readings_with_origins_sql(db) + ") WHERE origin='sensor' LIMIT 1").fetchone():
                 raise ValueError("DB này có số đo cảm biến thật; hãy chọn DB demo khác")
             if "kv" in tables:
                 role = db.execute("SELECT value FROM kv WHERE key='database_role'").fetchone()
@@ -113,7 +113,8 @@ class Monitor:
         data = {"time": now.isoformat(timespec="seconds"), "temp": temp, "hum": hum, "state": state, "source": source}
         if self.write_csv and not self.demo:
             try:
-                append_csv(config.DATA_FILE, ["time", "temp", "hum"], [data["time"], round(temp, 1), round(hum, 1)])
+                append_csv(config.LIVE_DATA_FILE, ["time", "temp", "hum", "source"],
+                           [data["time"], round(temp, 1), round(hum, 1), "sensor"])
                 first = points[0] if points else {}
                 append_csv(config.LOG_FILE, ["time", "temp", "hum", "pred_temp", "pred_hum", "state"],
                            [data["time"], round(temp, 1), round(hum, 1), first.get("temp", ""), first.get("hum", ""), state])

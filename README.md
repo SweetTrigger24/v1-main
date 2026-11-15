@@ -144,12 +144,14 @@ Cùng loại cảnh báo lặp tối đa một lần mỗi 30 phút; đợt mớ
 
 ## Dự báo 12 giờ và dữ liệu hiện có
 
-CSV hiện có **43.200 mẫu, 30 ngày** từ **11/10/2026 22:21 đến 10/11/2026 22:20**, theo giờ Việt Nam. Nguồn giờ là **Open-Meteo / ECMWF IFS** tại Hà Đông (20.9714°B, 105.7788°Đ), lưới khoảng 9 km. Nội suy về 1 phút và thêm nhiễu nhỏ có tương quan để mô phỏng chuỗi cảm biến; không lặp đường sin của bộ mẫu cũ. Giữ nguyên số liệu nguồn/API, metadata SHA-256 và thống kê từng ngày để kiểm tra.
+CSV hiện có **87.841 mẫu**, từ **16/09/2026 05:00 đến 16/11/2026 05:00**, theo giờ Việt Nam, cách nhau một phút. Bộ train có **86.041 mẫu**, đã loại 1.800 mẫu dùng dự báo hoặc chưa xảy ra tại thời điểm lấy nguồn. Nguồn gồm mô hình khí tượng tại Hà Đông và 314 bản tin trạm WMO 48825 để hiệu chỉnh khi đủ dữ liệu; URL, thời điểm tải và hash được lưu cùng bộ dữ liệu.
 
-Đây là **dữ liệu mô phỏng dựa trên khí tượng ngoài trời**, không phải số đo DHT22 thật hoặc quan trắc của một trạm tại Hà Đông. Bản tin METAR Nội Bài gần nhất được lưu để đối chiếu vùng, không dùng thay số đo Hà Đông. Xem [mô tả bộ dữ liệu và nguồn](data/WEATHER_DATA_README.md).
+Đây là **dữ liệu 100% mô phỏng dựa trên khí tượng ngoài trời**. Nhãn `label=sensor` trong 10 ngày cuối là nhãn kịch bản, không phải số đo DHT22 thật. Xem [mô tả bộ dữ liệu và nguồn](data/README_DATASET.md). CSV có `time,temp,hum,label`; SQLite có `readings(time,temp,hum,state,reasons)` và bảng nguồn riêng `reading_origins(time,origin)`.
+
+Hai DB SQLite đã loại cấu hình/xác thực riêng tư được đóng gói trong [gói dữ liệu hiện tại](deliverables/Du_lieu_100_phan_tram_mo_phong_20261116_0500.zip). Giải nén thư mục `data/` vào repo để dùng DB có sẵn. Mô hình nằm trong `model/`; [báo cáo cuối kì](reports/Bao_cao_cuoi_ki_Nhom_11_LSTM.docx) và [các gói bàn giao](deliverables/README.md) cũng được lưu trong repo. Tệp `.env`, DB vận hành chứa cấu hình cá nhân và lịch sử bảo trì chỉ giữ trên máy.
 
 ```bash
-# Tải/sinh lại 30 ngày tính tới hiện tại, tự sao lưu CSV cũ:
+# Ví dụ tạo một bộ 30 ngày khác; lệnh này sẽ thay CSV hiện tại:
 python generate_weather_data.py --days 30
 sudo systemctl restart iot-monitor
 ```
@@ -168,8 +170,8 @@ bash install_pi.sh --with-ml
 source venv/bin/activate
 pip install -r requirements-ml.txt
 python train_forecast.py --epochs 60
-# Thử nghiệm trên bộ 30 ngày khí tượng đã sinh:
-python train_forecast.py --epochs 60 --include-weather-samples
+# Thử nghiệm trên DB mô phỏng hiện tại đã loại forecast:
+python train_forecast.py --epochs 60 --db data/training_data.sqlite3 --skip-csv-import --include-weather-samples
 ```
 
 Có thể huấn luyện trên PC với bản sao dữ liệu SQLite rồi chép cả `model/forecast_12h.keras` và `model/forecast_12h.json` về Pi (Pi cần TensorFlow để suy luận LSTM). Chia train/validation/test theo thời gian 70/15/15, fit MinMax trên train, không cho nhãn 12 giờ vượt ranh giới tập. Chỉ điền tiến tối đa 20 phút khi thiếu dữ liệu; khoảng trống dài giữ nguyên và cửa sổ lỗi bị loại.
@@ -217,7 +219,7 @@ Bạn có thể đặt `IOT_DB_FILE` trỏ tới `data/demo.sqlite3` trong cả 
 | `common.py`, `.env` | Chân GPIO, cấu hình, thời gian, ngưỡng và thông tin SMTP |
 | `install_pi.sh`, `start_dashboard.sh` | Cài một lần, sinh dịch vụ tự chạy |
 
-SQLite là nguồn dùng cho dashboard. Monitor vẫn ghi `data/sensor_data.csv` và `data/monitor_log.csv` để tương thích xuất dữ liệu; trong log, `pred_temp/pred_hum` là **mốc dự báo kế tiếp** (tối đa 10 phút), không phải giá trị ở 12 giờ. Toàn bộ 72 mốc nằm trong snapshot SQLite. Sao lưu DB bằng SQLite backup API hoặc dừng dịch vụ trước khi sao chép; không chỉ copy tệp DB đang mở mà bỏ qua WAL.
+SQLite là nguồn dùng cho dashboard. Bộ dữ liệu hiện tại trên PC là bộ hai tháng **100% mô phỏng** trong `data/sensor_data.csv` và `data/iot.sqlite3`; xem `data/README_DATASET.md`. Các nhãn nhóm `label=sensor` trong 10 ngày cuối là nhãn kiểm thử; nguồn `weather_sample` và trạng thái 100% mô phỏng được ghi trong metadata và SQLite. CSV chỉ còn `time,temp,hum,label`. Để train bộ đã loại forecast, dùng `--db data/training_data.sqlite3 --skip-csv-import --include-weather-samples`. Khi chạy phần cứng thật, monitor tạo `data/live_sensor_data.csv` và `data/monitor_log.csv`; trong log, `pred_temp/pred_hum` là **mốc dự báo kế tiếp** (tối đa 10 phút), không phải giá trị ở 12 giờ. Toàn bộ 72 mốc nằm trong snapshot SQLite. Sao lưu DB bằng SQLite backup API hoặc dừng dịch vụ trước khi sao chép; không chỉ copy tệp DB đang mở mà bỏ qua WAL.
 
 `monitor.py` quản lý việc thu dữ liệu và giám sát chung. `markdown.md` và `NHUNG_GI_DA_LAM.md` lưu bối cảnh học thuật/thực nghiệm của bản 10 phút; README này mô tả phiên bản hiện hành.
 

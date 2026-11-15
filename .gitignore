@@ -25,3 +25,13 @@ backend.zip
 .reflex/
 deploy/frontend.previous/
 deploy/frontend-stage-*/
+
+# Local maintenance history and machine-specific deployment receipts.
+backups/
+deployment_pc_training_*.json
+pi_sync_receipt_*.json
+deploy/nginx.conf
+~$*
+
+# Reviewed distribution archives contain sanitized current data/model only.
+!deliverables/*.zip

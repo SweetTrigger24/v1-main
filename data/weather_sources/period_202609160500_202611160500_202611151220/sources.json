@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "start": "2026-09-16T05:00:00",
+  "end": "2026-11-16T05:00:00",
+  "as_of": "2026-11-15T12:20:00",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "station_wmo": "48825",
+  "station_name": "HA DONG",
+  "station_coordinates": [
+    20.9667,
+    105.7667
+  ],
+  "station_identity_reference": "https://www.jma.go.jp/jma/jma-eng/jma-center/rwc/semester/Quality_Performance_Report_202406.pdf",
+  "excluded_source": "Meteostat 48825 mixes Ha Dong coordinates with Cat Bi name/ICAO; not used.",
+  "sources": [
+    {
+      "url": "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202609150400&end=202610050400",
+      "file": "ha_dong_synop_202609150400_202610050400.csv",
+      "sha256": "004d6f5dd5f141b9b1a379c2ce419def9d7752c43ffaebeb4157edb178b0da05",
+      "downloaded_at": "2026-11-15T12:20:05.736295",
+      "kind": "synop"
+    },
+    {
+      "url": "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202610050401&end=202610250401",
+      "file": "ha_dong_synop_202610050401_202610250401.csv",
+      "sha256": "8e181cb00d1d9f1ef131c9074ce57f6cd37ccee89f751f6e44aceb4631ef2c3c",
+      "downloaded_at": "2026-11-15T12:20:06.424242",
+      "kind": "synop"
+    },
+    {
+      "url": "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202610250402&end=202611140402",
+      "file": "ha_dong_synop_202610250402_202611140402.csv",
+      "sha256": "75fbfb0a01612cc72a2f62291d0622b7d5886d21bcb81aa7a517f66b65d9f58a",
+      "downloaded_at": "2026-11-15T12:20:07.276788",
+      "kind": "synop"
+    },
+    {
+      "url": "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202611140403&end=202611150520",
+      "file": "ha_dong_synop_202611140403_202611150520.csv",
+      "sha256": "1611edfb3572cc3a64cac7eddb3609eccf7d4ddac6b055d9de9f6b59bf9ea13b",
+      "downloaded_at": "2026-11-15T12:20:07.923172",
+      "kind": "synop"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=20.9714&longitude=105.7788&hourly=temperature_2m%2Crelative_humidity_2m&timezone=Asia%2FHo_Chi_Minh&start_date=2026-09-16&end_date=2026-11-14&models=ecmwf_ifs",
+      "file": "ha_dong_archive.json",
+      "sha256": "9fe06489cb75e7d0cb786e1d3109d14899024c56d710726a4e2a00539b4e5983",
+      "downloaded_at": "2026-11-15T12:20:09.894167",
+      "kind": "archive"
+    },
+    {
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=20.9714&longitude=105.7788&hourly=temperature_2m%2Crelative_humidity_2m&timezone=Asia%2FHo_Chi_Minh&start_date=2026-11-13&end_date=2026-11-16&models=ecmwf_ifs",
+      "file": "ha_dong_forecast.json",
+      "sha256": "3ed41092fce2f0673cc0f7004a7bf3cc404e4ab334be7b1c54273649a62355ef",
+      "downloaded_at": "2026-11-15T12:20:10.814074",
+      "kind": "forecast"
+    }
+  ]
+}

@@ -1,0 +1,6599 @@
+{
+  "schema": 1,
+  "kind": "fully_simulated_weather_dataset",
+  "start": "2026-09-16T05:00:00",
+  "end": "2026-11-16T05:00:00",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "weather_downloaded_as_of": "2026-11-15T12:20:00",
+  "rows": 87841,
+  "physical_pi_readings": 0,
+  "all_rows_are_simulated": true,
+  "source_counts": {
+    "weather_sample": 87841
+  },
+  "label_counts": {
+    "weather_simulated": 73441,
+    "sensor": 14400
+  },
+  "last_10_days": {
+    "start_exclusive": "2026-11-06T05:00:00",
+    "end": "2026-11-16T05:00:00",
+    "rows": 14400,
+    "label": "sensor",
+    "source": "weather_sample",
+    "is_simulated": 1
+  },
+  "label_semantics": "Scenario grouping only. label=sensor is NOT a statement of DHT22 measurement provenance.",
+  "source_semantics": "All rows are weather_sample derived simulations, including the final ten days.",
+  "training_rows": 86041,
+  "excluded_forecast_or_future_rows": 1800,
+  "pi_contacted": false,
+  "active_runtime_data_changed": true,
+  "models_changed": true,
+  "station_wmo": "48825",
+  "station_observations": 314,
+  "method": "Interpolate station-minus-model residuals between anchors <=12h apart; taper nearest residual to zero over 3h at gap edges; add to hourly interpolated model; small seeded correlated noise zero at full hours; round 0.1. Distant gaps use model. Future uses forecast, never sensor.",
+  "source_manifest": "weather_sources/period_202609160500_202611160500_202611151220/sources.json",
+  "files_sha256": {
+    "sensor_data.csv": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+    "iot.sqlite3": "70b6089f45ac906bdec558f72268707b00206b5489aec7f2f3eb5fc54c1b6188",
+    "training_data.csv": "630b10f07057d9b2ba0646706f2e4000d0d576cba68430520648f0f068e0fb81",
+    "training_data.sqlite3": "01f538c699fd42708727d82f52bc73d830bd2c0bde097d629f4d813f75af70e4"
+  },
+  "selected_as_only_pc_dataset": true,
+  "settings_preserved": true,
+  "data_readings_preserved_from_old_pc_database": false,
+  "database_checksum_note": "SQLite checksum at verification; runtime settings/import markers may change later.",
+  "current_pc_model_training_run": "artifacts/training/20261115_current_simulation",
+  "csv_format_revision": 3,
+  "csv_columns": [
+    "time",
+    "temp",
+    "hum",
+    "label"
+  ],
+  "column_meanings": {
+    "time": "Vietnam local ISO8601 time",
+    "temp": "Temperature in degrees Celsius",
+    "hum": "Relative humidity percent",
+    "label": "Scenario group only, not measurement provenance"
+  },
+  "removed_csv_columns_storage": {
+    "is_simulated": "all_rows_are_simulated=true for the entire dataset",
+    "training_eligible": "training_time_ranges and the prefiltered training CSV/DB",
+    "weather_details": "row_metadata_segments below",
+    "source": "Global source_counts/source_semantics, sensor_data.provenance.json and SQLite reading_origins.origin"
+  },
+  "training_time_ranges": [
+    {
+      "start": "2026-09-16T05:00:00",
+      "end": "2026-11-14T23:00:00",
+      "rows": 86041
+    }
+  ],
+  "row_metadata_segments": [
+    {
+      "row_start": 0,
+      "row_end": 300,
+      "start": "2026-09-16T05:00:00",
+      "end": "2026-09-16T10:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 301,
+      "row_end": 479,
+      "start": "2026-09-16T10:01:00",
+      "end": "2026-09-16T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 480,
+      "row_end": 480,
+      "start": "2026-09-16T13:00:00",
+      "end": "2026-09-16T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 481,
+      "row_end": 839,
+      "start": "2026-09-16T13:01:00",
+      "end": "2026-09-16T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 840,
+      "row_end": 840,
+      "start": "2026-09-16T19:00:00",
+      "end": "2026-09-16T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 841,
+      "row_end": 1019,
+      "start": "2026-09-16T19:01:00",
+      "end": "2026-09-16T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1020,
+      "row_end": 1020,
+      "start": "2026-09-16T22:00:00",
+      "end": "2026-09-16T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1021,
+      "row_end": 1199,
+      "start": "2026-09-16T22:01:00",
+      "end": "2026-09-17T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1200,
+      "row_end": 1200,
+      "start": "2026-09-17T01:00:00",
+      "end": "2026-09-17T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1201,
+      "row_end": 1559,
+      "start": "2026-09-17T01:01:00",
+      "end": "2026-09-17T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1560,
+      "row_end": 1560,
+      "start": "2026-09-17T07:00:00",
+      "end": "2026-09-17T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1561,
+      "row_end": 1739,
+      "start": "2026-09-17T07:01:00",
+      "end": "2026-09-17T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1740,
+      "row_end": 1740,
+      "start": "2026-09-17T10:00:00",
+      "end": "2026-09-17T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 1741,
+      "row_end": 2279,
+      "start": "2026-09-17T10:01:00",
+      "end": "2026-09-17T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 2280,
+      "row_end": 2280,
+      "start": "2026-09-17T19:00:00",
+      "end": "2026-09-17T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 2281,
+      "row_end": 2459,
+      "start": "2026-09-17T19:01:00",
+      "end": "2026-09-17T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 2460,
+      "row_end": 3000,
+      "start": "2026-09-17T22:00:00",
+      "end": "2026-09-18T07:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 3001,
+      "row_end": 3179,
+      "start": "2026-09-18T07:01:00",
+      "end": "2026-09-18T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 3180,
+      "row_end": 3180,
+      "start": "2026-09-18T10:00:00",
+      "end": "2026-09-18T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 3181,
+      "row_end": 3899,
+      "start": "2026-09-18T10:01:00",
+      "end": "2026-09-18T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 3900,
+      "row_end": 3900,
+      "start": "2026-09-18T22:00:00",
+      "end": "2026-09-18T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 3901,
+      "row_end": 4079,
+      "start": "2026-09-18T22:01:00",
+      "end": "2026-09-19T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4080,
+      "row_end": 4080,
+      "start": "2026-09-19T01:00:00",
+      "end": "2026-09-19T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4081,
+      "row_end": 4439,
+      "start": "2026-09-19T01:01:00",
+      "end": "2026-09-19T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4440,
+      "row_end": 4440,
+      "start": "2026-09-19T07:00:00",
+      "end": "2026-09-19T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4441,
+      "row_end": 4799,
+      "start": "2026-09-19T07:01:00",
+      "end": "2026-09-19T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4800,
+      "row_end": 4800,
+      "start": "2026-09-19T13:00:00",
+      "end": "2026-09-19T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 4801,
+      "row_end": 5159,
+      "start": "2026-09-19T13:01:00",
+      "end": "2026-09-19T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 5160,
+      "row_end": 5160,
+      "start": "2026-09-19T19:00:00",
+      "end": "2026-09-19T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 5161,
+      "row_end": 5879,
+      "start": "2026-09-19T19:01:00",
+      "end": "2026-09-20T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 5880,
+      "row_end": 5880,
+      "start": "2026-09-20T07:00:00",
+      "end": "2026-09-20T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 5881,
+      "row_end": 6059,
+      "start": "2026-09-20T07:01:00",
+      "end": "2026-09-20T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6060,
+      "row_end": 6060,
+      "start": "2026-09-20T10:00:00",
+      "end": "2026-09-20T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6061,
+      "row_end": 6239,
+      "start": "2026-09-20T10:01:00",
+      "end": "2026-09-20T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6240,
+      "row_end": 6240,
+      "start": "2026-09-20T13:00:00",
+      "end": "2026-09-20T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6241,
+      "row_end": 6419,
+      "start": "2026-09-20T13:01:00",
+      "end": "2026-09-20T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6420,
+      "row_end": 6420,
+      "start": "2026-09-20T16:00:00",
+      "end": "2026-09-20T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6421,
+      "row_end": 6599,
+      "start": "2026-09-20T16:01:00",
+      "end": "2026-09-20T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6600,
+      "row_end": 6600,
+      "start": "2026-09-20T19:00:00",
+      "end": "2026-09-20T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6601,
+      "row_end": 6779,
+      "start": "2026-09-20T19:01:00",
+      "end": "2026-09-20T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6780,
+      "row_end": 6780,
+      "start": "2026-09-20T22:00:00",
+      "end": "2026-09-20T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 6781,
+      "row_end": 7139,
+      "start": "2026-09-20T22:01:00",
+      "end": "2026-09-21T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7140,
+      "row_end": 7140,
+      "start": "2026-09-21T04:00:00",
+      "end": "2026-09-21T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7141,
+      "row_end": 7319,
+      "start": "2026-09-21T04:01:00",
+      "end": "2026-09-21T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7320,
+      "row_end": 7320,
+      "start": "2026-09-21T07:00:00",
+      "end": "2026-09-21T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7321,
+      "row_end": 7679,
+      "start": "2026-09-21T07:01:00",
+      "end": "2026-09-21T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7680,
+      "row_end": 7680,
+      "start": "2026-09-21T13:00:00",
+      "end": "2026-09-21T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 7681,
+      "row_end": 8039,
+      "start": "2026-09-21T13:01:00",
+      "end": "2026-09-21T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8040,
+      "row_end": 8040,
+      "start": "2026-09-21T19:00:00",
+      "end": "2026-09-21T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8041,
+      "row_end": 8219,
+      "start": "2026-09-21T19:01:00",
+      "end": "2026-09-21T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8220,
+      "row_end": 8220,
+      "start": "2026-09-21T22:00:00",
+      "end": "2026-09-21T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8221,
+      "row_end": 8399,
+      "start": "2026-09-21T22:01:00",
+      "end": "2026-09-22T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8400,
+      "row_end": 8400,
+      "start": "2026-09-22T01:00:00",
+      "end": "2026-09-22T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8401,
+      "row_end": 8579,
+      "start": "2026-09-22T01:01:00",
+      "end": "2026-09-22T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8580,
+      "row_end": 8580,
+      "start": "2026-09-22T04:00:00",
+      "end": "2026-09-22T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8581,
+      "row_end": 8759,
+      "start": "2026-09-22T04:01:00",
+      "end": "2026-09-22T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8760,
+      "row_end": 8760,
+      "start": "2026-09-22T07:00:00",
+      "end": "2026-09-22T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8761,
+      "row_end": 8939,
+      "start": "2026-09-22T07:01:00",
+      "end": "2026-09-22T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8940,
+      "row_end": 8940,
+      "start": "2026-09-22T10:00:00",
+      "end": "2026-09-22T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 8941,
+      "row_end": 9119,
+      "start": "2026-09-22T10:01:00",
+      "end": "2026-09-22T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9120,
+      "row_end": 9120,
+      "start": "2026-09-22T13:00:00",
+      "end": "2026-09-22T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9121,
+      "row_end": 9479,
+      "start": "2026-09-22T13:01:00",
+      "end": "2026-09-22T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9480,
+      "row_end": 9480,
+      "start": "2026-09-22T19:00:00",
+      "end": "2026-09-22T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9481,
+      "row_end": 9839,
+      "start": "2026-09-22T19:01:00",
+      "end": "2026-09-23T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9840,
+      "row_end": 9840,
+      "start": "2026-09-23T01:00:00",
+      "end": "2026-09-23T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 9841,
+      "row_end": 10019,
+      "start": "2026-09-23T01:01:00",
+      "end": "2026-09-23T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10020,
+      "row_end": 10020,
+      "start": "2026-09-23T04:00:00",
+      "end": "2026-09-23T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10021,
+      "row_end": 10379,
+      "start": "2026-09-23T04:01:00",
+      "end": "2026-09-23T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10380,
+      "row_end": 10380,
+      "start": "2026-09-23T10:00:00",
+      "end": "2026-09-23T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10381,
+      "row_end": 10559,
+      "start": "2026-09-23T10:01:00",
+      "end": "2026-09-23T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10560,
+      "row_end": 10560,
+      "start": "2026-09-23T13:00:00",
+      "end": "2026-09-23T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10561,
+      "row_end": 10919,
+      "start": "2026-09-23T13:01:00",
+      "end": "2026-09-23T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10920,
+      "row_end": 10920,
+      "start": "2026-09-23T19:00:00",
+      "end": "2026-09-23T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 10921,
+      "row_end": 11279,
+      "start": "2026-09-23T19:01:00",
+      "end": "2026-09-24T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11280,
+      "row_end": 11280,
+      "start": "2026-09-24T01:00:00",
+      "end": "2026-09-24T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11281,
+      "row_end": 11459,
+      "start": "2026-09-24T01:01:00",
+      "end": "2026-09-24T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11460,
+      "row_end": 11460,
+      "start": "2026-09-24T04:00:00",
+      "end": "2026-09-24T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11461,
+      "row_end": 11819,
+      "start": "2026-09-24T04:01:00",
+      "end": "2026-09-24T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11820,
+      "row_end": 11820,
+      "start": "2026-09-24T10:00:00",
+      "end": "2026-09-24T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 11821,
+      "row_end": 11999,
+      "start": "2026-09-24T10:01:00",
+      "end": "2026-09-24T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12000,
+      "row_end": 12000,
+      "start": "2026-09-24T13:00:00",
+      "end": "2026-09-24T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12001,
+      "row_end": 12359,
+      "start": "2026-09-24T13:01:00",
+      "end": "2026-09-24T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12360,
+      "row_end": 12360,
+      "start": "2026-09-24T19:00:00",
+      "end": "2026-09-24T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12361,
+      "row_end": 12719,
+      "start": "2026-09-24T19:01:00",
+      "end": "2026-09-25T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12720,
+      "row_end": 12720,
+      "start": "2026-09-25T01:00:00",
+      "end": "2026-09-25T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12721,
+      "row_end": 12899,
+      "start": "2026-09-25T01:01:00",
+      "end": "2026-09-25T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12900,
+      "row_end": 12900,
+      "start": "2026-09-25T04:00:00",
+      "end": "2026-09-25T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 12901,
+      "row_end": 13079,
+      "start": "2026-09-25T04:01:00",
+      "end": "2026-09-25T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13080,
+      "row_end": 13080,
+      "start": "2026-09-25T07:00:00",
+      "end": "2026-09-25T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13081,
+      "row_end": 13259,
+      "start": "2026-09-25T07:01:00",
+      "end": "2026-09-25T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13260,
+      "row_end": 13260,
+      "start": "2026-09-25T10:00:00",
+      "end": "2026-09-25T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13261,
+      "row_end": 13619,
+      "start": "2026-09-25T10:01:00",
+      "end": "2026-09-25T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13620,
+      "row_end": 13620,
+      "start": "2026-09-25T16:00:00",
+      "end": "2026-09-25T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13621,
+      "row_end": 13799,
+      "start": "2026-09-25T16:01:00",
+      "end": "2026-09-25T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13800,
+      "row_end": 13800,
+      "start": "2026-09-25T19:00:00",
+      "end": "2026-09-25T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13801,
+      "row_end": 13979,
+      "start": "2026-09-25T19:01:00",
+      "end": "2026-09-25T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13980,
+      "row_end": 13980,
+      "start": "2026-09-25T22:00:00",
+      "end": "2026-09-25T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 13981,
+      "row_end": 14519,
+      "start": "2026-09-25T22:01:00",
+      "end": "2026-09-26T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14520,
+      "row_end": 14520,
+      "start": "2026-09-26T07:00:00",
+      "end": "2026-09-26T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14521,
+      "row_end": 14699,
+      "start": "2026-09-26T07:01:00",
+      "end": "2026-09-26T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14700,
+      "row_end": 14700,
+      "start": "2026-09-26T10:00:00",
+      "end": "2026-09-26T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14701,
+      "row_end": 14879,
+      "start": "2026-09-26T10:01:00",
+      "end": "2026-09-26T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14880,
+      "row_end": 14880,
+      "start": "2026-09-26T13:00:00",
+      "end": "2026-09-26T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 14881,
+      "row_end": 15059,
+      "start": "2026-09-26T13:01:00",
+      "end": "2026-09-26T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15060,
+      "row_end": 15060,
+      "start": "2026-09-26T16:00:00",
+      "end": "2026-09-26T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15061,
+      "row_end": 15779,
+      "start": "2026-09-26T16:01:00",
+      "end": "2026-09-27T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15780,
+      "row_end": 15780,
+      "start": "2026-09-27T04:00:00",
+      "end": "2026-09-27T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15781,
+      "row_end": 15959,
+      "start": "2026-09-27T04:01:00",
+      "end": "2026-09-27T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15960,
+      "row_end": 15960,
+      "start": "2026-09-27T07:00:00",
+      "end": "2026-09-27T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 15961,
+      "row_end": 16139,
+      "start": "2026-09-27T07:01:00",
+      "end": "2026-09-27T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16140,
+      "row_end": 16140,
+      "start": "2026-09-27T10:00:00",
+      "end": "2026-09-27T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16141,
+      "row_end": 16319,
+      "start": "2026-09-27T10:01:00",
+      "end": "2026-09-27T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16320,
+      "row_end": 16320,
+      "start": "2026-09-27T13:00:00",
+      "end": "2026-09-27T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16321,
+      "row_end": 16499,
+      "start": "2026-09-27T13:01:00",
+      "end": "2026-09-27T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16500,
+      "row_end": 16500,
+      "start": "2026-09-27T16:00:00",
+      "end": "2026-09-27T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16501,
+      "row_end": 16679,
+      "start": "2026-09-27T16:01:00",
+      "end": "2026-09-27T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16680,
+      "row_end": 16680,
+      "start": "2026-09-27T19:00:00",
+      "end": "2026-09-27T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 16681,
+      "row_end": 17399,
+      "start": "2026-09-27T19:01:00",
+      "end": "2026-09-28T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17400,
+      "row_end": 17400,
+      "start": "2026-09-28T07:00:00",
+      "end": "2026-09-28T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17401,
+      "row_end": 17579,
+      "start": "2026-09-28T07:01:00",
+      "end": "2026-09-28T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17580,
+      "row_end": 17580,
+      "start": "2026-09-28T10:00:00",
+      "end": "2026-09-28T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17581,
+      "row_end": 17939,
+      "start": "2026-09-28T10:01:00",
+      "end": "2026-09-28T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17940,
+      "row_end": 17940,
+      "start": "2026-09-28T16:00:00",
+      "end": "2026-09-28T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 17941,
+      "row_end": 18299,
+      "start": "2026-09-28T16:01:00",
+      "end": "2026-09-28T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18300,
+      "row_end": 18300,
+      "start": "2026-09-28T22:00:00",
+      "end": "2026-09-28T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18301,
+      "row_end": 18659,
+      "start": "2026-09-28T22:01:00",
+      "end": "2026-09-29T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18660,
+      "row_end": 18660,
+      "start": "2026-09-29T04:00:00",
+      "end": "2026-09-29T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18661,
+      "row_end": 18839,
+      "start": "2026-09-29T04:01:00",
+      "end": "2026-09-29T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18840,
+      "row_end": 18840,
+      "start": "2026-09-29T07:00:00",
+      "end": "2026-09-29T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 18841,
+      "row_end": 19199,
+      "start": "2026-09-29T07:01:00",
+      "end": "2026-09-29T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19200,
+      "row_end": 19200,
+      "start": "2026-09-29T13:00:00",
+      "end": "2026-09-29T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19201,
+      "row_end": 19379,
+      "start": "2026-09-29T13:01:00",
+      "end": "2026-09-29T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19380,
+      "row_end": 19380,
+      "start": "2026-09-29T16:00:00",
+      "end": "2026-09-29T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19381,
+      "row_end": 19559,
+      "start": "2026-09-29T16:01:00",
+      "end": "2026-09-29T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19560,
+      "row_end": 19560,
+      "start": "2026-09-29T19:00:00",
+      "end": "2026-09-29T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19561,
+      "row_end": 19919,
+      "start": "2026-09-29T19:01:00",
+      "end": "2026-09-30T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19920,
+      "row_end": 19920,
+      "start": "2026-09-30T01:00:00",
+      "end": "2026-09-30T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 19921,
+      "row_end": 20279,
+      "start": "2026-09-30T01:01:00",
+      "end": "2026-09-30T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 20280,
+      "row_end": 20280,
+      "start": "2026-09-30T07:00:00",
+      "end": "2026-09-30T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 20281,
+      "row_end": 20459,
+      "start": "2026-09-30T07:01:00",
+      "end": "2026-09-30T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 20460,
+      "row_end": 21000,
+      "start": "2026-09-30T10:00:00",
+      "end": "2026-09-30T19:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 21001,
+      "row_end": 21179,
+      "start": "2026-09-30T19:01:00",
+      "end": "2026-09-30T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21180,
+      "row_end": 21180,
+      "start": "2026-09-30T22:00:00",
+      "end": "2026-09-30T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21181,
+      "row_end": 21359,
+      "start": "2026-09-30T22:01:00",
+      "end": "2026-10-01T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21360,
+      "row_end": 21360,
+      "start": "2026-10-01T01:00:00",
+      "end": "2026-10-01T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21361,
+      "row_end": 21539,
+      "start": "2026-10-01T01:01:00",
+      "end": "2026-10-01T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21540,
+      "row_end": 21540,
+      "start": "2026-10-01T04:00:00",
+      "end": "2026-10-01T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21541,
+      "row_end": 21719,
+      "start": "2026-10-01T04:01:00",
+      "end": "2026-10-01T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 21720,
+      "row_end": 22260,
+      "start": "2026-10-01T07:00:00",
+      "end": "2026-10-01T16:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 22261,
+      "row_end": 22439,
+      "start": "2026-10-01T16:01:00",
+      "end": "2026-10-01T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22440,
+      "row_end": 22440,
+      "start": "2026-10-01T19:00:00",
+      "end": "2026-10-01T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22441,
+      "row_end": 22619,
+      "start": "2026-10-01T19:01:00",
+      "end": "2026-10-01T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22620,
+      "row_end": 22620,
+      "start": "2026-10-01T22:00:00",
+      "end": "2026-10-01T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22621,
+      "row_end": 22799,
+      "start": "2026-10-01T22:01:00",
+      "end": "2026-10-02T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22800,
+      "row_end": 22800,
+      "start": "2026-10-02T01:00:00",
+      "end": "2026-10-02T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22801,
+      "row_end": 22979,
+      "start": "2026-10-02T01:01:00",
+      "end": "2026-10-02T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22980,
+      "row_end": 22980,
+      "start": "2026-10-02T04:00:00",
+      "end": "2026-10-02T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 22981,
+      "row_end": 23159,
+      "start": "2026-10-02T04:01:00",
+      "end": "2026-10-02T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 23160,
+      "row_end": 23160,
+      "start": "2026-10-02T07:00:00",
+      "end": "2026-10-02T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 23161,
+      "row_end": 23339,
+      "start": "2026-10-02T07:01:00",
+      "end": "2026-10-02T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 23340,
+      "row_end": 23880,
+      "start": "2026-10-02T10:00:00",
+      "end": "2026-10-02T19:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 23881,
+      "row_end": 24059,
+      "start": "2026-10-02T19:01:00",
+      "end": "2026-10-02T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24060,
+      "row_end": 24060,
+      "start": "2026-10-02T22:00:00",
+      "end": "2026-10-02T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24061,
+      "row_end": 24239,
+      "start": "2026-10-02T22:01:00",
+      "end": "2026-10-03T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24240,
+      "row_end": 24240,
+      "start": "2026-10-03T01:00:00",
+      "end": "2026-10-03T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24241,
+      "row_end": 24599,
+      "start": "2026-10-03T01:01:00",
+      "end": "2026-10-03T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24600,
+      "row_end": 24600,
+      "start": "2026-10-03T07:00:00",
+      "end": "2026-10-03T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 24601,
+      "row_end": 25139,
+      "start": "2026-10-03T07:01:00",
+      "end": "2026-10-03T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 25140,
+      "row_end": 25140,
+      "start": "2026-10-03T16:00:00",
+      "end": "2026-10-03T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 25141,
+      "row_end": 25679,
+      "start": "2026-10-03T16:01:00",
+      "end": "2026-10-04T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 25680,
+      "row_end": 25680,
+      "start": "2026-10-04T01:00:00",
+      "end": "2026-10-04T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 25681,
+      "row_end": 26039,
+      "start": "2026-10-04T01:01:00",
+      "end": "2026-10-04T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26040,
+      "row_end": 26040,
+      "start": "2026-10-04T07:00:00",
+      "end": "2026-10-04T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26041,
+      "row_end": 26219,
+      "start": "2026-10-04T07:01:00",
+      "end": "2026-10-04T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26220,
+      "row_end": 26220,
+      "start": "2026-10-04T10:00:00",
+      "end": "2026-10-04T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26221,
+      "row_end": 26399,
+      "start": "2026-10-04T10:01:00",
+      "end": "2026-10-04T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26400,
+      "row_end": 26400,
+      "start": "2026-10-04T13:00:00",
+      "end": "2026-10-04T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26401,
+      "row_end": 26579,
+      "start": "2026-10-04T13:01:00",
+      "end": "2026-10-04T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26580,
+      "row_end": 26580,
+      "start": "2026-10-04T16:00:00",
+      "end": "2026-10-04T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 26581,
+      "row_end": 27119,
+      "start": "2026-10-04T16:01:00",
+      "end": "2026-10-05T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27120,
+      "row_end": 27120,
+      "start": "2026-10-05T01:00:00",
+      "end": "2026-10-05T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27121,
+      "row_end": 27479,
+      "start": "2026-10-05T01:01:00",
+      "end": "2026-10-05T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27480,
+      "row_end": 27480,
+      "start": "2026-10-05T07:00:00",
+      "end": "2026-10-05T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27481,
+      "row_end": 27839,
+      "start": "2026-10-05T07:01:00",
+      "end": "2026-10-05T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27840,
+      "row_end": 27840,
+      "start": "2026-10-05T13:00:00",
+      "end": "2026-10-05T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 27841,
+      "row_end": 28019,
+      "start": "2026-10-05T13:01:00",
+      "end": "2026-10-05T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28020,
+      "row_end": 28020,
+      "start": "2026-10-05T16:00:00",
+      "end": "2026-10-05T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28021,
+      "row_end": 28559,
+      "start": "2026-10-05T16:01:00",
+      "end": "2026-10-06T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28560,
+      "row_end": 28560,
+      "start": "2026-10-06T01:00:00",
+      "end": "2026-10-06T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28561,
+      "row_end": 28739,
+      "start": "2026-10-06T01:01:00",
+      "end": "2026-10-06T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28740,
+      "row_end": 28740,
+      "start": "2026-10-06T04:00:00",
+      "end": "2026-10-06T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28741,
+      "row_end": 28919,
+      "start": "2026-10-06T04:01:00",
+      "end": "2026-10-06T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28920,
+      "row_end": 28920,
+      "start": "2026-10-06T07:00:00",
+      "end": "2026-10-06T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 28921,
+      "row_end": 29099,
+      "start": "2026-10-06T07:01:00",
+      "end": "2026-10-06T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 29100,
+      "row_end": 29820,
+      "start": "2026-10-06T10:00:00",
+      "end": "2026-10-06T22:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 29821,
+      "row_end": 29999,
+      "start": "2026-10-06T22:01:00",
+      "end": "2026-10-07T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30000,
+      "row_end": 30000,
+      "start": "2026-10-07T01:00:00",
+      "end": "2026-10-07T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30001,
+      "row_end": 30539,
+      "start": "2026-10-07T01:01:00",
+      "end": "2026-10-07T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30540,
+      "row_end": 30540,
+      "start": "2026-10-07T10:00:00",
+      "end": "2026-10-07T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30541,
+      "row_end": 30719,
+      "start": "2026-10-07T10:01:00",
+      "end": "2026-10-07T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30720,
+      "row_end": 30720,
+      "start": "2026-10-07T13:00:00",
+      "end": "2026-10-07T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30721,
+      "row_end": 30899,
+      "start": "2026-10-07T13:01:00",
+      "end": "2026-10-07T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 30900,
+      "row_end": 31440,
+      "start": "2026-10-07T16:00:00",
+      "end": "2026-10-08T01:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 31441,
+      "row_end": 31619,
+      "start": "2026-10-08T01:01:00",
+      "end": "2026-10-08T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 31620,
+      "row_end": 31620,
+      "start": "2026-10-08T04:00:00",
+      "end": "2026-10-08T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 31621,
+      "row_end": 31799,
+      "start": "2026-10-08T04:01:00",
+      "end": "2026-10-08T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 31800,
+      "row_end": 31800,
+      "start": "2026-10-08T07:00:00",
+      "end": "2026-10-08T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 31801,
+      "row_end": 32159,
+      "start": "2026-10-08T07:01:00",
+      "end": "2026-10-08T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32160,
+      "row_end": 32160,
+      "start": "2026-10-08T13:00:00",
+      "end": "2026-10-08T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32161,
+      "row_end": 32519,
+      "start": "2026-10-08T13:01:00",
+      "end": "2026-10-08T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32520,
+      "row_end": 32520,
+      "start": "2026-10-08T19:00:00",
+      "end": "2026-10-08T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32521,
+      "row_end": 32699,
+      "start": "2026-10-08T19:01:00",
+      "end": "2026-10-08T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32700,
+      "row_end": 32700,
+      "start": "2026-10-08T22:00:00",
+      "end": "2026-10-08T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32701,
+      "row_end": 32879,
+      "start": "2026-10-08T22:01:00",
+      "end": "2026-10-09T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32880,
+      "row_end": 32880,
+      "start": "2026-10-09T01:00:00",
+      "end": "2026-10-09T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 32881,
+      "row_end": 33059,
+      "start": "2026-10-09T01:01:00",
+      "end": "2026-10-09T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33060,
+      "row_end": 33060,
+      "start": "2026-10-09T04:00:00",
+      "end": "2026-10-09T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33061,
+      "row_end": 33239,
+      "start": "2026-10-09T04:01:00",
+      "end": "2026-10-09T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33240,
+      "row_end": 33240,
+      "start": "2026-10-09T07:00:00",
+      "end": "2026-10-09T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33241,
+      "row_end": 33599,
+      "start": "2026-10-09T07:01:00",
+      "end": "2026-10-09T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33600,
+      "row_end": 33600,
+      "start": "2026-10-09T13:00:00",
+      "end": "2026-10-09T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33601,
+      "row_end": 33959,
+      "start": "2026-10-09T13:01:00",
+      "end": "2026-10-09T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33960,
+      "row_end": 33960,
+      "start": "2026-10-09T19:00:00",
+      "end": "2026-10-09T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 33961,
+      "row_end": 34139,
+      "start": "2026-10-09T19:01:00",
+      "end": "2026-10-09T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34140,
+      "row_end": 34140,
+      "start": "2026-10-09T22:00:00",
+      "end": "2026-10-09T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34141,
+      "row_end": 34319,
+      "start": "2026-10-09T22:01:00",
+      "end": "2026-10-10T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34320,
+      "row_end": 34320,
+      "start": "2026-10-10T01:00:00",
+      "end": "2026-10-10T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34321,
+      "row_end": 34499,
+      "start": "2026-10-10T01:01:00",
+      "end": "2026-10-10T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34500,
+      "row_end": 34500,
+      "start": "2026-10-10T04:00:00",
+      "end": "2026-10-10T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34501,
+      "row_end": 34679,
+      "start": "2026-10-10T04:01:00",
+      "end": "2026-10-10T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34680,
+      "row_end": 34680,
+      "start": "2026-10-10T07:00:00",
+      "end": "2026-10-10T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34681,
+      "row_end": 34859,
+      "start": "2026-10-10T07:01:00",
+      "end": "2026-10-10T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34860,
+      "row_end": 34860,
+      "start": "2026-10-10T10:00:00",
+      "end": "2026-10-10T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 34861,
+      "row_end": 35219,
+      "start": "2026-10-10T10:01:00",
+      "end": "2026-10-10T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35220,
+      "row_end": 35220,
+      "start": "2026-10-10T16:00:00",
+      "end": "2026-10-10T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35221,
+      "row_end": 35399,
+      "start": "2026-10-10T16:01:00",
+      "end": "2026-10-10T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35400,
+      "row_end": 35400,
+      "start": "2026-10-10T19:00:00",
+      "end": "2026-10-10T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35401,
+      "row_end": 35759,
+      "start": "2026-10-10T19:01:00",
+      "end": "2026-10-11T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35760,
+      "row_end": 35760,
+      "start": "2026-10-11T01:00:00",
+      "end": "2026-10-11T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35761,
+      "row_end": 35939,
+      "start": "2026-10-11T01:01:00",
+      "end": "2026-10-11T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35940,
+      "row_end": 35940,
+      "start": "2026-10-11T04:00:00",
+      "end": "2026-10-11T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 35941,
+      "row_end": 36119,
+      "start": "2026-10-11T04:01:00",
+      "end": "2026-10-11T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36120,
+      "row_end": 36120,
+      "start": "2026-10-11T07:00:00",
+      "end": "2026-10-11T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36121,
+      "row_end": 36299,
+      "start": "2026-10-11T07:01:00",
+      "end": "2026-10-11T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36300,
+      "row_end": 36300,
+      "start": "2026-10-11T10:00:00",
+      "end": "2026-10-11T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36301,
+      "row_end": 36659,
+      "start": "2026-10-11T10:01:00",
+      "end": "2026-10-11T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36660,
+      "row_end": 36660,
+      "start": "2026-10-11T16:00:00",
+      "end": "2026-10-11T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 36661,
+      "row_end": 37199,
+      "start": "2026-10-11T16:01:00",
+      "end": "2026-10-12T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37200,
+      "row_end": 37200,
+      "start": "2026-10-12T01:00:00",
+      "end": "2026-10-12T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37201,
+      "row_end": 37559,
+      "start": "2026-10-12T01:01:00",
+      "end": "2026-10-12T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37560,
+      "row_end": 37560,
+      "start": "2026-10-12T07:00:00",
+      "end": "2026-10-12T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37561,
+      "row_end": 37739,
+      "start": "2026-10-12T07:01:00",
+      "end": "2026-10-12T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37740,
+      "row_end": 37740,
+      "start": "2026-10-12T10:00:00",
+      "end": "2026-10-12T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37741,
+      "row_end": 37919,
+      "start": "2026-10-12T10:01:00",
+      "end": "2026-10-12T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37920,
+      "row_end": 37920,
+      "start": "2026-10-12T13:00:00",
+      "end": "2026-10-12T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 37921,
+      "row_end": 38279,
+      "start": "2026-10-12T13:01:00",
+      "end": "2026-10-12T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38280,
+      "row_end": 38280,
+      "start": "2026-10-12T19:00:00",
+      "end": "2026-10-12T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38281,
+      "row_end": 38459,
+      "start": "2026-10-12T19:01:00",
+      "end": "2026-10-12T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38460,
+      "row_end": 38460,
+      "start": "2026-10-12T22:00:00",
+      "end": "2026-10-12T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38461,
+      "row_end": 38819,
+      "start": "2026-10-12T22:01:00",
+      "end": "2026-10-13T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38820,
+      "row_end": 38820,
+      "start": "2026-10-13T04:00:00",
+      "end": "2026-10-13T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 38821,
+      "row_end": 39359,
+      "start": "2026-10-13T04:01:00",
+      "end": "2026-10-13T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 39360,
+      "row_end": 39360,
+      "start": "2026-10-13T13:00:00",
+      "end": "2026-10-13T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 39361,
+      "row_end": 39539,
+      "start": "2026-10-13T13:01:00",
+      "end": "2026-10-13T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 39540,
+      "row_end": 39540,
+      "start": "2026-10-13T16:00:00",
+      "end": "2026-10-13T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 39541,
+      "row_end": 40259,
+      "start": "2026-10-13T16:01:00",
+      "end": "2026-10-14T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40260,
+      "row_end": 40260,
+      "start": "2026-10-14T04:00:00",
+      "end": "2026-10-14T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40261,
+      "row_end": 40799,
+      "start": "2026-10-14T04:01:00",
+      "end": "2026-10-14T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40800,
+      "row_end": 40800,
+      "start": "2026-10-14T13:00:00",
+      "end": "2026-10-14T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40801,
+      "row_end": 40979,
+      "start": "2026-10-14T13:01:00",
+      "end": "2026-10-14T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40980,
+      "row_end": 40980,
+      "start": "2026-10-14T16:00:00",
+      "end": "2026-10-14T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 40981,
+      "row_end": 41159,
+      "start": "2026-10-14T16:01:00",
+      "end": "2026-10-14T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41160,
+      "row_end": 41160,
+      "start": "2026-10-14T19:00:00",
+      "end": "2026-10-14T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41161,
+      "row_end": 41519,
+      "start": "2026-10-14T19:01:00",
+      "end": "2026-10-15T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41520,
+      "row_end": 41520,
+      "start": "2026-10-15T01:00:00",
+      "end": "2026-10-15T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41521,
+      "row_end": 41699,
+      "start": "2026-10-15T01:01:00",
+      "end": "2026-10-15T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41700,
+      "row_end": 41700,
+      "start": "2026-10-15T04:00:00",
+      "end": "2026-10-15T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 41701,
+      "row_end": 42419,
+      "start": "2026-10-15T04:01:00",
+      "end": "2026-10-15T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42420,
+      "row_end": 42420,
+      "start": "2026-10-15T16:00:00",
+      "end": "2026-10-15T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42421,
+      "row_end": 42599,
+      "start": "2026-10-15T16:01:00",
+      "end": "2026-10-15T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42600,
+      "row_end": 42600,
+      "start": "2026-10-15T19:00:00",
+      "end": "2026-10-15T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42601,
+      "row_end": 42959,
+      "start": "2026-10-15T19:01:00",
+      "end": "2026-10-16T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42960,
+      "row_end": 42960,
+      "start": "2026-10-16T01:00:00",
+      "end": "2026-10-16T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 42961,
+      "row_end": 43139,
+      "start": "2026-10-16T01:01:00",
+      "end": "2026-10-16T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43140,
+      "row_end": 43140,
+      "start": "2026-10-16T04:00:00",
+      "end": "2026-10-16T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43141,
+      "row_end": 43319,
+      "start": "2026-10-16T04:01:00",
+      "end": "2026-10-16T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43320,
+      "row_end": 43320,
+      "start": "2026-10-16T07:00:00",
+      "end": "2026-10-16T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43321,
+      "row_end": 43679,
+      "start": "2026-10-16T07:01:00",
+      "end": "2026-10-16T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43680,
+      "row_end": 43680,
+      "start": "2026-10-16T13:00:00",
+      "end": "2026-10-16T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43681,
+      "row_end": 43859,
+      "start": "2026-10-16T13:01:00",
+      "end": "2026-10-16T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 43860,
+      "row_end": 44580,
+      "start": "2026-10-16T16:00:00",
+      "end": "2026-10-17T04:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 44581,
+      "row_end": 44759,
+      "start": "2026-10-17T04:01:00",
+      "end": "2026-10-17T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 44760,
+      "row_end": 44760,
+      "start": "2026-10-17T07:00:00",
+      "end": "2026-10-17T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 44761,
+      "row_end": 44939,
+      "start": "2026-10-17T07:01:00",
+      "end": "2026-10-17T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 44940,
+      "row_end": 44940,
+      "start": "2026-10-17T10:00:00",
+      "end": "2026-10-17T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 44941,
+      "row_end": 45119,
+      "start": "2026-10-17T10:01:00",
+      "end": "2026-10-17T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 45120,
+      "row_end": 45120,
+      "start": "2026-10-17T13:00:00",
+      "end": "2026-10-17T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 45121,
+      "row_end": 45659,
+      "start": "2026-10-17T13:01:00",
+      "end": "2026-10-17T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 45660,
+      "row_end": 45660,
+      "start": "2026-10-17T22:00:00",
+      "end": "2026-10-17T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 45661,
+      "row_end": 46019,
+      "start": "2026-10-17T22:01:00",
+      "end": "2026-10-18T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46020,
+      "row_end": 46020,
+      "start": "2026-10-18T04:00:00",
+      "end": "2026-10-18T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46021,
+      "row_end": 46559,
+      "start": "2026-10-18T04:01:00",
+      "end": "2026-10-18T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46560,
+      "row_end": 46560,
+      "start": "2026-10-18T13:00:00",
+      "end": "2026-10-18T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46561,
+      "row_end": 46739,
+      "start": "2026-10-18T13:01:00",
+      "end": "2026-10-18T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46740,
+      "row_end": 46740,
+      "start": "2026-10-18T16:00:00",
+      "end": "2026-10-18T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46741,
+      "row_end": 46919,
+      "start": "2026-10-18T16:01:00",
+      "end": "2026-10-18T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46920,
+      "row_end": 46920,
+      "start": "2026-10-18T19:00:00",
+      "end": "2026-10-18T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 46921,
+      "row_end": 47099,
+      "start": "2026-10-18T19:01:00",
+      "end": "2026-10-18T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 47100,
+      "row_end": 47100,
+      "start": "2026-10-18T22:00:00",
+      "end": "2026-10-18T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 47101,
+      "row_end": 47459,
+      "start": "2026-10-18T22:01:00",
+      "end": "2026-10-19T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 47460,
+      "row_end": 47460,
+      "start": "2026-10-19T04:00:00",
+      "end": "2026-10-19T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 47461,
+      "row_end": 47639,
+      "start": "2026-10-19T04:01:00",
+      "end": "2026-10-19T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 47640,
+      "row_end": 48180,
+      "start": "2026-10-19T07:00:00",
+      "end": "2026-10-19T16:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 48181,
+      "row_end": 48359,
+      "start": "2026-10-19T16:01:00",
+      "end": "2026-10-19T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 48360,
+      "row_end": 48360,
+      "start": "2026-10-19T19:00:00",
+      "end": "2026-10-19T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 48361,
+      "row_end": 48719,
+      "start": "2026-10-19T19:01:00",
+      "end": "2026-10-20T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 48720,
+      "row_end": 48720,
+      "start": "2026-10-20T01:00:00",
+      "end": "2026-10-20T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 48721,
+      "row_end": 48899,
+      "start": "2026-10-20T01:01:00",
+      "end": "2026-10-20T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 48900,
+      "row_end": 49440,
+      "start": "2026-10-20T04:00:00",
+      "end": "2026-10-20T13:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 49441,
+      "row_end": 49619,
+      "start": "2026-10-20T13:01:00",
+      "end": "2026-10-20T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 49620,
+      "row_end": 49620,
+      "start": "2026-10-20T16:00:00",
+      "end": "2026-10-20T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 49621,
+      "row_end": 49799,
+      "start": "2026-10-20T16:01:00",
+      "end": "2026-10-20T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 49800,
+      "row_end": 49800,
+      "start": "2026-10-20T19:00:00",
+      "end": "2026-10-20T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 49801,
+      "row_end": 50159,
+      "start": "2026-10-20T19:01:00",
+      "end": "2026-10-21T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 50160,
+      "row_end": 50160,
+      "start": "2026-10-21T01:00:00",
+      "end": "2026-10-21T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 50161,
+      "row_end": 50519,
+      "start": "2026-10-21T01:01:00",
+      "end": "2026-10-21T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 50520,
+      "row_end": 50520,
+      "start": "2026-10-21T07:00:00",
+      "end": "2026-10-21T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 50521,
+      "row_end": 51239,
+      "start": "2026-10-21T07:01:00",
+      "end": "2026-10-21T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51240,
+      "row_end": 51240,
+      "start": "2026-10-21T19:00:00",
+      "end": "2026-10-21T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51241,
+      "row_end": 51599,
+      "start": "2026-10-21T19:01:00",
+      "end": "2026-10-22T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51600,
+      "row_end": 51600,
+      "start": "2026-10-22T01:00:00",
+      "end": "2026-10-22T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51601,
+      "row_end": 51779,
+      "start": "2026-10-22T01:01:00",
+      "end": "2026-10-22T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51780,
+      "row_end": 51780,
+      "start": "2026-10-22T04:00:00",
+      "end": "2026-10-22T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 51781,
+      "row_end": 52139,
+      "start": "2026-10-22T04:01:00",
+      "end": "2026-10-22T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52140,
+      "row_end": 52140,
+      "start": "2026-10-22T10:00:00",
+      "end": "2026-10-22T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52141,
+      "row_end": 52319,
+      "start": "2026-10-22T10:01:00",
+      "end": "2026-10-22T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52320,
+      "row_end": 52320,
+      "start": "2026-10-22T13:00:00",
+      "end": "2026-10-22T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52321,
+      "row_end": 52499,
+      "start": "2026-10-22T13:01:00",
+      "end": "2026-10-22T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52500,
+      "row_end": 52500,
+      "start": "2026-10-22T16:00:00",
+      "end": "2026-10-22T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52501,
+      "row_end": 52859,
+      "start": "2026-10-22T16:01:00",
+      "end": "2026-10-22T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52860,
+      "row_end": 52860,
+      "start": "2026-10-22T22:00:00",
+      "end": "2026-10-22T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 52861,
+      "row_end": 53039,
+      "start": "2026-10-22T22:01:00",
+      "end": "2026-10-23T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 53040,
+      "row_end": 53580,
+      "start": "2026-10-23T01:00:00",
+      "end": "2026-10-23T10:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 53581,
+      "row_end": 53759,
+      "start": "2026-10-23T10:01:00",
+      "end": "2026-10-23T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 53760,
+      "row_end": 53760,
+      "start": "2026-10-23T13:00:00",
+      "end": "2026-10-23T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 53761,
+      "row_end": 53939,
+      "start": "2026-10-23T13:01:00",
+      "end": "2026-10-23T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 53940,
+      "row_end": 53940,
+      "start": "2026-10-23T16:00:00",
+      "end": "2026-10-23T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 53941,
+      "row_end": 54479,
+      "start": "2026-10-23T16:01:00",
+      "end": "2026-10-24T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 54480,
+      "row_end": 54480,
+      "start": "2026-10-24T01:00:00",
+      "end": "2026-10-24T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 54481,
+      "row_end": 54659,
+      "start": "2026-10-24T01:01:00",
+      "end": "2026-10-24T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 54660,
+      "row_end": 54660,
+      "start": "2026-10-24T04:00:00",
+      "end": "2026-10-24T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 54661,
+      "row_end": 55019,
+      "start": "2026-10-24T04:01:00",
+      "end": "2026-10-24T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55020,
+      "row_end": 55020,
+      "start": "2026-10-24T10:00:00",
+      "end": "2026-10-24T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55021,
+      "row_end": 55199,
+      "start": "2026-10-24T10:01:00",
+      "end": "2026-10-24T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55200,
+      "row_end": 55200,
+      "start": "2026-10-24T13:00:00",
+      "end": "2026-10-24T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55201,
+      "row_end": 55379,
+      "start": "2026-10-24T13:01:00",
+      "end": "2026-10-24T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55380,
+      "row_end": 55380,
+      "start": "2026-10-24T16:00:00",
+      "end": "2026-10-24T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55381,
+      "row_end": 55559,
+      "start": "2026-10-24T16:01:00",
+      "end": "2026-10-24T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 55560,
+      "row_end": 56100,
+      "start": "2026-10-24T19:00:00",
+      "end": "2026-10-25T04:00:00",
+      "weather_origin": "archive_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": ""
+    },
+    {
+      "row_start": 56101,
+      "row_end": 56279,
+      "start": "2026-10-25T04:01:00",
+      "end": "2026-10-25T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56280,
+      "row_end": 56280,
+      "start": "2026-10-25T07:00:00",
+      "end": "2026-10-25T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56281,
+      "row_end": 56459,
+      "start": "2026-10-25T07:01:00",
+      "end": "2026-10-25T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56460,
+      "row_end": 56460,
+      "start": "2026-10-25T10:00:00",
+      "end": "2026-10-25T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56461,
+      "row_end": 56639,
+      "start": "2026-10-25T10:01:00",
+      "end": "2026-10-25T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56640,
+      "row_end": 56640,
+      "start": "2026-10-25T13:00:00",
+      "end": "2026-10-25T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 56641,
+      "row_end": 56999,
+      "start": "2026-10-25T13:01:00",
+      "end": "2026-10-25T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57000,
+      "row_end": 57000,
+      "start": "2026-10-25T19:00:00",
+      "end": "2026-10-25T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57001,
+      "row_end": 57179,
+      "start": "2026-10-25T19:01:00",
+      "end": "2026-10-25T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57180,
+      "row_end": 57180,
+      "start": "2026-10-25T22:00:00",
+      "end": "2026-10-25T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57181,
+      "row_end": 57359,
+      "start": "2026-10-25T22:01:00",
+      "end": "2026-10-26T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57360,
+      "row_end": 57360,
+      "start": "2026-10-26T01:00:00",
+      "end": "2026-10-26T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57361,
+      "row_end": 57539,
+      "start": "2026-10-26T01:01:00",
+      "end": "2026-10-26T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57540,
+      "row_end": 57540,
+      "start": "2026-10-26T04:00:00",
+      "end": "2026-10-26T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57541,
+      "row_end": 57719,
+      "start": "2026-10-26T04:01:00",
+      "end": "2026-10-26T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57720,
+      "row_end": 57720,
+      "start": "2026-10-26T07:00:00",
+      "end": "2026-10-26T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 57721,
+      "row_end": 58079,
+      "start": "2026-10-26T07:01:00",
+      "end": "2026-10-26T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58080,
+      "row_end": 58080,
+      "start": "2026-10-26T13:00:00",
+      "end": "2026-10-26T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58081,
+      "row_end": 58259,
+      "start": "2026-10-26T13:01:00",
+      "end": "2026-10-26T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58260,
+      "row_end": 58260,
+      "start": "2026-10-26T16:00:00",
+      "end": "2026-10-26T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58261,
+      "row_end": 58439,
+      "start": "2026-10-26T16:01:00",
+      "end": "2026-10-26T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58440,
+      "row_end": 58440,
+      "start": "2026-10-26T19:00:00",
+      "end": "2026-10-26T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58441,
+      "row_end": 58799,
+      "start": "2026-10-26T19:01:00",
+      "end": "2026-10-27T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58800,
+      "row_end": 58800,
+      "start": "2026-10-27T01:00:00",
+      "end": "2026-10-27T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58801,
+      "row_end": 58979,
+      "start": "2026-10-27T01:01:00",
+      "end": "2026-10-27T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58980,
+      "row_end": 58980,
+      "start": "2026-10-27T04:00:00",
+      "end": "2026-10-27T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 58981,
+      "row_end": 59159,
+      "start": "2026-10-27T04:01:00",
+      "end": "2026-10-27T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59160,
+      "row_end": 59160,
+      "start": "2026-10-27T07:00:00",
+      "end": "2026-10-27T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59161,
+      "row_end": 59519,
+      "start": "2026-10-27T07:01:00",
+      "end": "2026-10-27T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59520,
+      "row_end": 59520,
+      "start": "2026-10-27T13:00:00",
+      "end": "2026-10-27T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59521,
+      "row_end": 59879,
+      "start": "2026-10-27T13:01:00",
+      "end": "2026-10-27T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59880,
+      "row_end": 59880,
+      "start": "2026-10-27T19:00:00",
+      "end": "2026-10-27T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 59881,
+      "row_end": 60239,
+      "start": "2026-10-27T19:01:00",
+      "end": "2026-10-28T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60240,
+      "row_end": 60240,
+      "start": "2026-10-28T01:00:00",
+      "end": "2026-10-28T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60241,
+      "row_end": 60599,
+      "start": "2026-10-28T01:01:00",
+      "end": "2026-10-28T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60600,
+      "row_end": 60600,
+      "start": "2026-10-28T07:00:00",
+      "end": "2026-10-28T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60601,
+      "row_end": 60779,
+      "start": "2026-10-28T07:01:00",
+      "end": "2026-10-28T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60780,
+      "row_end": 60780,
+      "start": "2026-10-28T10:00:00",
+      "end": "2026-10-28T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60781,
+      "row_end": 60959,
+      "start": "2026-10-28T10:01:00",
+      "end": "2026-10-28T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60960,
+      "row_end": 60960,
+      "start": "2026-10-28T13:00:00",
+      "end": "2026-10-28T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 60961,
+      "row_end": 61139,
+      "start": "2026-10-28T13:01:00",
+      "end": "2026-10-28T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61140,
+      "row_end": 61140,
+      "start": "2026-10-28T16:00:00",
+      "end": "2026-10-28T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61141,
+      "row_end": 61319,
+      "start": "2026-10-28T16:01:00",
+      "end": "2026-10-28T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61320,
+      "row_end": 61320,
+      "start": "2026-10-28T19:00:00",
+      "end": "2026-10-28T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61321,
+      "row_end": 61499,
+      "start": "2026-10-28T19:01:00",
+      "end": "2026-10-28T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61500,
+      "row_end": 61500,
+      "start": "2026-10-28T22:00:00",
+      "end": "2026-10-28T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61501,
+      "row_end": 61859,
+      "start": "2026-10-28T22:01:00",
+      "end": "2026-10-29T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61860,
+      "row_end": 61860,
+      "start": "2026-10-29T04:00:00",
+      "end": "2026-10-29T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 61861,
+      "row_end": 62039,
+      "start": "2026-10-29T04:01:00",
+      "end": "2026-10-29T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62040,
+      "row_end": 62040,
+      "start": "2026-10-29T07:00:00",
+      "end": "2026-10-29T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62041,
+      "row_end": 62399,
+      "start": "2026-10-29T07:01:00",
+      "end": "2026-10-29T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62400,
+      "row_end": 62400,
+      "start": "2026-10-29T13:00:00",
+      "end": "2026-10-29T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62401,
+      "row_end": 62579,
+      "start": "2026-10-29T13:01:00",
+      "end": "2026-10-29T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62580,
+      "row_end": 62580,
+      "start": "2026-10-29T16:00:00",
+      "end": "2026-10-29T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62581,
+      "row_end": 62939,
+      "start": "2026-10-29T16:01:00",
+      "end": "2026-10-29T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62940,
+      "row_end": 62940,
+      "start": "2026-10-29T22:00:00",
+      "end": "2026-10-29T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 62941,
+      "row_end": 63659,
+      "start": "2026-10-29T22:01:00",
+      "end": "2026-10-30T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 63660,
+      "row_end": 63660,
+      "start": "2026-10-30T10:00:00",
+      "end": "2026-10-30T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 63661,
+      "row_end": 63839,
+      "start": "2026-10-30T10:01:00",
+      "end": "2026-10-30T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 63840,
+      "row_end": 63840,
+      "start": "2026-10-30T13:00:00",
+      "end": "2026-10-30T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 63841,
+      "row_end": 64019,
+      "start": "2026-10-30T13:01:00",
+      "end": "2026-10-30T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64020,
+      "row_end": 64020,
+      "start": "2026-10-30T16:00:00",
+      "end": "2026-10-30T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64021,
+      "row_end": 64199,
+      "start": "2026-10-30T16:01:00",
+      "end": "2026-10-30T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64200,
+      "row_end": 64200,
+      "start": "2026-10-30T19:00:00",
+      "end": "2026-10-30T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64201,
+      "row_end": 64559,
+      "start": "2026-10-30T19:01:00",
+      "end": "2026-10-31T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64560,
+      "row_end": 64560,
+      "start": "2026-10-31T01:00:00",
+      "end": "2026-10-31T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64561,
+      "row_end": 64739,
+      "start": "2026-10-31T01:01:00",
+      "end": "2026-10-31T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64740,
+      "row_end": 64740,
+      "start": "2026-10-31T04:00:00",
+      "end": "2026-10-31T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64741,
+      "row_end": 64919,
+      "start": "2026-10-31T04:01:00",
+      "end": "2026-10-31T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64920,
+      "row_end": 64920,
+      "start": "2026-10-31T07:00:00",
+      "end": "2026-10-31T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 64921,
+      "row_end": 65099,
+      "start": "2026-10-31T07:01:00",
+      "end": "2026-10-31T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 65100,
+      "row_end": 65100,
+      "start": "2026-10-31T10:00:00",
+      "end": "2026-10-31T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 65101,
+      "row_end": 65819,
+      "start": "2026-10-31T10:01:00",
+      "end": "2026-10-31T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 65820,
+      "row_end": 65820,
+      "start": "2026-10-31T22:00:00",
+      "end": "2026-10-31T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 65821,
+      "row_end": 65999,
+      "start": "2026-10-31T22:01:00",
+      "end": "2026-11-01T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66000,
+      "row_end": 66000,
+      "start": "2026-11-01T01:00:00",
+      "end": "2026-11-01T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66001,
+      "row_end": 66359,
+      "start": "2026-11-01T01:01:00",
+      "end": "2026-11-01T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66360,
+      "row_end": 66360,
+      "start": "2026-11-01T07:00:00",
+      "end": "2026-11-01T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66361,
+      "row_end": 66539,
+      "start": "2026-11-01T07:01:00",
+      "end": "2026-11-01T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66540,
+      "row_end": 66540,
+      "start": "2026-11-01T10:00:00",
+      "end": "2026-11-01T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66541,
+      "row_end": 66719,
+      "start": "2026-11-01T10:01:00",
+      "end": "2026-11-01T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66720,
+      "row_end": 66720,
+      "start": "2026-11-01T13:00:00",
+      "end": "2026-11-01T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66721,
+      "row_end": 66899,
+      "start": "2026-11-01T13:01:00",
+      "end": "2026-11-01T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66900,
+      "row_end": 66900,
+      "start": "2026-11-01T16:00:00",
+      "end": "2026-11-01T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 66901,
+      "row_end": 67079,
+      "start": "2026-11-01T16:01:00",
+      "end": "2026-11-01T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67080,
+      "row_end": 67080,
+      "start": "2026-11-01T19:00:00",
+      "end": "2026-11-01T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67081,
+      "row_end": 67439,
+      "start": "2026-11-01T19:01:00",
+      "end": "2026-11-02T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67440,
+      "row_end": 67440,
+      "start": "2026-11-02T01:00:00",
+      "end": "2026-11-02T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67441,
+      "row_end": 67799,
+      "start": "2026-11-02T01:01:00",
+      "end": "2026-11-02T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67800,
+      "row_end": 67800,
+      "start": "2026-11-02T07:00:00",
+      "end": "2026-11-02T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67801,
+      "row_end": 67979,
+      "start": "2026-11-02T07:01:00",
+      "end": "2026-11-02T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67980,
+      "row_end": 67980,
+      "start": "2026-11-02T10:00:00",
+      "end": "2026-11-02T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 67981,
+      "row_end": 68339,
+      "start": "2026-11-02T10:01:00",
+      "end": "2026-11-02T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 68340,
+      "row_end": 68340,
+      "start": "2026-11-02T16:00:00",
+      "end": "2026-11-02T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 68341,
+      "row_end": 69059,
+      "start": "2026-11-02T16:01:00",
+      "end": "2026-11-03T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69060,
+      "row_end": 69060,
+      "start": "2026-11-03T04:00:00",
+      "end": "2026-11-03T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69061,
+      "row_end": 69239,
+      "start": "2026-11-03T04:01:00",
+      "end": "2026-11-03T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69240,
+      "row_end": 69240,
+      "start": "2026-11-03T07:00:00",
+      "end": "2026-11-03T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69241,
+      "row_end": 69599,
+      "start": "2026-11-03T07:01:00",
+      "end": "2026-11-03T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69600,
+      "row_end": 69600,
+      "start": "2026-11-03T13:00:00",
+      "end": "2026-11-03T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69601,
+      "row_end": 69959,
+      "start": "2026-11-03T13:01:00",
+      "end": "2026-11-03T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69960,
+      "row_end": 69960,
+      "start": "2026-11-03T19:00:00",
+      "end": "2026-11-03T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 69961,
+      "row_end": 70139,
+      "start": "2026-11-03T19:01:00",
+      "end": "2026-11-03T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70140,
+      "row_end": 70140,
+      "start": "2026-11-03T22:00:00",
+      "end": "2026-11-03T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70141,
+      "row_end": 70319,
+      "start": "2026-11-03T22:01:00",
+      "end": "2026-11-04T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70320,
+      "row_end": 70320,
+      "start": "2026-11-04T01:00:00",
+      "end": "2026-11-04T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70321,
+      "row_end": 70499,
+      "start": "2026-11-04T01:01:00",
+      "end": "2026-11-04T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70500,
+      "row_end": 70500,
+      "start": "2026-11-04T04:00:00",
+      "end": "2026-11-04T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70501,
+      "row_end": 70679,
+      "start": "2026-11-04T04:01:00",
+      "end": "2026-11-04T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70680,
+      "row_end": 70680,
+      "start": "2026-11-04T07:00:00",
+      "end": "2026-11-04T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70681,
+      "row_end": 70859,
+      "start": "2026-11-04T07:01:00",
+      "end": "2026-11-04T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70860,
+      "row_end": 70860,
+      "start": "2026-11-04T10:00:00",
+      "end": "2026-11-04T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 70861,
+      "row_end": 71039,
+      "start": "2026-11-04T10:01:00",
+      "end": "2026-11-04T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71040,
+      "row_end": 71040,
+      "start": "2026-11-04T13:00:00",
+      "end": "2026-11-04T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71041,
+      "row_end": 71219,
+      "start": "2026-11-04T13:01:00",
+      "end": "2026-11-04T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71220,
+      "row_end": 71220,
+      "start": "2026-11-04T16:00:00",
+      "end": "2026-11-04T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71221,
+      "row_end": 71399,
+      "start": "2026-11-04T16:01:00",
+      "end": "2026-11-04T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71400,
+      "row_end": 71400,
+      "start": "2026-11-04T19:00:00",
+      "end": "2026-11-04T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71401,
+      "row_end": 71579,
+      "start": "2026-11-04T19:01:00",
+      "end": "2026-11-04T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71580,
+      "row_end": 71580,
+      "start": "2026-11-04T22:00:00",
+      "end": "2026-11-04T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71581,
+      "row_end": 71759,
+      "start": "2026-11-04T22:01:00",
+      "end": "2026-11-05T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71760,
+      "row_end": 71760,
+      "start": "2026-11-05T01:00:00",
+      "end": "2026-11-05T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71761,
+      "row_end": 71939,
+      "start": "2026-11-05T01:01:00",
+      "end": "2026-11-05T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71940,
+      "row_end": 71940,
+      "start": "2026-11-05T04:00:00",
+      "end": "2026-11-05T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 71941,
+      "row_end": 72119,
+      "start": "2026-11-05T04:01:00",
+      "end": "2026-11-05T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72120,
+      "row_end": 72120,
+      "start": "2026-11-05T07:00:00",
+      "end": "2026-11-05T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72121,
+      "row_end": 72299,
+      "start": "2026-11-05T07:01:00",
+      "end": "2026-11-05T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72300,
+      "row_end": 72300,
+      "start": "2026-11-05T10:00:00",
+      "end": "2026-11-05T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72301,
+      "row_end": 72479,
+      "start": "2026-11-05T10:01:00",
+      "end": "2026-11-05T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72480,
+      "row_end": 72480,
+      "start": "2026-11-05T13:00:00",
+      "end": "2026-11-05T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72481,
+      "row_end": 72659,
+      "start": "2026-11-05T13:01:00",
+      "end": "2026-11-05T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72660,
+      "row_end": 72660,
+      "start": "2026-11-05T16:00:00",
+      "end": "2026-11-05T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72661,
+      "row_end": 72839,
+      "start": "2026-11-05T16:01:00",
+      "end": "2026-11-05T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72840,
+      "row_end": 72840,
+      "start": "2026-11-05T19:00:00",
+      "end": "2026-11-05T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 72841,
+      "row_end": 73019,
+      "start": "2026-11-05T19:01:00",
+      "end": "2026-11-05T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73020,
+      "row_end": 73020,
+      "start": "2026-11-05T22:00:00",
+      "end": "2026-11-05T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73021,
+      "row_end": 73199,
+      "start": "2026-11-05T22:01:00",
+      "end": "2026-11-06T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73200,
+      "row_end": 73200,
+      "start": "2026-11-06T01:00:00",
+      "end": "2026-11-06T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73201,
+      "row_end": 73379,
+      "start": "2026-11-06T01:01:00",
+      "end": "2026-11-06T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73380,
+      "row_end": 73380,
+      "start": "2026-11-06T04:00:00",
+      "end": "2026-11-06T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73381,
+      "row_end": 73559,
+      "start": "2026-11-06T04:01:00",
+      "end": "2026-11-06T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73560,
+      "row_end": 73560,
+      "start": "2026-11-06T07:00:00",
+      "end": "2026-11-06T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73561,
+      "row_end": 73739,
+      "start": "2026-11-06T07:01:00",
+      "end": "2026-11-06T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73740,
+      "row_end": 73740,
+      "start": "2026-11-06T10:00:00",
+      "end": "2026-11-06T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73741,
+      "row_end": 73919,
+      "start": "2026-11-06T10:01:00",
+      "end": "2026-11-06T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73920,
+      "row_end": 73920,
+      "start": "2026-11-06T13:00:00",
+      "end": "2026-11-06T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 73921,
+      "row_end": 74099,
+      "start": "2026-11-06T13:01:00",
+      "end": "2026-11-06T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74100,
+      "row_end": 74100,
+      "start": "2026-11-06T16:00:00",
+      "end": "2026-11-06T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74101,
+      "row_end": 74279,
+      "start": "2026-11-06T16:01:00",
+      "end": "2026-11-06T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74280,
+      "row_end": 74280,
+      "start": "2026-11-06T19:00:00",
+      "end": "2026-11-06T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74281,
+      "row_end": 74459,
+      "start": "2026-11-06T19:01:00",
+      "end": "2026-11-06T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74460,
+      "row_end": 74460,
+      "start": "2026-11-06T22:00:00",
+      "end": "2026-11-06T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74461,
+      "row_end": 74639,
+      "start": "2026-11-06T22:01:00",
+      "end": "2026-11-07T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74640,
+      "row_end": 74640,
+      "start": "2026-11-07T01:00:00",
+      "end": "2026-11-07T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74641,
+      "row_end": 74819,
+      "start": "2026-11-07T01:01:00",
+      "end": "2026-11-07T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74820,
+      "row_end": 74820,
+      "start": "2026-11-07T04:00:00",
+      "end": "2026-11-07T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 74821,
+      "row_end": 74999,
+      "start": "2026-11-07T04:01:00",
+      "end": "2026-11-07T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75000,
+      "row_end": 75000,
+      "start": "2026-11-07T07:00:00",
+      "end": "2026-11-07T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75001,
+      "row_end": 75179,
+      "start": "2026-11-07T07:01:00",
+      "end": "2026-11-07T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75180,
+      "row_end": 75180,
+      "start": "2026-11-07T10:00:00",
+      "end": "2026-11-07T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75181,
+      "row_end": 75359,
+      "start": "2026-11-07T10:01:00",
+      "end": "2026-11-07T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75360,
+      "row_end": 75360,
+      "start": "2026-11-07T13:00:00",
+      "end": "2026-11-07T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75361,
+      "row_end": 75539,
+      "start": "2026-11-07T13:01:00",
+      "end": "2026-11-07T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75540,
+      "row_end": 75540,
+      "start": "2026-11-07T16:00:00",
+      "end": "2026-11-07T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75541,
+      "row_end": 75719,
+      "start": "2026-11-07T16:01:00",
+      "end": "2026-11-07T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75720,
+      "row_end": 75720,
+      "start": "2026-11-07T19:00:00",
+      "end": "2026-11-07T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75721,
+      "row_end": 75899,
+      "start": "2026-11-07T19:01:00",
+      "end": "2026-11-07T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75900,
+      "row_end": 75900,
+      "start": "2026-11-07T22:00:00",
+      "end": "2026-11-07T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 75901,
+      "row_end": 76079,
+      "start": "2026-11-07T22:01:00",
+      "end": "2026-11-08T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76080,
+      "row_end": 76080,
+      "start": "2026-11-08T01:00:00",
+      "end": "2026-11-08T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76081,
+      "row_end": 76259,
+      "start": "2026-11-08T01:01:00",
+      "end": "2026-11-08T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76260,
+      "row_end": 76260,
+      "start": "2026-11-08T04:00:00",
+      "end": "2026-11-08T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76261,
+      "row_end": 76439,
+      "start": "2026-11-08T04:01:00",
+      "end": "2026-11-08T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76440,
+      "row_end": 76440,
+      "start": "2026-11-08T07:00:00",
+      "end": "2026-11-08T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76441,
+      "row_end": 76619,
+      "start": "2026-11-08T07:01:00",
+      "end": "2026-11-08T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76620,
+      "row_end": 76620,
+      "start": "2026-11-08T10:00:00",
+      "end": "2026-11-08T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76621,
+      "row_end": 76799,
+      "start": "2026-11-08T10:01:00",
+      "end": "2026-11-08T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76800,
+      "row_end": 76800,
+      "start": "2026-11-08T13:00:00",
+      "end": "2026-11-08T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76801,
+      "row_end": 76979,
+      "start": "2026-11-08T13:01:00",
+      "end": "2026-11-08T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76980,
+      "row_end": 76980,
+      "start": "2026-11-08T16:00:00",
+      "end": "2026-11-08T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 76981,
+      "row_end": 77159,
+      "start": "2026-11-08T16:01:00",
+      "end": "2026-11-08T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77160,
+      "row_end": 77160,
+      "start": "2026-11-08T19:00:00",
+      "end": "2026-11-08T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77161,
+      "row_end": 77339,
+      "start": "2026-11-08T19:01:00",
+      "end": "2026-11-08T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77340,
+      "row_end": 77340,
+      "start": "2026-11-08T22:00:00",
+      "end": "2026-11-08T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77341,
+      "row_end": 77519,
+      "start": "2026-11-08T22:01:00",
+      "end": "2026-11-09T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77520,
+      "row_end": 77520,
+      "start": "2026-11-09T01:00:00",
+      "end": "2026-11-09T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77521,
+      "row_end": 77699,
+      "start": "2026-11-09T01:01:00",
+      "end": "2026-11-09T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77700,
+      "row_end": 77700,
+      "start": "2026-11-09T04:00:00",
+      "end": "2026-11-09T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77701,
+      "row_end": 77879,
+      "start": "2026-11-09T04:01:00",
+      "end": "2026-11-09T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77880,
+      "row_end": 77880,
+      "start": "2026-11-09T07:00:00",
+      "end": "2026-11-09T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 77881,
+      "row_end": 78059,
+      "start": "2026-11-09T07:01:00",
+      "end": "2026-11-09T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78060,
+      "row_end": 78060,
+      "start": "2026-11-09T10:00:00",
+      "end": "2026-11-09T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78061,
+      "row_end": 78239,
+      "start": "2026-11-09T10:01:00",
+      "end": "2026-11-09T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78240,
+      "row_end": 78240,
+      "start": "2026-11-09T13:00:00",
+      "end": "2026-11-09T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78241,
+      "row_end": 78419,
+      "start": "2026-11-09T13:01:00",
+      "end": "2026-11-09T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78420,
+      "row_end": 78420,
+      "start": "2026-11-09T16:00:00",
+      "end": "2026-11-09T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78421,
+      "row_end": 78599,
+      "start": "2026-11-09T16:01:00",
+      "end": "2026-11-09T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78600,
+      "row_end": 78600,
+      "start": "2026-11-09T19:00:00",
+      "end": "2026-11-09T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78601,
+      "row_end": 78779,
+      "start": "2026-11-09T19:01:00",
+      "end": "2026-11-09T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78780,
+      "row_end": 78780,
+      "start": "2026-11-09T22:00:00",
+      "end": "2026-11-09T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78781,
+      "row_end": 78959,
+      "start": "2026-11-09T22:01:00",
+      "end": "2026-11-10T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78960,
+      "row_end": 78960,
+      "start": "2026-11-10T01:00:00",
+      "end": "2026-11-10T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 78961,
+      "row_end": 79139,
+      "start": "2026-11-10T01:01:00",
+      "end": "2026-11-10T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79140,
+      "row_end": 79140,
+      "start": "2026-11-10T04:00:00",
+      "end": "2026-11-10T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79141,
+      "row_end": 79319,
+      "start": "2026-11-10T04:01:00",
+      "end": "2026-11-10T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79320,
+      "row_end": 79320,
+      "start": "2026-11-10T07:00:00",
+      "end": "2026-11-10T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79321,
+      "row_end": 79499,
+      "start": "2026-11-10T07:01:00",
+      "end": "2026-11-10T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79500,
+      "row_end": 79500,
+      "start": "2026-11-10T10:00:00",
+      "end": "2026-11-10T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79501,
+      "row_end": 79679,
+      "start": "2026-11-10T10:01:00",
+      "end": "2026-11-10T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79680,
+      "row_end": 79680,
+      "start": "2026-11-10T13:00:00",
+      "end": "2026-11-10T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79681,
+      "row_end": 79859,
+      "start": "2026-11-10T13:01:00",
+      "end": "2026-11-10T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79860,
+      "row_end": 79860,
+      "start": "2026-11-10T16:00:00",
+      "end": "2026-11-10T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 79861,
+      "row_end": 80039,
+      "start": "2026-11-10T16:01:00",
+      "end": "2026-11-10T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80040,
+      "row_end": 80040,
+      "start": "2026-11-10T19:00:00",
+      "end": "2026-11-10T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80041,
+      "row_end": 80219,
+      "start": "2026-11-10T19:01:00",
+      "end": "2026-11-10T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80220,
+      "row_end": 80220,
+      "start": "2026-11-10T22:00:00",
+      "end": "2026-11-10T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80221,
+      "row_end": 80399,
+      "start": "2026-11-10T22:01:00",
+      "end": "2026-11-11T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80400,
+      "row_end": 80400,
+      "start": "2026-11-11T01:00:00",
+      "end": "2026-11-11T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80401,
+      "row_end": 80579,
+      "start": "2026-11-11T01:01:00",
+      "end": "2026-11-11T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80580,
+      "row_end": 80580,
+      "start": "2026-11-11T04:00:00",
+      "end": "2026-11-11T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80581,
+      "row_end": 80759,
+      "start": "2026-11-11T04:01:00",
+      "end": "2026-11-11T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80760,
+      "row_end": 80760,
+      "start": "2026-11-11T07:00:00",
+      "end": "2026-11-11T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80761,
+      "row_end": 80939,
+      "start": "2026-11-11T07:01:00",
+      "end": "2026-11-11T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80940,
+      "row_end": 80940,
+      "start": "2026-11-11T10:00:00",
+      "end": "2026-11-11T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 80941,
+      "row_end": 81119,
+      "start": "2026-11-11T10:01:00",
+      "end": "2026-11-11T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81120,
+      "row_end": 81120,
+      "start": "2026-11-11T13:00:00",
+      "end": "2026-11-11T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81121,
+      "row_end": 81299,
+      "start": "2026-11-11T13:01:00",
+      "end": "2026-11-11T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81300,
+      "row_end": 81300,
+      "start": "2026-11-11T16:00:00",
+      "end": "2026-11-11T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81301,
+      "row_end": 81479,
+      "start": "2026-11-11T16:01:00",
+      "end": "2026-11-11T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81480,
+      "row_end": 81480,
+      "start": "2026-11-11T19:00:00",
+      "end": "2026-11-11T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81481,
+      "row_end": 81659,
+      "start": "2026-11-11T19:01:00",
+      "end": "2026-11-11T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81660,
+      "row_end": 81660,
+      "start": "2026-11-11T22:00:00",
+      "end": "2026-11-11T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81661,
+      "row_end": 81839,
+      "start": "2026-11-11T22:01:00",
+      "end": "2026-11-12T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81840,
+      "row_end": 81840,
+      "start": "2026-11-12T01:00:00",
+      "end": "2026-11-12T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 81841,
+      "row_end": 82019,
+      "start": "2026-11-12T01:01:00",
+      "end": "2026-11-12T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82020,
+      "row_end": 82020,
+      "start": "2026-11-12T04:00:00",
+      "end": "2026-11-12T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82021,
+      "row_end": 82199,
+      "start": "2026-11-12T04:01:00",
+      "end": "2026-11-12T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82200,
+      "row_end": 82200,
+      "start": "2026-11-12T07:00:00",
+      "end": "2026-11-12T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82201,
+      "row_end": 82379,
+      "start": "2026-11-12T07:01:00",
+      "end": "2026-11-12T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82380,
+      "row_end": 82380,
+      "start": "2026-11-12T10:00:00",
+      "end": "2026-11-12T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82381,
+      "row_end": 82559,
+      "start": "2026-11-12T10:01:00",
+      "end": "2026-11-12T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82560,
+      "row_end": 82560,
+      "start": "2026-11-12T13:00:00",
+      "end": "2026-11-12T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82561,
+      "row_end": 82739,
+      "start": "2026-11-12T13:01:00",
+      "end": "2026-11-12T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82740,
+      "row_end": 82740,
+      "start": "2026-11-12T16:00:00",
+      "end": "2026-11-12T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82741,
+      "row_end": 82919,
+      "start": "2026-11-12T16:01:00",
+      "end": "2026-11-12T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82920,
+      "row_end": 82920,
+      "start": "2026-11-12T19:00:00",
+      "end": "2026-11-12T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 82921,
+      "row_end": 83099,
+      "start": "2026-11-12T19:01:00",
+      "end": "2026-11-12T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83100,
+      "row_end": 83100,
+      "start": "2026-11-12T22:00:00",
+      "end": "2026-11-12T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83101,
+      "row_end": 83279,
+      "start": "2026-11-12T22:01:00",
+      "end": "2026-11-13T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83280,
+      "row_end": 83280,
+      "start": "2026-11-13T01:00:00",
+      "end": "2026-11-13T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83281,
+      "row_end": 83459,
+      "start": "2026-11-13T01:01:00",
+      "end": "2026-11-13T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83460,
+      "row_end": 83460,
+      "start": "2026-11-13T04:00:00",
+      "end": "2026-11-13T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83461,
+      "row_end": 83639,
+      "start": "2026-11-13T04:01:00",
+      "end": "2026-11-13T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83640,
+      "row_end": 83640,
+      "start": "2026-11-13T07:00:00",
+      "end": "2026-11-13T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83641,
+      "row_end": 83819,
+      "start": "2026-11-13T07:01:00",
+      "end": "2026-11-13T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83820,
+      "row_end": 83820,
+      "start": "2026-11-13T10:00:00",
+      "end": "2026-11-13T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 83821,
+      "row_end": 83999,
+      "start": "2026-11-13T10:01:00",
+      "end": "2026-11-13T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84000,
+      "row_end": 84000,
+      "start": "2026-11-13T13:00:00",
+      "end": "2026-11-13T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84001,
+      "row_end": 84179,
+      "start": "2026-11-13T13:01:00",
+      "end": "2026-11-13T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84180,
+      "row_end": 84180,
+      "start": "2026-11-13T16:00:00",
+      "end": "2026-11-13T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84181,
+      "row_end": 84359,
+      "start": "2026-11-13T16:01:00",
+      "end": "2026-11-13T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84360,
+      "row_end": 84360,
+      "start": "2026-11-13T19:00:00",
+      "end": "2026-11-13T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84361,
+      "row_end": 84539,
+      "start": "2026-11-13T19:01:00",
+      "end": "2026-11-13T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84540,
+      "row_end": 84540,
+      "start": "2026-11-13T22:00:00",
+      "end": "2026-11-13T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84541,
+      "row_end": 84719,
+      "start": "2026-11-13T22:01:00",
+      "end": "2026-11-14T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84720,
+      "row_end": 84720,
+      "start": "2026-11-14T01:00:00",
+      "end": "2026-11-14T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84721,
+      "row_end": 84899,
+      "start": "2026-11-14T01:01:00",
+      "end": "2026-11-14T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84900,
+      "row_end": 84900,
+      "start": "2026-11-14T04:00:00",
+      "end": "2026-11-14T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 84901,
+      "row_end": 85079,
+      "start": "2026-11-14T04:01:00",
+      "end": "2026-11-14T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85080,
+      "row_end": 85080,
+      "start": "2026-11-14T07:00:00",
+      "end": "2026-11-14T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85081,
+      "row_end": 85259,
+      "start": "2026-11-14T07:01:00",
+      "end": "2026-11-14T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85260,
+      "row_end": 85260,
+      "start": "2026-11-14T10:00:00",
+      "end": "2026-11-14T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85261,
+      "row_end": 85439,
+      "start": "2026-11-14T10:01:00",
+      "end": "2026-11-14T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85440,
+      "row_end": 85440,
+      "start": "2026-11-14T13:00:00",
+      "end": "2026-11-14T13:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85441,
+      "row_end": 85619,
+      "start": "2026-11-14T13:01:00",
+      "end": "2026-11-14T15:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85620,
+      "row_end": 85620,
+      "start": "2026-11-14T16:00:00",
+      "end": "2026-11-14T16:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85621,
+      "row_end": 85799,
+      "start": "2026-11-14T16:01:00",
+      "end": "2026-11-14T18:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85800,
+      "row_end": 85800,
+      "start": "2026-11-14T19:00:00",
+      "end": "2026-11-14T19:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85801,
+      "row_end": 85979,
+      "start": "2026-11-14T19:01:00",
+      "end": "2026-11-14T21:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85980,
+      "row_end": 85980,
+      "start": "2026-11-14T22:00:00",
+      "end": "2026-11-14T22:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 85981,
+      "row_end": 86040,
+      "start": "2026-11-14T22:01:00",
+      "end": "2026-11-14T23:00:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": false,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86041,
+      "row_end": 86159,
+      "start": "2026-11-14T23:01:00",
+      "end": "2026-11-15T00:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86160,
+      "row_end": 86160,
+      "start": "2026-11-15T01:00:00",
+      "end": "2026-11-15T01:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86161,
+      "row_end": 86339,
+      "start": "2026-11-15T01:01:00",
+      "end": "2026-11-15T03:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86340,
+      "row_end": 86340,
+      "start": "2026-11-15T04:00:00",
+      "end": "2026-11-15T04:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86341,
+      "row_end": 86519,
+      "start": "2026-11-15T04:01:00",
+      "end": "2026-11-15T06:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86520,
+      "row_end": 86520,
+      "start": "2026-11-15T07:00:00",
+      "end": "2026-11-15T07:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86521,
+      "row_end": 86699,
+      "start": "2026-11-15T07:01:00",
+      "end": "2026-11-15T09:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86700,
+      "row_end": 86700,
+      "start": "2026-11-15T10:00:00",
+      "end": "2026-11-15T10:00:00",
+      "weather_origin": "station_anchor_rounded",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86701,
+      "row_end": 86840,
+      "start": "2026-11-15T10:01:00",
+      "end": "2026-11-15T12:20:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": false,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86841,
+      "row_end": 86879,
+      "start": "2026-11-15T12:21:00",
+      "end": "2026-11-15T12:59:00",
+      "weather_origin": "station_adjusted_model",
+      "uses_forecast_model": true,
+      "future_at_generation": true,
+      "station_wmo": "48825"
+    },
+    {
+      "row_start": 86880,
+      "row_end": 87840,
+      "start": "2026-11-15T13:00:00",
+      "end": "2026-11-16T05:00:00",
+      "weather_origin": "forecast_model",
+      "uses_forecast_model": true,
+      "future_at_generation": true,
+      "station_wmo": ""
+    }
+  ],
+  "feature_value_sha256": {
+    "sensor_data.csv": "2b604e953bb43ea6cc6a3d0a031d10e179a57e99531a91683ac468fb4273067b",
+    "training_data.csv": "b6d6be0a390b34cb54b74cfa6f3587a91fe9f3657a77c05816d95da196c47fd0"
+  },
+  "sqlite_format_revision": 2,
+  "sqlite_readings_columns": [
+    "time",
+    "temp",
+    "hum",
+    "state",
+    "reasons"
+  ],
+  "sqlite_origin_metadata": "reading_origins(time PRIMARY KEY REFERENCES readings(time) ON DELETE CASCADE, origin TEXT NOT NULL)"
+}

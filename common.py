@@ -58,6 +58,7 @@ BUZZER_DUTY = 50     # % – duty cycle khi còi đang kêu
 # ---------- Dữ liệu; tên mô hình 10 phút chỉ giữ tương thích công cụ cũ ----------
 SAMPLE_SEC  = 60             # chu kỳ đọc cảm biến (giây)
 DATA_FILE   = BASE_DIR / "data/sensor_data.csv"
+LIVE_DATA_FILE = BASE_DIR / "data/live_sensor_data.csv"  # Chỉ số đo DHT22, tách khỏi CSV tham khảo
 LOG_FILE    = BASE_DIR / "data/monitor_log.csv"
 MODEL_FILE  = BASE_DIR / "model/lstm_model.keras"
 TFLITE_FILE = BASE_DIR / "model/lstm_model.tflite"

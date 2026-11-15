@@ -12,6 +12,18 @@ from common import DATA_FILE, DB_FILE
 from provenance import dataset_provenance
 
 
+def readings_with_origins_sql(db):
+    """Read old Pi snapshots and the compact schema without mutating either."""
+    columns = {row[1] for row in db.execute("PRAGMA table_info(readings)")}
+    if "source" in columns:
+        return "SELECT time,temp,hum,state,reasons,source AS origin FROM readings"
+    tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    if "reading_origins" in tables:
+        return ("SELECT r.time,r.temp,r.hum,r.state,r.reasons,COALESCE(o.origin,'import') AS origin "
+                "FROM readings r LEFT JOIN reading_origins o ON r.time=o.time")
+    return "SELECT time,temp,hum,state,reasons,'import' AS origin FROM readings"
+
+
 class Store:
     def __init__(self, path=DB_FILE):
         self.path = str(path)
@@ -22,15 +34,41 @@ class Store:
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS readings (
                     time TEXT PRIMARY KEY, temp REAL NOT NULL, hum REAL NOT NULL,
-                    source TEXT NOT NULL, state TEXT NOT NULL DEFAULT 'XANH',
+                    state TEXT NOT NULL DEFAULT 'XANH',
                     reasons TEXT NOT NULL DEFAULT '[]');
                 CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS reading_origins (
+                    time TEXT PRIMARY KEY REFERENCES readings(time) ON DELETE CASCADE,
+                    origin TEXT NOT NULL);
             """)
+            columns = {row[1] for row in db.execute("PRAGMA table_info(readings)")}
+            if "source" in columns:
+                # Copy provenance before dropping the visible column. The DML
+                # and ALTER are in the same transaction, so failure rolls back.
+                db.execute("INSERT OR REPLACE INTO reading_origins SELECT time,source FROM readings")
+                db.execute("DROP INDEX IF EXISTS readings_source_time")
+                db.execute("ALTER TABLE readings DROP COLUMN source")
+            db.execute("CREATE INDEX IF NOT EXISTS reading_origins_kind_time ON reading_origins(origin,time)")
+            db.execute("INSERT OR IGNORE INTO reading_origins SELECT time,'import' FROM readings")
+        self.remove_simulated_overlaps()
+
+    def remove_simulated_overlaps(self):
+        """Xóa mẫu mô phỏng cùng phút đã có sensor, giữ mọi lần đọc thật."""
+        removed = 0
+        with self.connection() as db:
+            minutes = db.execute("SELECT DISTINCT substr(time,1,16) FROM reading_origins WHERE origin='sensor'").fetchall()
+            for row in minutes:
+                lower = datetime.fromisoformat(row[0]).replace(second=0)
+                upper = lower + timedelta(minutes=1)
+                removed += db.execute("DELETE FROM readings WHERE time IN (SELECT time FROM reading_origins WHERE origin IN ('sample','weather_sample') AND time>=? AND time<?)",
+                                      (lower.isoformat(timespec='seconds'),upper.isoformat(timespec='seconds'))).rowcount
+        return removed
 
     @contextmanager
     def connection(self):
         db = sqlite3.connect(self.path, timeout=15)
         db.row_factory = sqlite3.Row
+        db.execute("PRAGMA foreign_keys=ON")
         try:
             with db:
                 yield db
@@ -51,9 +89,18 @@ class Store:
         if not (math.isfinite(temp) and math.isfinite(hum) and -40 <= temp <= 80 and 0 <= hum <= 100):
             raise ValueError("Số đo DHT22 không hợp lệ")
         with self.connection() as db:
-            db.execute("INSERT OR REPLACE INTO readings VALUES (?, ?, ?, ?, ?, ?)",
-                       (stamp.isoformat(timespec="seconds"), temp, hum, source, state,
+            if source == "sensor":
+                lower = stamp.replace(second=0,microsecond=0)
+                upper = lower + timedelta(minutes=1)
+                db.execute("DELETE FROM readings WHERE time IN (SELECT time FROM reading_origins WHERE origin IN ('sample','weather_sample') AND time>=? AND time<?)",
+                           (lower.isoformat(timespec='seconds'),upper.isoformat(timespec='seconds')))
+            db.execute("""INSERT INTO readings(time,temp,hum,state,reasons) VALUES (?, ?, ?, ?, ?)
+                          ON CONFLICT(time) DO UPDATE SET temp=excluded.temp,hum=excluded.hum,
+                          state=excluded.state,reasons=excluded.reasons""",
+                       (stamp.isoformat(timespec="seconds"), temp, hum, state,
                         json.dumps(reasons or [], ensure_ascii=False)))
+            db.execute("INSERT INTO reading_origins VALUES (?,?) ON CONFLICT(time) DO UPDATE SET origin=excluded.origin",
+                       (stamp.isoformat(timespec="seconds"),source))
 
     def import_csv(self, path=DATA_FILE):
         """Nhập CSV và cập nhật khi đổi bộ mẫu; luôn giữ số đo source=sensor."""
@@ -73,10 +120,12 @@ class Store:
         with path.open(encoding="utf-8-sig", newline="") as f, self.connection() as db:
             if previous and previous.get("dataset_id") != provenance["dataset_id"]:
                 if previous.get("sample_rows"):
-                    db.execute("DELETE FROM readings WHERE source='sample'")
+                    db.execute("DELETE FROM readings WHERE time IN (SELECT time FROM reading_origins WHERE origin='sample')")
                 if previous.get("weather_rows") and previous.get("start") and previous.get("end"):
-                    db.execute("DELETE FROM readings WHERE source='weather_sample' AND time BETWEEN ? AND ?",
+                    db.execute("DELETE FROM readings WHERE time IN (SELECT time FROM reading_origins WHERE origin='weather_sample' AND time BETWEEN ? AND ?)",
                                (previous["start"], previous["end"]))
+            protected = dict(db.execute("SELECT time,origin FROM reading_origins WHERE origin IN ('sensor','demo')"))
+            sensor_minutes = {stamp[:16] for stamp,origin in protected.items() if origin == "sensor"}
             for i, row in enumerate(csv.DictReader(f)):
                 try:
                     stamp = datetime.fromisoformat(row["time"]).isoformat(timespec="seconds")
@@ -84,11 +133,14 @@ class Store:
                     if not (math.isfinite(t) and math.isfinite(h) and -40 <= t <= 80 and 0 <= h <= 100):
                         continue
                     source = "weather_sample" if i < weather_rows else "sample" if i < sample_rows else "import"
+                    if stamp in protected or (source in {"sample", "weather_sample"} and stamp[:16] in sensor_minutes):
+                        continue
                     # Cho phép thay dữ liệu nhập/mẫu tại cùng timestamp, không đè số đo thật/demo.
-                    cur = db.execute("""INSERT INTO readings VALUES (?, ?, ?, ?, 'XANH', '[]')
+                    cur = db.execute("""INSERT INTO readings(time,temp,hum,state,reasons) VALUES (?, ?, ?, 'XANH', '[]')
                         ON CONFLICT(time) DO UPDATE SET temp=excluded.temp, hum=excluded.hum,
-                            source=excluded.source WHERE readings.source NOT IN ('sensor','demo')""",
-                                     (stamp, t, h, source))
+                            state=excluded.state,reasons=excluded.reasons""",(stamp, t, h))
+                    db.execute("INSERT INTO reading_origins VALUES (?,?) ON CONFLICT(time) DO UPDATE SET origin=excluded.origin",
+                               (stamp,source))
                     count += cur.rowcount
                 except (ValueError, KeyError, TypeError):
                     continue
@@ -102,9 +154,10 @@ class Store:
             if val is not None:
                 clauses.append(f"time {op} ?")
                 params.append(val.isoformat(timespec="seconds"))
-        query = "SELECT * FROM readings" + (" WHERE " + " AND ".join(clauses) if clauses else "") + " ORDER BY time"
         with self.connection() as db:
+            query = "SELECT * FROM (" + readings_with_origins_sql(db) + ")" + (" WHERE " + " AND ".join(clauses) if clauses else "") + " ORDER BY time"
             frame = pd.read_sql_query(query, db, params=params)
+        frame = frame.rename(columns={"origin":"source"})[["time","temp","hum","source","state","reasons"]]
         frame["time"] = pd.to_datetime(frame["time"])
         return frame
 
@@ -136,5 +189,9 @@ class Store:
 
     def latest_live(self):
         with self.connection() as db:
-            row = db.execute("SELECT * FROM readings WHERE source IN ('sensor','demo') ORDER BY time DESC LIMIT 1").fetchone()
-        return dict(row) if row else None
+            row = db.execute("SELECT * FROM (" + readings_with_origins_sql(db) + ") WHERE origin IN ('sensor','demo') ORDER BY time DESC LIMIT 1").fetchone()
+        if row:
+            result = dict(row)
+            result["source"] = result.pop("origin")
+            return result
+        return None

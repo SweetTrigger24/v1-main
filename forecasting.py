@@ -18,7 +18,12 @@ def regular_series(frame):
     """Giữ khoảng trống dài; chỉ điền tiến tối đa 20 phút, không nhìn tương lai."""
     if frame.empty:
         return pd.DataFrame(columns=["temp", "hum"], index=pd.DatetimeIndex([]))
-    df = frame.copy().sort_values("time").drop_duplicates("time").set_index("time")
+    df = frame.copy()
+    if "source" in df:
+        minutes = pd.to_datetime(df["time"]).dt.floor("min")
+        real_minutes = minutes[df["source"].eq("sensor")]
+        df = df.loc[~(df["source"].isin(["sample", "weather_sample"]) & minutes.isin(real_minutes))]
+    df = df.sort_values("time").drop_duplicates("time", keep="last").set_index("time")
     last = df.index[-1]
     result = df[["temp", "hum"]].resample(f"{FORECAST_STEP_MIN}min", label="right", closed="right").mean()
     return result.loc[result.index <= last].ffill(limit=2)

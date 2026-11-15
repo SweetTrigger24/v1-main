@@ -1,0 +1,92 @@
+{
+  "created_at": "2026-11-15T14:27:38",
+  "pi_contacted": false,
+  "databases": {
+    "iot.sqlite3": {
+      "before": {
+        "rows": 87841,
+        "logical_sha256": "b3b882a3cd54d5f4171f00ed992a2773d16d68a4ccb249d938d95c1244c50edc",
+        "settings_sha256": "09e011a51a22efd32a7e15ba89e99dbe20156cfb4e687b03815639bfcf303739",
+        "labels_sha256": "b55f8543b418053c4c7d56d8b3ca1bef4391d4e775d9b97fc91e408614393a72",
+        "origins": {
+          "weather_sample": 87841
+        },
+        "columns": [
+          "time",
+          "temp",
+          "hum",
+          "state",
+          "reasons"
+        ]
+      },
+      "after": {
+        "rows": 87841,
+        "logical_sha256": "b3b882a3cd54d5f4171f00ed992a2773d16d68a4ccb249d938d95c1244c50edc",
+        "settings_sha256": "09e011a51a22efd32a7e15ba89e99dbe20156cfb4e687b03815639bfcf303739",
+        "labels_sha256": "b55f8543b418053c4c7d56d8b3ca1bef4391d4e775d9b97fc91e408614393a72",
+        "origins": {
+          "weather_sample": 87841
+        },
+        "columns": [
+          "time",
+          "temp",
+          "hum",
+          "state",
+          "reasons"
+        ]
+      },
+      "integrity_check": "ok",
+      "foreign_key_check": "ok"
+    },
+    "training_data.sqlite3": {
+      "before": {
+        "rows": 86041,
+        "logical_sha256": "5bf8083e5218dffdbf0465c8e89ccce12e88a4163d3fbca4b4899fa8e14df9ba",
+        "settings_sha256": "c03b7215d3ce5e96981b65b28c9bbd7e6a5eca7c631470d20100657737c42eab",
+        "labels_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "origins": {
+          "weather_sample": 86041
+        },
+        "columns": [
+          "time",
+          "temp",
+          "hum",
+          "source",
+          "state",
+          "reasons"
+        ]
+      },
+      "after": {
+        "rows": 86041,
+        "logical_sha256": "5bf8083e5218dffdbf0465c8e89ccce12e88a4163d3fbca4b4899fa8e14df9ba",
+        "settings_sha256": "c03b7215d3ce5e96981b65b28c9bbd7e6a5eca7c631470d20100657737c42eab",
+        "labels_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "origins": {
+          "weather_sample": 86041
+        },
+        "columns": [
+          "time",
+          "temp",
+          "hum",
+          "state",
+          "reasons"
+        ]
+      },
+      "integrity_check": "ok",
+      "foreign_key_check": "ok"
+    }
+  },
+  "csv_sha256": {
+    "sensor_data.csv": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+    "training_data.csv": "630b10f07057d9b2ba0646706f2e4000d0d576cba68430520648f0f068e0fb81"
+  },
+  "model_sha256": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0",
+  "values_unchanged": true,
+  "settings_unchanged": true,
+  "verification": {
+    "test_suite_passed": 109,
+    "migration_and_data_tests_passed": 16,
+    "warnings": "5 existing Keras/NumPy deprecation warnings",
+    "sanitized_export_reopened_and_verified": true
+  }
+}

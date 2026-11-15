@@ -2,9 +2,9 @@
   "schema": 1,
   "kind": "weather_derived_synthetic",
   "source": "weather_sample",
-  "dataset_id": "110c09e51a128242105272f3685aceb35b9e1aa2013595b0570c2b572a6bb448",
-  "generated_at": "2026-11-10T22:22:23.804328",
-  "seed": 20261110,
+  "dataset_id": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "generated_at": "2026-11-15T12:20:13.955180",
+  "seed": 20261116,
   "location": "Hà Đông, Hà Nội",
   "environment": "outdoor_weather_reference",
   "requested_coordinates": {
@@ -12,38 +12,82 @@
     "longitude": 105.7788
   },
   "grid_coordinates": {
-    "latitude": 20.984182,
-    "longitude": 105.79108
+    "latitude": 20.9714,
+    "longitude": 105.7788
   },
   "timezone": "Asia/Ho_Chi_Minh",
-  "source_provider": "Open-Meteo / ECMWF IFS",
-  "source_url": "https://archive-api.open-meteo.com/v1/archive?latitude=20.9714&longitude=105.7788&start_date=2026-10-11&end_date=2026-11-10&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation&models=ecmwf_ifs&timezone=Asia%2FHo_Chi_Minh",
+  "source_provider": "Ogimet SYNOP HA DONG WMO 48825 + Open-Meteo ECMWF IFS",
+  "source_url": "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202609150400&end=202610050400",
   "documentation_url": "https://open-meteo.com/en/docs/historical-weather-api",
-  "source_file": "weather_sources/ha_dong_ecmwf_ifs_raw.json",
-  "source_resolution": "hourly, approximately 9 km grid",
-  "source_hours_available": 743,
-  "source_last_used": "2026-11-10T22:00:00",
-  "tail_hold_minutes": 20.0,
-  "start": "2026-10-11T22:21:00",
-  "end": "2026-11-10T22:20:00",
-  "row_count": 43200,
+  "source_file": "weather_sources/period_202609160500_202611160500_202611151220/sources.json",
+  "source_resolution": "Irregular 3-hourly SYNOP anchors; hourly weather-model fallback",
+  "source_hours_available": 1488,
+  "source_last_used": "2026-11-16T05:00:00",
+  "tail_hold_minutes": 0,
+  "start": "2026-09-16T05:00:00",
+  "end": "2026-11-16T05:00:00",
+  "row_count": 87841,
   "sample_sec": 60,
-  "csv_prefix_bytes": 1296025,
-  "csv_prefix_sha256": "110c09e51a128242105272f3685aceb35b9e1aa2013595b0570c2b572a6bb448",
-  "method": "Hourly linear interpolation + small correlated AR(1) noise, zero noise at exact source hours; hold latest available hour for incomplete current hour; round 0.1 units.",
+  "csv_prefix_bytes": 4059053,
+  "csv_prefix_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "method": "Interpolate station-minus-model residuals between anchors <=12h apart; taper nearest residual to zero over 3h at gap edges; add to hourly interpolated model; small seeded correlated noise zero at full hours; round 0.1. Distant gaps use model. Future uses forecast, never sensor.",
   "limitations": [
-    "Not DHT22 observations and not exact Ha Dong station measurements.",
-    "Minute values are interpolated/simulated, not 43,200 independent observations.",
-    "Weather analysis grid does not reproduce indoor air conditioning or local microclimate.",
-    "Do not report validation on this data as real sensor forecast accuracy."
+    "Not DHT22 observations. Every generated row remains weather_sample.",
+    "RH derived from station temperature/dewpoint is approximate; raw SYNOP retained.",
+    "Station-adjusted values use retrospective interpolation, not independent minute observations.",
+    "Archive/forecast model fills and future values are not station observations.",
+    "Do not report forecast/simulation test scores as measured DHT22 accuracy."
   ],
   "summary": {
-    "temp_min": 15.3,
-    "temp_max": 33.6,
-    "temp_mean": 26.857182870370373,
-    "hum_min": 42.4,
+    "temp_min": 13.2,
+    "temp_max": 37.3,
+    "temp_mean": 27.2740075818809,
+    "hum_min": 24.8,
     "hum_max": 100.0,
-    "hum_mean": 77.95654166666667
+    "hum_mean": 78.35564941200577
   },
-  "backup": "backups/sensor_data_20261110_222223_690113.csv"
+  "backup": null,
+  "as_of": "2026-11-15T12:20:00",
+  "source_urls": [
+    "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202609150400&end=202610050400",
+    "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202610050401&end=202610250401",
+    "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202610250402&end=202611140402",
+    "https://www.ogimet.com/cgi-bin/getsynop?block=48825&begin=202611140403&end=202611150520",
+    "https://archive-api.open-meteo.com/v1/archive?latitude=20.9714&longitude=105.7788&hourly=temperature_2m%2Crelative_humidity_2m&timezone=Asia%2FHo_Chi_Minh&start_date=2026-09-16&end_date=2026-11-14&models=ecmwf_ifs",
+    "https://api.open-meteo.com/v1/forecast?latitude=20.9714&longitude=105.7788&hourly=temperature_2m%2Crelative_humidity_2m&timezone=Asia%2FHo_Chi_Minh&start_date=2026-11-13&end_date=2026-11-16&models=ecmwf_ifs"
+  ],
+  "station_wmo": "48825",
+  "station_name": "HA DONG",
+  "station_observations": 314,
+  "rejected_station_lines": 4,
+  "last_station_observation": "2026-11-15T10:00:00",
+  "future_at_generation_rows": 1000,
+  "forecast_model_rows": 1800,
+  "origin_counts": {
+    "station_adjusted_model": 79956,
+    "archive_model": 6612,
+    "forecast_model": 961,
+    "station_anchor_rounded": 312
+  },
+  "last_10_days": {
+    "start_exclusive": "2026-11-06T05:00:00",
+    "end": "2026-11-16T05:00:00",
+    "rows": 14400,
+    "label": "sensor",
+    "source": "weather_sample",
+    "is_simulated": 1
+  },
+  "physical_pi_readings": 0,
+  "all_rows_are_simulated": true,
+  "label_semantics": "Scenario grouping only. label=sensor is NOT a statement of DHT22 measurement provenance.",
+  "archived_previous_dataset": false,
+  "csv_columns": [
+    "time",
+    "temp",
+    "hum",
+    "label"
+  ],
+  "row_metadata_file": "dataset.provenance.json",
+  "feature_value_sha256": "2b604e953bb43ea6cc6a3d0a031d10e179a57e99531a91683ac468fb4273067b",
+  "source_storage": "CSV-wide metadata and SQLite, not a visible CSV column"
 }

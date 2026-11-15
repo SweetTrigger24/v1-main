@@ -267,8 +267,9 @@ def test_training_refuses_sample_data_without_loading_tensorflow(store):
     from train_forecast import train
     frame = sample_frame()
     with store.connection() as db:
-        db.executemany("INSERT INTO readings VALUES (?, ?, ?, 'sample', 'XANH', '[]')",
+        db.executemany("INSERT INTO readings VALUES (?, ?, ?, 'XANH', '[]')",
                        [(row.time.isoformat(), row.temp, row.hum) for row in frame.itertuples()])
+        db.execute("INSERT INTO reading_origins SELECT time,'sample' FROM readings")
     with pytest.raises(SystemExit, match="hiện có 0.0 ngày"):
         train(epochs=1, db_path=store.path)
 
@@ -276,9 +277,10 @@ def test_training_refuses_sample_data_without_loading_tensorflow(store):
 def test_large_history_preserves_extrema(store):
     origin = NOW - timedelta(days=7)
     with store.connection() as db:
-        db.executemany("INSERT INTO readings VALUES (?, ?, 50, 'sensor', 'XANH', '[]')",
+        db.executemany("INSERT INTO readings VALUES (?, ?, 50, 'XANH', '[]')",
                        [((origin + timedelta(minutes=i)).isoformat(timespec="seconds"), 70 if i == 5005 else 25)
                         for i in range(0, 7 * 24 * 60, 5)])
+        db.execute("INSERT INTO reading_origins SELECT time,'sensor' FROM readings")
     result = store.history(origin, NOW, "minute")
     assert len(result) <= 1501
     assert max(row["temp_max"] for row in result if row["temp_max"] is not None) == 70
@@ -290,8 +292,9 @@ def test_keras_training_save_load_and_multistep_inference(store, tmp_path, monke
     # Toàn bộ là dữ liệu QA trong DB tạm; không ghi vào thư mục model vận hành.
     frame = sample_frame(days=16)
     with store.connection() as db:
-        db.executemany("INSERT INTO readings VALUES (?, ?, ?, 'sensor', 'XANH', '[]')",
+        db.executemany("INSERT INTO readings VALUES (?, ?, ?, 'XANH', '[]')",
                        [(row.time.isoformat(), row.temp, row.hum) for row in frame.itertuples()])
+        db.execute("INSERT INTO reading_origins SELECT time,'sensor' FROM readings")
     model_path, meta_path = tmp_path / "qa.keras", tmp_path / "qa.json"
     monkeypatch.setattr(train_forecast, "FORECAST_MODEL", model_path)
     monkeypatch.setattr(train_forecast, "FORECAST_META", meta_path)
@@ -362,13 +365,22 @@ def test_weather_manifest_detects_modification_and_survives_append(store, tmp_pa
         dataset_provenance(output)
 
 
-def test_delivered_weather_dataset_contiguous_30_days():
+def test_delivered_weather_dataset_matches_manifest_and_minute_spacing():
     meta = json.loads(config.DATA_FILE.with_suffix(".provenance.json").read_text(encoding="utf-8"))
     df = pd.read_csv(config.DATA_FILE, parse_dates=["time"]).iloc[:meta["row_count"]]
-    assert len(df) == 30 * 24 * 60
+    assert len(df) == meta["row_count"]
+    expected = int((pd.Timestamp(meta["end"]) - pd.Timestamp(meta["start"])).total_seconds() / meta["sample_sec"]) + 1
+    assert len(df) == expected
+    assert df["time"].iloc[0] == pd.Timestamp(meta["start"])
+    assert df["time"].iloc[-1] == pd.Timestamp(meta["end"])
     assert df["time"].is_unique and df["time"].is_monotonic_increasing
     assert (df["time"].diff().dropna() == pd.Timedelta(minutes=1)).all()
-    assert not df.isna().any().any()
+    # Cột station_wmo được phép trống khi mẫu chỉ dựa trên mô hình khí tượng.
+    assert not df[["time", "temp", "hum"]].isna().any().any()
+    if "source" in df:
+        assert df["source"].eq("weather_sample").all()
+    if "is_simulated" in df:
+        assert df["is_simulated"].eq(1).all()
     assert meta["source"] == "weather_sample"
 
 
@@ -793,7 +805,7 @@ def test_csv_failure_keeps_monitor_alerts_and_notifications(store, tmp_path, mon
     import monitor as service
     from types import SimpleNamespace
     monkeypatch.setattr(config, "MQTT_ENABLED", False)
-    monkeypatch.setattr(config, "DATA_FILE", tmp_path / "sensor.csv")
+    monkeypatch.setattr(config, "LIVE_DATA_FILE", tmp_path / "sensor.csv")
     monkeypatch.setattr(config, "LOG_FILE", tmp_path / "log.csv")
     original_append = service.append_csv
 

@@ -99,7 +99,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 
 | Đường dẫn | Nội dung |
 | --- | --- |
-| `data/sensor_data.csv` | CSV `time,temp,hum`, monitor bổ sung số đo thực |
+| `data/sensor_data.csv` | Bộ mô phỏng hiện tại, có `time,temp,hum,label`; nguồn được ghi trong metadata/SQLite, monitor ghi số đo thật riêng vào `live_sensor_data.csv` |
 | `data/sensor_data.provenance.json` | Nguồn, thời gian, số mẫu và hash phần mô phỏng khí tượng |
 | `data/weather_sources/` | JSON khí tượng gốc và dữ liệu đối chiếu vùng |
 | `data/weather_hourly_reference.csv` | Dữ liệu tham chiếu giờ |
@@ -116,7 +116,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 
 Bộ dữ liệu hiện có gồm 43.200 mẫu phút trong 30 ngày, từ 11/10/2026 22:21 đến 10/11/2026 22:20. Nguồn khí tượng Hà Đông được nội suy và thêm nhiễu nhỏ để mô phỏng chuỗi cảm biến. Các mẫu này mang nhãn `weather_sample`. Sai số học trên bộ này đánh giá thử nghiệm với dữ liệu mô phỏng.
 
-Trong SQLite, `readings` lưu số đo cùng `source`, `state` và lý do. `kv` lưu trạng thái monitor/dự báo, cấu hình, xác thực, nguồn và trạng thái email. Dashboard dùng `source=sensor/demo` cho số đo trực tiếp, đồng thời kiểm tra thời gian cập nhật và trạng thái monitor.
+Trong SQLite, `readings` chỉ có `time,temp,hum,state,reasons`. Nguồn nằm riêng trong `reading_origins(time,origin)`; `Store.frame()` ghép thành trường `source` cho code đọc. `kv` lưu trạng thái monitor/dự báo, cấu hình, xác thực, nguồn và trạng thái email. Dashboard dùng trường `source=sensor/demo` cho số đo trực tiếp, đồng thời kiểm tra thời gian cập nhật và trạng thái monitor. Khi chuyển DB cấu trúc mới sang Pi, cần dùng cùng bản code mới; code mới tự chuyển DB cũ khi mở.
 
 ## Trước khi bắt đầu
 
@@ -158,10 +158,10 @@ Bộ hiện có là dữ liệu phút mô phỏng từ khí tượng Hà Đông.
 
 ```powershell
 ..\.venv\Scripts\python.exe -m pip install -r requirements-ml.txt
-..\.venv\Scripts\python.exe train_forecast.py --db data/train_weather.sqlite3 --epochs 60 --include-weather-samples
+..\.venv\Scripts\python.exe train_forecast.py --db data/training_data.sqlite3 --skip-csv-import --epochs 60 --include-weather-samples
 ```
 
-DB `train_weather.sqlite3` phục vụ huấn luyện trên PC. Sau khi chương trình kết thúc, kiểm tra hai tệp mô hình và metadata.
+DB `training_data.sqlite3` thuộc bộ mô phỏng hiện tại và đã loại các mẫu dùng forecast; `--skip-csv-import` tránh nhập lại toàn bộ CSV tham khảo vào DB train. Sau khi chương trình kết thúc, kiểm tra hai tệp mô hình và metadata.
 
 ```powershell
 Get-Item .\model\forecast_12h.keras, .\model\forecast_12h.json

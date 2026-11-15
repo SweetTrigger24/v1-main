@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from common import (CONTEXT_STEPS, FORECAST_META, FORECAST_MODEL, FORECAST_STEP_MIN,
-                    FORECAST_STEPS, MIN_TRAIN_DAYS)
+                    FORECAST_STEPS, MIN_TRAIN_DAYS, now_local)
 from forecasting import features, regular_series, seasonal_values
 from storage import Store
 
@@ -48,12 +48,19 @@ def score(truth, pred):
             "rmse_12h": np.sqrt(np.mean(error[:, -1] ** 2, axis=0)).tolist()}
 
 
-def train(epochs=60, db_path=None, include_weather_samples=False):
+def eligible_training_frame(frame, include_weather_samples=False, cutoff=None):
+    """Không dùng thời điểm chưa xảy ra hoặc ngầm coi mô phỏng là cảm biến."""
+    excluded = ["demo", "sample", "forecast_sample"] + ([] if include_weather_samples else ["weather_sample"])
+    return frame[(~frame["source"].isin(excluded)) & (frame["time"] <= pd.Timestamp(cutoff or now_local()))].copy()
+
+
+def train(epochs=60, db_path=None, include_weather_samples=False, skip_csv_import=False, output_dir=None):
     store = Store() if db_path is None else Store(db_path)
-    store.import_csv()
+    if not skip_csv_import:
+        store.import_csv()
     frame = store.frame()
-    excluded = ["demo", "sample"] + ([] if include_weather_samples else ["weather_sample"])
-    eligible = frame[~frame["source"].isin(excluded)]
+    eligible = eligible_training_frame(frame, include_weather_samples)
+    future_excluded = int((frame["time"] > pd.Timestamp(now_local())).sum())
     series = regular_series(eligible)
     good_days = len(series.dropna()) / 144
     if good_days < MIN_TRAIN_DAYS:
@@ -92,6 +99,8 @@ def train(epochs=60, db_path=None, include_weather_samples=False):
     test_base = baseline_predictions(series, ote)
     meta = {"schema": 2, "steps": FORECAST_STEPS, "context": CONTEXT_STEPS,
             "training_data_kind": "weather_derived_simulation" if eligible["source"].eq("weather_sample").any() else "sensor_or_import",
+            "source_counts": {str(k): int(v) for k,v in eligible["source"].value_counts().items()},
+            "future_rows_excluded": future_excluded, "trained_at": now_local().isoformat(),
             "step_min": FORECAST_STEP_MIN, "lo": lo.tolist(), "hi": hi.tolist(),
             "train_end": series.index[a - 1].isoformat(), "data_end": series.index[-1].isoformat(),
             "use_lstm": use_lstm, "validation_rmse": val_rmse.tolist(),
@@ -100,15 +109,17 @@ def train(epochs=60, db_path=None, include_weather_samples=False):
             "windows": [len(part[0]) for part in parts],
             "loss": [float(v) for v in history.history["loss"]],
             "val_loss": [float(v) for v in history.history["val_loss"]]}
-    FORECAST_MODEL.parent.mkdir(parents=True, exist_ok=True)
+    model_path = Path(output_dir) / FORECAST_MODEL.name if output_dir else FORECAST_MODEL
+    meta_path = Path(output_dir) / FORECAST_META.name if output_dir else FORECAST_META
+    model_path.parent.mkdir(parents=True, exist_ok=True)
     # Metadata và model mang tên riêng, không đọc nhầm mô hình 10 phút cũ.
-    temporary = FORECAST_MODEL.with_name("forecast_12h.next.keras")
+    temporary = model_path.with_name("forecast_12h.next.keras")
     model.save(temporary)
     meta["model_sha256"] = hashlib.sha256(temporary.read_bytes()).hexdigest()
-    os.replace(temporary, FORECAST_MODEL)
-    temporary_meta = FORECAST_META.with_suffix(".next.json")
+    os.replace(temporary, model_path)
+    temporary_meta = meta_path.with_suffix(".next.json")
     temporary_meta.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
-    os.replace(temporary_meta, FORECAST_META)
+    os.replace(temporary_meta, meta_path)
     print(json.dumps(meta, indent=2, ensure_ascii=False))
     print("Đã chọn LSTM." if use_lstm else "LSTM chưa thắng baseline trên cả hai biến; tiếp tục dùng chu kỳ ngày.")
 
@@ -117,9 +128,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, default=60)
     parser.add_argument("--db", type=Path)
+    parser.add_argument("--skip-csv-import", action="store_true", help="Dùng nguyên DB đã chuẩn bị, không nhập CSV mặc định vào snapshot")
+    parser.add_argument("--output-dir", type=Path, help="Lưu cặp mô hình vào thư mục riêng trước khi triển khai")
     parser.add_argument("--include-weather-samples", action="store_true",
                         help="Cho phép dữ liệu mô phỏng từ khí tượng để thử nghiệm; không coi sai số là kết quả cảm biến thật")
     args = parser.parse_args()
     if args.epochs < 1:
         parser.error("epochs phải >= 1")
-    train(args.epochs, args.db, args.include_weather_samples)
+    train(args.epochs, args.db, args.include_weather_samples, args.skip_csv_import, args.output_dir)
