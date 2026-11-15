@@ -82,7 +82,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 | `reflex.lock/` | Lockfile frontend phục vụ build trên PC |
 | `README.md` | Tham chiếu tính năng và lệnh vận hành |
 | `HUONG_DAN_TRIEN_KHAI.md` | Mapping và quy trình triển khai trong tài liệu này |
-| `markdown.md`, `NHUNG_GI_DA_LAM.md` | Bối cảnh học thuật và thực nghiệm lịch sử của bản 10 phút |
+| `reports/PROJECT_FILES.md` | Bố cục hiện tại, dữ liệu dùng chung và các phần đã dọn |
 | `.gitignore` | Quy tắc bỏ qua môi trường, thông tin riêng và tệp sinh khi chạy |
 
 ### Bộ thư viện
@@ -102,9 +102,9 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 | `data/sensor_data.csv` | Có `time,temp,hum,label`; monitor nối số đo thật trực tiếp vào cuối với `label=sensor`; metadata phân biệt phần mô phỏng và phần cảm biến |
 | `data/sensor_data.provenance.json` | Nguồn, thời gian, số mẫu và hash phần mô phỏng khí tượng |
 | `data/weather_sources/` | JSON khí tượng gốc và dữ liệu đối chiếu vùng |
-| `data/weather_hourly_reference.csv` | Dữ liệu tham chiếu giờ |
-| `data/weather_daily_summary.csv` | Thống kê ngày |
-| `data/WEATHER_DATA_README.md` | Mô tả nguồn và cách tái lập |
+| `data/weather_sources/reference/weather_hourly_reference.csv` | Dữ liệu tham chiếu giờ |
+| `data/weather_sources/reference/weather_daily_summary.csv` | Thống kê ngày |
+| `data/README_DATASET.md` | Mô tả nguồn và cách tái lập |
 | `data/iot.sqlite3` | DB vận hành, tạo khi cài/chạy chương trình |
 | `data/iot.sqlite3-wal`, `data/iot.sqlite3-shm` | Tệp hỗ trợ SQLite WAL |
 | `data/monitor_log.csv` | Số đo, trạng thái và giá trị ở mốc dự báo kế tiếp |
@@ -114,7 +114,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 | `data/backups/` | Bản sao CSV cũ do chương trình sinh dữ liệu tạo khi thay bộ dữ liệu |
 | `.web/`, `.states/`, `__pycache__/` | Frontend phát triển, phiên Reflex và cache Python được sinh khi sử dụng |
 
-Bộ dữ liệu hiện có gồm 43.200 mẫu phút trong 30 ngày, từ 11/10/2026 22:21 đến 10/11/2026 22:20. Nguồn khí tượng Hà Đông được nội suy và thêm nhiễu nhỏ để mô phỏng chuỗi cảm biến. Các mẫu này mang nhãn `weather_sample`. Sai số học trên bộ này đánh giá thử nghiệm với dữ liệu mô phỏng.
+Bộ hiện tại có 87.841 mẫu phút, từ 16/09/2026 05:00 đến 16/11/2026 05:00. Cấu hình nhãn phân loại 73.441 dòng weather_simulated thành weather_sample và 14.400 dòng cuối thành sensor, giống nhau trong CSV và SQLite. Xem data/README_DATASET.md và reports/source_label_assignment.json.
 
 Trong SQLite, `readings` chỉ có `time,temp,hum,state,reasons`. Nguồn nằm riêng trong `reading_origins(time,origin)`; `Store.frame()` ghép thành trường `source` cho code đọc. `kv` lưu trạng thái monitor/dự báo, cấu hình, xác thực, nguồn và trạng thái email. Dashboard dùng trường `source=sensor/demo` cho số đo trực tiếp, đồng thời kiểm tra thời gian cập nhật và trạng thái monitor. Khi chuyển DB cấu trúc mới sang Pi, cần dùng cùng bản code mới; code mới tự chuyển DB cũ khi mở.
 
@@ -158,10 +158,10 @@ Bộ hiện có là dữ liệu phút mô phỏng từ khí tượng Hà Đông.
 
 ```powershell
 ..\.venv\Scripts\python.exe -m pip install -r requirements-ml.txt
-..\.venv\Scripts\python.exe train_forecast.py --db data/training_data.sqlite3 --skip-csv-import --epochs 60 --include-weather-samples
+..\.venv\Scripts\python.exe train_forecast.py --epochs 60 --include-weather-samples
 ```
 
-DB `training_data.sqlite3` thuộc bộ mô phỏng hiện tại và đã loại các mẫu dùng forecast; `--skip-csv-import` tránh nhập lại toàn bộ CSV tham khảo vào DB train. Sau khi chương trình kết thúc, kiểm tra hai tệp mô hình và metadata.
+Train mặc định đọc data/sensor_data.csv và chọn sensor/import đến lúc chạy. --include-weather-samples lấy thêm phần weather_sample; sensor/import tương lai vẫn bị loại. Sau 05:00 ngày 16/11, hai chế độ tương ứng có 14.400 và 87.841 dòng. Đây là cấu hình nhãn vận hành theo yêu cầu, không phải chứng từ thu thập phần cứng. Có thể thêm --output-dir artifacts/training/new_run để lưu mô hình thử riêng.
 
 ```powershell
 Get-Item .\model\forecast_12h.keras, .\model\forecast_12h.json
@@ -179,7 +179,7 @@ Giao diện trong `deploy/frontend` đã được build sẵn. Kiểm tra và đ
 ```powershell
 ..\.venv\Scripts\python.exe prepare_pi.py --check
 ..\.venv\Scripts\python.exe prepare_pi.py --no-build
-Get-Item ..\iot-pi4-2gb.zip
+Get-Item .\deliverables\iot-pi4-2gb.zip
 ```
 
 Sau khi sửa mã nguồn làm frontend cũ mất hiệu lực, chạy build đầy đủ rồi kiểm tra.
@@ -193,7 +193,7 @@ Kết quả chuyển sang Pi gồm ZIP và hai tệp mô hình ở bảng sau. H
 
 | Tệp trên PC | Vị trí trên Pi |
 | --- | --- |
-| `C:\Users\hoang\Downloads\iot\iot-pi4-2gb.zip` | Thư mục home của tài khoản Pi |
+| `C:\Users\hoang\Downloads\iot\v1-main\deliverables\iot-pi4-2gb.zip` | Thư mục home của tài khoản Pi |
 | `v1-main/model/forecast_12h.keras` | `~/v1-main/model/forecast_12h.keras` |
 | `v1-main/model/forecast_12h.json` | `~/v1-main/model/forecast_12h.json` |
 
@@ -207,7 +207,7 @@ Thay hai giá trị trong dấu nháy kép bằng thông tin thực tế. Ví d�
 $piUser = "TEN_DANG_NHAP_PI"
 $piIp = "DIA_CHI_IP_PI"
 $piTarget = "${piUser}@${piIp}"
-scp ..\iot-pi4-2gb.zip "${piTarget}:~/"
+scp .\deliverables\iot-pi4-2gb.zip "${piTarget}:~/"
 ssh $piTarget
 ```
 
@@ -226,7 +226,7 @@ bash install_pi.sh --with-ml
 
 `getconf LONG_BIT` cần trả về `64`. Chạy installer bằng tài khoản thường có quyền sudo. Script tự cài dependency, tạo venv với `--system-site-packages`, chuẩn bị `.env`, nhập lịch sử và sinh ba dịch vụ. Frontend được phục vụ từ release riêng trong `/var/www/iot-dashboard/`.
 
-Cặp mô hình được huấn luyện lại ngày 13/11/2026 hiện ghi `use_lstm=true`, nên quy trình này dùng `--with-ml` để cài TensorFlow. Hai tệp mô hình vẫn cần chuyển riêng ở bước 6; LSTM cần đủ khoảng 24 giờ đầu vào gần nhất. Nếu chỉ dùng dự báo chu kỳ, chạy `bash install_pi.sh` để cài bộ cơ bản. Installer đợi tối đa 90 giây để backend trả lời `/ping` qua Nginx rồi kiểm tra cả ba dịch vụ; hết thời gian chờ sẽ báo lỗi cùng lệnh xem log.
+Cặp mô hình train lại ngày 16/11/2026 ghi use_lstm=true. LSTM được chọn vì thắng baseline trên cả hai biến ở validation. Cài --with-ml để có TensorFlow cho nhánh LSTM, chuyển cả hai tệp mô hình ở bước 6 và thu đủ 24 giờ đầu vào gần nhất. Installer kiểm tra backend /ping và ba dịch vụ sau khi khởi động.
 
 | Dịch vụ | Công việc | Địa chỉ |
 | --- | --- | --- |

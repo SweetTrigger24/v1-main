@@ -66,7 +66,9 @@ def dashboard_payload(store, hours=12, start=None, end=None, resolution="hour", 
             "red": (f"Có thể chạm mức đỏ lúc {red['time'].replace('T', ' ')} · {red['temp']:.1f}°C / {red['hum']:.1f}%"
                     if red else "Chưa thấy mốc dự báo chạm đỏ trong 12 giờ" if valid_forecast else "Chưa đủ dữ liệu đánh giá 12 giờ tới"),
             "red_expected": bool(red), "error": status.get("error", "") if not ok else "",
-            "provenance": (f"{provenance['weather_rows']:,} mẫu phút mô phỏng theo {provenance.get('provider', 'khí tượng')} tại {provenance.get('location', 'Hà Đông')}; không phải số đo DHT22 thật."
+            "provenance": (f"{provenance['weather_source_rows']:,} mẫu nhãn mô phỏng; {provenance['sensor_label_assignment']['rows']:,} mẫu nhãn sensor."
+                           if provenance.get("sensor_label_assignment") else
+                           f"{provenance['weather_rows']:,} mẫu phút mô phỏng theo {provenance.get('provider', 'khí tượng')} tại {provenance.get('location', 'Hà Đông')}; không phải số đo DHT22 thật."
                            if provenance.get("weather_rows") else
                            f"CSV nhập có {provenance['sample_rows']:,} mẫu mô phỏng đã nhận diện; các mẫu này không dùng huấn luyện LSTM chính thức."
                            if provenance.get("sample_rows") else "Lịch sử nhập từ CSV; cần xác minh nguồn nếu dùng làm thực nghiệm."),

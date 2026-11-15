@@ -61,8 +61,9 @@ def build_frontend(root=ROOT):
 def package(root=ROOT, destination=None):
     root = Path(root).resolve()
     validate_frontend(root)
-    destination = Path(destination) if destination else root.parent / "iot-pi4-2gb.zip"
+    destination = Path(destination) if destination else root / "deliverables/iot-pi4-2gb.zip"
     destination = destination.resolve()
+    destination.parent.mkdir(parents=True,exist_ok=True)
     excluded = {".web", ".states", ".venv", "venv", "__pycache__", ".pytest_cache", ".git", ".reflex", "artifacts", "node_modules"}
     temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
     try:
@@ -72,7 +73,8 @@ def package(root=ROOT, destination=None):
                 if (not path.is_file()
                         or any(part in excluded or part.startswith("frontend-stage-") or part == "frontend.previous" for part in relative.parts)
                         or path.name == ".env" or ".sqlite3" in path.name or path.suffix in {".pyc", ".zip", ".keras", ".tflite"}
-                        or relative.parts[0] == "model" or relative.parts[:2] == ("data", "backups")
+                        or relative.parts[0] in {"model","backups","reports","deliverables"}
+                        or relative.parts[:2] == ("data", "backups")
                         or path.resolve() in {destination, temporary}):
                     continue
                 archive.write(path, Path(root.name) / relative)

@@ -12,6 +12,7 @@ import common as config
 from monitor import Monitor, validate_demo_database
 from provenance import dataset_provenance, prepare_sensor_csv
 from storage import Store
+from train_forecast import csv_training_frame, eligible_training_frame
 
 NOW = datetime(2026, 11, 16, 5, 1, 35)
 
@@ -82,6 +83,55 @@ def test_scenario_label_alone_never_becomes_sensor(sensor_csv, tmp_path):
     other = Store(tmp_path/'unverified.sqlite3')
     other.import_csv(unverified)
     assert other.frame().source.tolist()==['import']
+
+
+def test_explicit_assignment_matches_csv_and_sqlite_and_keeps_sensor_time_cutoff(sensor_csv,tmp_path):
+    meta=json.loads(sensor_csv.with_suffix('.provenance.json').read_text(encoding='utf-8'))
+    meta.update(kind='user_labeled_mixed_dataset',source_assignment='csv_label',
+                sensor_label_assignment={'start_exclusive':'2026-11-16T05:00:00',
+                                         'end':'2026-11-16T05:01:00','label':'sensor','rows':1})
+    sensor_csv.with_suffix('.provenance.json').write_text(json.dumps(meta),encoding='utf-8')
+    store=Store(tmp_path/'assigned.sqlite3')
+    store.import_csv(sensor_csv)
+    assert store.frame().source.tolist()==['weather_sample','sensor']
+    frame=csv_training_frame(sensor_csv)
+    assert frame.source.tolist()==['weather_sample','sensor']
+    cutoff=datetime(2026,11,16,5)
+    assert eligible_training_frame(frame,False,cutoff).empty
+    assert eligible_training_frame(frame,True,cutoff).source.tolist()==['weather_sample']
+    assert eligible_training_frame(frame,False,NOW).temp.tolist()==[19]
+    # Explicitly assigned sensor rows are skipped for a demo database too.
+    demo=Store(tmp_path/'demo_assigned.sqlite3')
+    demo.import_csv(sensor_csv,include_sensor=False)
+    assert demo.frame().source.tolist()==['weather_sample']
+    # New monitor appends keep the configured historical labels on restore.
+    collect(store,NOW+timedelta(minutes=1))
+    restored=Store(tmp_path/'assigned_restored.sqlite3')
+    restored.import_csv(sensor_csv)
+    assert restored.frame().source.tolist()==['weather_sample','sensor','sensor']
+
+
+def test_sensor_assignment_outside_verified_prefix_period_is_rejected(sensor_csv,tmp_path):
+    meta=json.loads(sensor_csv.with_suffix('.provenance.json').read_text(encoding='utf-8'))
+    meta.update(source_assignment='csv_label',sensor_label_assignment={
+        'start_exclusive':'2026-11-06T05:00:00','end':'2026-11-16T05:01:00','label':'sensor','rows':1})
+    sensor_csv.with_suffix('.provenance.json').write_text(json.dumps(meta),encoding='utf-8')
+    with pytest.raises(ValueError,match='Khoảng gán nhãn sensor'):
+        Store(tmp_path/'bad_assignment.sqlite3').import_csv(sensor_csv)
+
+
+def test_changing_label_assignment_invalidates_import_marker_without_rewriting_csv(sensor_csv,tmp_path):
+    store=Store(tmp_path/'changed_assignment.sqlite3')
+    store.import_csv(sensor_csv)
+    before=sensor_csv.read_bytes()
+    meta=json.loads(sensor_csv.with_suffix('.provenance.json').read_text(encoding='utf-8'))
+    meta.update(source_assignment='csv_label',sensor_label_assignment={
+        'start_exclusive':'2026-11-16T05:00:00','end':'2026-11-16T05:01:00','label':'sensor','rows':1})
+    sensor_csv.with_suffix('.provenance.json').write_text(json.dumps(meta),encoding='utf-8')
+    assert store.import_csv(sensor_csv)==2
+    assert store.frame().source.tolist()==['weather_sample','sensor']
+    assert store.import_csv(sensor_csv)==0
+    assert sensor_csv.read_bytes()==before
 
 
 def test_demo_does_not_append_and_can_import_only_historical_prefix(sensor_csv, tmp_path):

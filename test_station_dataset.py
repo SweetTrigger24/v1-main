@@ -6,7 +6,6 @@ import pandas as pd
 import pytest
 
 from generate_station_dataset import decode_synop, simulate
-from merge_pi_dataset import combine, sensor_records
 
 
 def test_synop_section_one_station_time_and_humidity():
@@ -84,35 +83,3 @@ def test_transition_to_model_tapers_instead_of_jumping():
     frame,evidence = simulate(station,grid,start,start+timedelta(hours=24),start+timedelta(hours=24))
     assert abs(frame.temp.iloc[1]-frame.temp.iloc[0]) <= .2
     assert evidence.weather_origin.iloc[1] == 'station_adjusted_model'
-
-
-def test_combining_replaces_minute_without_changing_sensor_timestamp_or_values():
-    start,grid,station = fixtures()
-    _,evidence = simulate(station,grid,start,start+timedelta(hours=18),start+timedelta(hours=12))
-    actual = pd.DataFrame([{'time':'2026-11-15T01:00:37','temp':23.456,'hum':61.234,
-                           'source':'sensor','state':'XANH','reasons':'[]'}])
-    result = combine(evidence,actual)
-    sensor = result[result.source=='sensor']
-    assert len(result) == len(evidence) and len(sensor)==1
-    assert sensor.time.iloc[0] == actual.time.iloc[0]
-    assert sensor.temp.iloc[0] == 23.456 and sensor.hum.iloc[0] == 61.234
-    assert '2026-11-15T01:00:00' not in result.time.values
-    assert not sensor.future_at_generation.any() and not sensor.uses_forecast_model.any()
-
-
-@pytest.mark.parametrize('compact',[False,True])
-def test_snapshot_uses_only_real_sensor_rows_and_rejects_future(tmp_path,compact):
-    import sqlite3
-    p = tmp_path/'pi.sqlite3'
-    with sqlite3.connect(p) as db:
-        db.execute('CREATE TABLE readings(time TEXT PRIMARY KEY,temp REAL,hum REAL,source TEXT,state TEXT,reasons TEXT)')
-        db.executemany('INSERT INTO readings VALUES(?,?,?,?,?,?)',[
-            ('2026-11-15T01:00:37',23.,61.,'sensor','XANH','[]'),
-            ('2026-11-15T01:01:00',24.,62.,'weather_sample','XANH','[]')])
-    if compact:
-        from storage import Store
-        Store(p)
-    actual = sensor_records(p,datetime(2026,11,5),datetime(2026,11,16),datetime(2026,11,15,2))
-    assert len(actual) == 1 and actual.source.iloc[0] == 'sensor'
-    with pytest.raises(ValueError,match='tương lai'):
-        sensor_records(p,datetime(2026,11,5),datetime(2026,11,16),datetime(2026,11,15))

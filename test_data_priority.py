@@ -90,10 +90,12 @@ def test_resampling_never_averages_sensor_with_simulation_same_minute():
 
 
 def test_training_excludes_future_and_preserves_source_labels():
-    frame=pd.DataFrame({'time':[NOW-timedelta(days=1),NOW,NOW+timedelta(minutes=1),NOW],
-                        'temp':[20,25,26,30],'hum':[60,61,62,70],
-                        'source':['weather_sample','sensor','sensor','forecast_sample']})
+    frame=pd.DataFrame({'time':[NOW-timedelta(days=1),NOW,NOW+timedelta(minutes=1),NOW,
+                               NOW+timedelta(hours=4),NOW+timedelta(minutes=1)],
+                        'temp':[20,25,26,30,21,27],'hum':[60,61,62,70,63,64],
+                        'source':['weather_sample','sensor','sensor','forecast_sample','weather_sample','import']})
     actual=eligible_training_frame(frame,False,NOW)
     assert actual.source.tolist()==['sensor'] and actual.temp.iloc[0]==25
     simulated=eligible_training_frame(frame,True,NOW)
-    assert simulated.source.tolist()==['weather_sample','sensor']
+    assert simulated.source.tolist()==['weather_sample','sensor','weather_sample']
+    assert simulated.temp.tolist()==[20,25,21]

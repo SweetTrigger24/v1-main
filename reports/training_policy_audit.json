@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-11-16T01:15:59.057522",
+  "canonical_csv": "data/sensor_data.csv",
+  "csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "current_policy_selected_rows": 87841,
+  "previous_policy_selected_rows": 86041,
+  "additional_simulated_rows": 1800,
+  "data_end": "2026-11-16T05:00:00",
+  "future_weather_rows_included_at_check": 225,
+  "all_selected_rows_are_simulated": true,
+  "sensor_future_cutoff_retained": true,
+  "weather_simulation_requires_opt_in": true,
+  "tests_passed": 140,
+  "existing_model_sha256": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0",
+  "existing_model_training_rows": 86041,
+  "existing_model_retrained": false,
+  "pi_changed": false
+}

@@ -244,14 +244,20 @@ def create_dataset(output, source_dir, manifest, seed):
     # Dùng writer cũ để giữ sao lưu và manifest prefix tương thích với Store.import_csv.
     metadata = write_dataset(frame, grid[['temp','hum']], envelope, output, source_index,
                              seed, LATITUDE, LONGITUDE)
-    sources_csv = output.with_name(output.stem + '_sources.csv')
+    references = output.parent/'weather_sources'/'reference'
+    references.mkdir(parents=True,exist_ok=True)
+    sources_csv = references/(output.stem + '_sources.csv')
     if sources_csv.exists() and metadata['backup']:
         import shutil
         backup = output.parent / metadata['backup']
         shutil.copy2(sources_csv, backup.with_name(backup.stem + '_sources.csv'))
     evidence.to_csv(sources_csv, index=False, lineterminator='\n')
-    station.to_csv(output.parent/'ha_dong_station_observations.csv', index_label='time', lineterminator='\n')
-    grid.to_csv(output.parent/'weather_hourly_reference.csv', index_label='time', lineterminator='\n')
+    station.to_csv(references/'ha_dong_station_observations.csv', index_label='time', lineterminator='\n')
+    grid.to_csv(references/'weather_hourly_reference.csv', index_label='time', lineterminator='\n')
+    eligible = ~(evidence['uses_forecast_model'] | evidence['future_at_generation'])
+    groups = eligible.ne(eligible.shift()).cumsum()
+    training_ranges = [{'start':part.time.iloc[0],'end':part.time.iloc[-1],'rows':len(part)}
+                       for _,part in evidence.loc[eligible].groupby(groups.loc[eligible])]
     last_ten = evidence[pd.to_datetime(evidence.time) > end-timedelta(days=10)]
     metadata.update({
         'as_of': as_of.isoformat(), 'source_provider': 'Ogimet SYNOP HA DONG WMO 48825 + Open-Meteo ECMWF IFS',
@@ -265,7 +271,8 @@ def create_dataset(output, source_dir, manifest, seed):
         'future_at_generation_rows': int(evidence.future_at_generation.sum()),
         'forecast_model_rows': int(evidence.uses_forecast_model.sum()),
         'origin_counts': {str(k): int(v) for k,v in evidence.weather_origin.value_counts().items()},
-        'row_sources_file': sources_csv.name,
+        'row_sources_file': sources_csv.relative_to(output.parent).as_posix(),
+        'training_time_ranges':training_ranges,
         'row_sources_sha256': hashlib.sha256(sources_csv.read_bytes()).hexdigest(),
         'last_10_days': {'start_exclusive': (end-timedelta(days=10)).isoformat(), 'end': end.isoformat(),
                          'rows': len(last_ten), 'sensor_rows': 0, 'weather_sample_rows': len(last_ten),
@@ -296,11 +303,11 @@ SYNOP chính thức tham khảo [WMO Manual on Codes](https://amc.namem.gov.mn/w
 
 ## Các tệp
 
-- `{output.name}`: ba cột time,temp,hum tương thích monitor. Tên sensor_data không có nghĩa mọi dòng là số đo thật.
-- `{sources_csv.name}`: nhiệt độ, độ ẩm và nguồn từng dòng; có cờ dùng mô hình forecast và cờ tương lai tại thời điểm tạo.
+- `{output.name}`: bốn cột time,temp,hum,label tương thích monitor. Tên sensor_data không có nghĩa mọi dòng là số đo thật.
+- `{sources_csv.relative_to(output.parent).as_posix()}`: nguồn tham chiếu từng dòng; có cờ dùng mô hình forecast và cờ tương lai tại thời điểm tạo.
 - `{output.with_suffix('.provenance.json').name}`: manifest có SHA-256 kiểm tra prefix mô phỏng; vẫn cho phép monitor append số đo thật phía sau.
-- `ha_dong_station_observations.csv`: bản tin trạm đã giải mã, điểm sương và nguyên văn SYNOP; thời gian đổi UTC sang Việt Nam +7.
-- `weather_hourly_reference.csv`: mô hình nền theo giờ, phân biệt archive/forecast.
+- `weather_sources/reference/ha_dong_station_observations.csv`: bản tin trạm đã giải mã, điểm sương và nguyên văn SYNOP; thời gian đổi UTC sang Việt Nam +7.
+- `weather_sources/reference/weather_hourly_reference.csv`: mô hình nền theo giờ, phân biệt archive/forecast.
 - `weather_daily_summary.csv`: thống kê dữ liệu mô phỏng theo ngày.
 - `{source_index.relative_to(output.parent).as_posix()}`: URL, thời điểm tải, hash và danh sách tệp nguồn gốc.
 - `backups/`: bản sao CSV, manifest và nguồn từng dòng trước khi thay.
@@ -321,7 +328,7 @@ python generate_station_dataset.py --reuse-sources "{source_index.relative_to(Pa
 
 Mô hình hiện có chưa được huấn luyện lại trên bộ mới. Không dùng phần forecast làm giá trị quan trắc để tuyên bố độ chính xác. Mặc định train_forecast.py loại weather_sample; cờ --include-weather-samples chỉ dành cho thử nghiệm mô phỏng. Bản báo cáo cuối kỳ trước đó mô tả bộ dữ liệu/mô hình cũ, không tự cập nhật theo lần tạo này.
 '''
-    (output.parent/'WEATHER_DATA_README.md').write_text(text,encoding='utf-8')
+    (output.parent/'README_DATASET.md').write_text(text,encoding='utf-8')
     return metadata
 
 

@@ -15,7 +15,7 @@ cd C:\Users\hoang\Downloads\iot\v1-main
 ..\.venv\Scripts\python.exe prepare_pi.py
 ```
 
-Chương trình tạo **`iot-pi4-2gb.zip`** ở thư mục cha, gồm mã nguồn và `deploy/frontend` đã build. Gói đã chuẩn bị sẵn có thể chép trực tiếp lên Pi; không cần build lại nếu không sửa mã giao diện. Môi trường ảo Windows, `node_modules`, DB đang chạy, `.env` và mô hình riêng không được đưa vào gói.
+Chương trình tạo **`deliverables/iot-pi4-2gb.zip`**, gồm mã nguồn và `deploy/frontend` đã build. Gói đã chuẩn bị sẵn có thể chép trực tiếp lên Pi; không cần build lại nếu không sửa mã giao diện. Môi trường ảo Windows, `node_modules`, DB đang chạy, `.env`, bản sao cũ và báo cáo không được đưa vào gói.
 
 Giải nén gói, chép hai tệp mô hình PC đã huấn luyện vào `model/forecast_12h.keras` và `model/forecast_12h.json` nếu muốn chạy LSTM. Trên **Raspberry Pi OS Lite 64-bit có systemd**, kết nối mạng rồi chạy bằng tài khoản thường:
 
@@ -25,7 +25,7 @@ bash install_pi.sh --with-ml
 
 Script kiểm tra checksum bản build trước khi sửa hệ thống, cài `venv`, thư viện GPIO, Reflex và Nginx; nhập CSV lịch sử rồi tạo/bật ba dịch vụ với đúng tên người dùng/đường dẫn. Installer chờ `/ping` qua Nginx phản hồi trước khi báo thành công. Dùng `bash install_pi.sh --with-ml` để cài thêm TensorFlow khi cần suy luận LSTM. Không huấn luyện mô hình trên Pi.
 
-Cặp mô hình hiện có trong thư mục `model/` đã được huấn luyện lại ngày 13/11/2026, ghi `use_lstm=true`: LSTM thắng baseline trên cả hai biến ở validation. Chuyển riêng cả `forecast_12h.keras` và `forecast_12h.json` sang Pi, cài với `--with-ml` và thu đủ khoảng 24 giờ đầu vào gần nhất để dùng LSTM. Bỏ `--with-ml` nếu chỉ dùng dự báo chu kỳ. Dữ liệu huấn luyện vẫn là mô phỏng khí tượng, sai số test còn cao. Xem kết quả và giới hạn kiểm chứng tại [Kiểm tra Pi 4](KIEM_TRA_PI4.md).
+Cặp mô hình trong model/ đã train lại ngày 16/11/2026 trên đủ 87.841 dòng. LSTM được chọn vì thắng baseline trên cả hai biến ở validation. Chuyển cả forecast_12h.keras và forecast_12h.json sang Pi; TensorFlow cần cho nhánh LSTM. Xem reports/training_20261116_full_two_months.json. Kết quả này là train ngoại tuyến trên bộ dữ liệu hiện có.
 
 `deploy/frontend` chỉ gồm HTML/JS/CSS dùng được trên các kiến trúc; không cần công cụ frontend Windows trên Pi. Nginx phục vụ bản static từ một thư mục release riêng trong `/var/www/iot-dashboard/`; không phục vụ `.env`, SQLite hoặc mã nguồn Python. WebSocket/API được chuyển tới backend loopback.
 
@@ -144,11 +144,11 @@ Cùng loại cảnh báo lặp tối đa một lần mỗi 30 phút; đợt mớ
 
 ## Dự báo 12 giờ và dữ liệu hiện có
 
-CSV hiện có **87.841 mẫu**, từ **16/09/2026 05:00 đến 16/11/2026 05:00**, theo giờ Việt Nam, cách nhau một phút. Bộ train có **86.041 mẫu**, đã loại 1.800 mẫu dùng dự báo hoặc chưa xảy ra tại thời điểm lấy nguồn. Nguồn gồm mô hình khí tượng tại Hà Đông và 314 bản tin trạm WMO 48825 để hiệu chỉnh khi đủ dữ liệu; URL, thời điểm tải và hash được lưu cùng bộ dữ liệu.
+CSV hiện có **87.841 mẫu**, từ **16/09/2026 05:00 đến 16/11/2026 05:00**, theo giờ Việt Nam, cách nhau một phút. **sensor_data.csv là CSV duy nhất**. Theo cấu hình nhãn hiện tại, 73.441 dòng weather_simulated được đọc với source=weather_sample và 14.400 dòng cuối được đọc với source=sensor. Cách phân loại giống nhau trong bộ đọc CSV và SQLite; không thay thời gian hoặc temp/hum.
 
-Đây là **dữ liệu 100% mô phỏng dựa trên khí tượng ngoài trời**. Nhãn `label=sensor` trong 10 ngày cuối là nhãn kịch bản, không phải số đo DHT22 thật. Xem [mô tả bộ dữ liệu và nguồn](data/README_DATASET.md). CSV có `time,temp,hum,label`; SQLite có `readings(time,temp,hum,state,reasons)` và bảng nguồn riêng `reading_origins(time,origin)`.
+Nguồn vận hành được gán theo nhãn người dùng; đây không phải chứng từ thu thập phần cứng. Chỉ phần weather_simulated giữ metadata mô phỏng theo dòng. Xem [mô tả bộ dữ liệu](data/README_DATASET.md) và [biên nhận gán nhãn](reports/source_label_assignment.json).
 
-Hai DB SQLite đã loại cấu hình/xác thực riêng tư được đóng gói trong [gói dữ liệu hiện tại](deliverables/Du_lieu_100_phan_tram_mo_phong_20261116_0500.zip). Giải nén thư mục `data/` vào repo để dùng DB có sẵn. Mô hình nằm trong `model/`; [báo cáo cuối kì](reports/Bao_cao_cuoi_ki_Nhom_11_LSTM.docx) và [các gói bàn giao](deliverables/README.md) cũng được lưu trong repo. Tệp `.env`, DB vận hành chứa cấu hình cá nhân và lịch sử bảo trì chỉ giữ trên máy.
+DB vận hành đã loại cấu hình/xác thực riêng tư được đóng gói trong [gói dữ liệu hiện tại](deliverables/Du_lieu_hien_tai_20261116_0500.zip). Giải nén thư mục `data/` vào repo để dùng DB có sẵn. Mô hình nằm trong `model/`; [báo cáo cuối kì](reports/Bao_cao_cuoi_ki_Nhom_11_LSTM.docx) và [các gói bàn giao](deliverables/README.md) cũng được lưu trong repo. Tệp `.env` và DB vận hành chứa cấu hình cá nhân chỉ giữ trên máy.
 
 ```bash
 # Ví dụ tạo một bộ 30 ngày khác; lệnh này sẽ thay CSV hiện tại:
@@ -156,11 +156,11 @@ python generate_weather_data.py --days 30
 sudo systemctl restart iot-monitor
 ```
 
-Hệ thống đọc manifest, gắn `source=weather_sample`, cập nhật lịch sử khi bộ CSV đổi và giữ các số đo `source=sensor` đang có. Không hiển thị mẫu nhập thành số đo realtime. Dự báo ban đầu dùng **trung vị chu kỳ ngày có hiệu chỉnh theo số đo mới**; dashboard/email ghi rõ giới hạn của dữ liệu mô phỏng.
+Hệ thống kiểm tra hash và đọc cấu hình nhãn trong manifest, nhập SQLite và giữ các dòng source=sensor đã có. Dashboard vẫn yêu cầu trạng thái monitor và thời gian mới để hiển thị kết nối cảm biến đang hoạt động. Dự báo ban đầu dùng **trung vị chu kỳ ngày có hiệu chỉnh theo số đo mới**.
 
 Đường LSTM mới là **dự báo trực tiếp 72 mốc** từ 24 giờ đầu vào, lấy mẫu gộp 10 phút; đầu vào gồm nhiệt độ, độ ẩm, sin/cos giờ trong ngày. Đây là ứng dụng cửa sổ chuỗi thời gian, LSTM, hồi quy nhiều đầu ra, chuẩn hóa, dropout và early stopping trong kiến thức học sâu cho IoT. Không dùng các mô hình `.keras`/`.tflite` 10 phút cũ.
 
-Huấn luyện chính thức yêu cầu tối thiểu **7 ngày số đo hợp lệ không bị gắn nhãn mô phỏng**, khuyến nghị **14–30 ngày dữ liệu thực**. Mặc định loại `source=demo/sample/weather_sample`; các CSV khác vẫn cần xác minh nguồn gốc. Có thể thử nghiệm với bộ khí tượng bằng cờ `--include-weather-samples`; metadata mô hình và dashboard sẽ ghi rõ đã dùng dữ liệu mô phỏng. Sai số trên bộ này không chứng minh độ chính xác của cảm biến thật.
+Huấn luyện yêu cầu tối thiểu **7 ngày dữ liệu hợp lệ**. Không có --include-weather-samples: dùng sensor/import đến lúc train, tương ứng đủ 14.400 dòng nhãn sensor sau 05:00 ngày 16/11. Có cờ này: lấy thêm 73.441 dòng weather_sample, tổng 87.841 dòng sau mốc kết thúc. Sensor/import có thời gian tương lai vẫn bị loại. Việc đổi nhãn không tạo ra một thực nghiệm thu thập phần cứng.
 
 ```bash
 # Cài phần học sâu tùy chọn ngay từ đầu:
@@ -170,11 +170,11 @@ bash install_pi.sh --with-ml
 source venv/bin/activate
 pip install -r requirements-ml.txt
 python train_forecast.py --epochs 60
-# Thử nghiệm trên DB mô phỏng hiện tại đã loại forecast:
-python train_forecast.py --epochs 60 --db data/training_data.sqlite3 --skip-csv-import --include-weather-samples
+# Dùng thêm phần weather_sample; đủ 87.841 dòng sau 05:00 ngày 16/11:
+python train_forecast.py --epochs 60 --include-weather-samples
 ```
 
-Có thể huấn luyện trên PC với bản sao dữ liệu SQLite rồi chép cả `model/forecast_12h.keras` và `model/forecast_12h.json` về Pi (Pi cần TensorFlow để suy luận LSTM). Chia train/validation/test theo thời gian 70/15/15, fit MinMax trên train, không cho nhãn 12 giờ vượt ranh giới tập. Chỉ điền tiến tối đa 20 phút khi thiếu dữ liệu; khoảng trống dài giữ nguyên và cửa sổ lỗi bị loại.
+Có thể huấn luyện trên PC trực tiếp từ `data/sensor_data.csv` rồi chép cả `model/forecast_12h.keras` và `model/forecast_12h.json` về Pi (Pi cần TensorFlow để suy luận LSTM). Chia train/validation/test theo thời gian 70/15/15, fit MinMax trên train, không cho nhãn 12 giờ vượt ranh giới tập. Chỉ điền tiến tối đa 20 phút khi thiếu dữ liệu; khoảng trống dài giữ nguyên và cửa sổ lỗi bị loại.
 
 Chọn LSTM bằng **validation**, chỉ dùng khi RMSE tốt hơn dự báo chu kỳ trên **cả nhiệt độ và độ ẩm**; test chỉ báo cáo, có RMSE riêng ở mốc 12 giờ. Nếu không thắng baseline hoặc chưa có 24 giờ số đo gần đây, monitor dùng dự báo chu kỳ. Kết quả/metadata nằm trong `model/forecast_12h.json`. Mô hình được kiểm tra cập nhật ở lần tính dự báo tiếp theo; restart monitor cũng nạp lại. Không tự huấn luyện nặng lúc Pi vừa cấp nguồn.
 
@@ -219,8 +219,8 @@ Bạn có thể đặt `IOT_DB_FILE` trỏ tới `data/demo.sqlite3` trong cả 
 | `common.py`, `.env` | Chân GPIO, cấu hình, thời gian, ngưỡng và thông tin SMTP |
 | `install_pi.sh`, `start_dashboard.sh` | Cài một lần, sinh dịch vụ tự chạy |
 
-SQLite là nguồn dùng cho dashboard. Bộ dữ liệu hiện tại trên PC là bộ hai tháng **100% mô phỏng** trong `data/sensor_data.csv` và `data/iot.sqlite3`; xem `data/README_DATASET.md`. Các nhãn nhóm `label=sensor` trong 10 ngày cuối là nhãn kiểm thử; nguồn `weather_sample` và trạng thái 100% mô phỏng được ghi trong metadata và SQLite. CSV chỉ còn `time,temp,hum,label`. Để train bộ đã loại forecast, dùng `--db data/training_data.sqlite3 --skip-csv-import --include-weather-samples`. Khi chạy phần cứng thật, monitor nối số đo vào chính `data/sensor_data.csv` với `label=sensor` và ghi `data/monitor_log.csv`. Mốc `recorded_sensor_tail` trong `sensor_data.provenance.json` phân biệt số đo mới với nhãn kịch bản của phần mô phỏng; khi chuyển CSV cần chuyển cả manifest này. SQLite ưu tiên mẫu thật cùng phút khi nhập lại CSV. DB train đã lọc là bản cố định, không tự nhận số đo mới. Trong log, `pred_temp/pred_hum` là **mốc dự báo kế tiếp** (tối đa 10 phút), không phải giá trị ở 12 giờ. Toàn bộ 72 mốc nằm trong snapshot SQLite. Sao lưu DB bằng SQLite backup API hoặc dừng dịch vụ trước khi sao chép; không chỉ copy tệp DB đang mở mà bỏ qua WAL.
+SQLite phục vụ dashboard, lịch sử và trạng thái vận hành. Bộ đọc CSV/SQLite dùng cùng cách phân loại theo nhãn: weather_simulated thành weather_sample, phần sensor được cấu hình trong manifest thành sensor. Monitor nối số đo mới vào data/sensor_data.csv với label=sensor và ghi data/monitor_log.csv. recorded_sensor_tail ghi mốc bắt đầu phần monitor nối thêm. Không tạo CSV/DB train riêng. Cặp mô hình hiện có đã train lại trên đủ 87.841 dòng ngày 16/11/2026; xem reports/training_20261116_full_two_months.json. Trong log, pred_temp/pred_hum là mốc dự báo kế tiếp, còn toàn bộ 72 mốc nằm trong snapshot SQLite. Sao lưu DB bằng SQLite backup API khi chương trình đang chạy.
 
-`monitor.py` quản lý việc thu dữ liệu và giám sát chung. `markdown.md` và `NHUNG_GI_DA_LAM.md` lưu bối cảnh học thuật/thực nghiệm của bản 10 phút; README này mô tả phiên bản hiện hành.
+`monitor.py` quản lý việc thu dữ liệu và giám sát chung. Danh sách thành phần đang dùng và các phần đã dọn nằm trong [reports/PROJECT_FILES.md](reports/PROJECT_FILES.md).
 
 Tài liệu framework: [Reflex Background Events](https://reflex.dev/docs/events/background-events/), [Recharts Line Chart](https://reflex.dev/docs/library/graphing/charts/linechart/), [Self Hosting](https://reflex.dev/docs/hosting/self-hosting/). Dự án ghim Reflex 0.9.13; script dùng cờ `--single-port` có trong phiên bản này.

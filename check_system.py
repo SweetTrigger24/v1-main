@@ -175,7 +175,7 @@ def check_environment():
         status = "PASS" if lines >= 300 else "WARN"
         from provenance import dataset_provenance
         provenance = dataset_provenance(data_file.resolve())
-        simulated = provenance.get("weather_rows", 0) + provenance.get("sample_rows", 0)
+        simulated = provenance.get("weather_source_rows", provenance.get("weather_rows", 0)) + provenance.get("sample_rows", 0)
         print_status("data/sensor_data.csv", status, f"CSV có {lines} mẫu, gồm {simulated} mẫu mô phỏng đã nhận diện")
     else:
         print_status("data/sensor_data.csv", "WARN", "Chưa có CSV lịch sử; monitor.py sẽ ghi số đo cảm biến")

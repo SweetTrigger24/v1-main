@@ -1,0 +1,338 @@
+{
+  "canonical_csv": "data/sensor_data.csv",
+  "runtime_db": "data/iot.sqlite3",
+  "total_base_rows": 87841,
+  "eligible_weather_rows": 86041,
+  "excluded_weather_rows": 1800,
+  "filtered_values_identical_to_removed_training_csv_and_db": true,
+  "resampled_series_identical": true,
+  "training_ranges": [
+    [
+      "2026-09-16T05:00:00",
+      "2026-11-14T23:00:00"
+    ]
+  ],
+  "source_csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "model_sha256": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0",
+  "retraining_required": false,
+  "python_files_reviewed_before_cleanup": [
+    {
+      "path": "alerts.py",
+      "lines": 55,
+      "imports": [
+        "common",
+        "dataclasses",
+        "runtime_settings"
+      ]
+    },
+    {
+      "path": "check_system.py",
+      "lines": 531,
+      "imports": [
+        "common",
+        "gpiozero",
+        "pathlib",
+        "provenance",
+        "runtime_settings",
+        "storage"
+      ]
+    },
+    {
+      "path": "common.py",
+      "lines": 176,
+      "imports": [
+        "datetime",
+        "dotenv",
+        "pathlib",
+        "zoneinfo"
+      ]
+    },
+    {
+      "path": "dashboard.py",
+      "lines": 11,
+      "imports": [
+        "common"
+      ]
+    },
+    {
+      "path": "dashboard_auth.py",
+      "lines": 80,
+      "imports": []
+    },
+    {
+      "path": "dashboard_data.py",
+      "lines": 84,
+      "imports": [
+        "alerts",
+        "datetime",
+        "runtime_settings",
+        "storage"
+      ]
+    },
+    {
+      "path": "forecasting.py",
+      "lines": 169,
+      "imports": [
+        "alerts",
+        "common",
+        "datetime",
+        "tensorflow"
+      ]
+    },
+    {
+      "path": "generate_station_dataset.py",
+      "lines": 363,
+      "imports": [
+        "common",
+        "datetime",
+        "generate_weather_data",
+        "pathlib"
+      ]
+    },
+    {
+      "path": "generate_weather_data.py",
+      "lines": 183,
+      "imports": [
+        "common",
+        "datetime",
+        "pathlib"
+      ]
+    },
+    {
+      "path": "hardware.py",
+      "lines": 96,
+      "imports": [
+        "contextlib",
+        "gpiozero"
+      ]
+    },
+    {
+      "path": "merge_pi_dataset.py",
+      "lines": 148,
+      "imports": [
+        "common",
+        "datetime",
+        "pathlib",
+        "storage"
+      ]
+    },
+    {
+      "path": "monitor.py",
+      "lines": 192,
+      "imports": [
+        "alerts",
+        "contextlib",
+        "datetime",
+        "forecasting",
+        "hardware",
+        "notifications",
+        "pathlib",
+        "provenance",
+        "runtime_settings",
+        "storage"
+      ]
+    },
+    {
+      "path": "notifications.py",
+      "lines": 80,
+      "imports": [
+        "alerts",
+        "datetime",
+        "email.mime.text",
+        "runtime_settings"
+      ]
+    },
+    {
+      "path": "pi_deploy.py",
+      "lines": 119,
+      "imports": [
+        "pathlib"
+      ]
+    },
+    {
+      "path": "prepare_pi.py",
+      "lines": 107,
+      "imports": [
+        "datetime",
+        "pathlib",
+        "pi_deploy"
+      ]
+    },
+    {
+      "path": "provenance.py",
+      "lines": 145,
+      "imports": [
+        "pathlib"
+      ]
+    },
+    {
+      "path": "runtime_settings.py",
+      "lines": 77,
+      "imports": []
+    },
+    {
+      "path": "rxconfig.py",
+      "lines": 5,
+      "imports": []
+    },
+    {
+      "path": "storage.py",
+      "lines": 210,
+      "imports": [
+        "common",
+        "contextlib",
+        "datetime",
+        "pathlib",
+        "provenance"
+      ]
+    },
+    {
+      "path": "test_data_priority.py",
+      "lines": 99,
+      "imports": [
+        "datetime",
+        "forecasting",
+        "generate_weather_data",
+        "storage",
+        "train_forecast"
+      ]
+    },
+    {
+      "path": "test_sensor_csv.py",
+      "lines": 141,
+      "imports": [
+        "datetime",
+        "monitor",
+        "provenance",
+        "storage",
+        "types"
+      ]
+    },
+    {
+      "path": "test_single_dataset.py",
+      "lines": 91,
+      "imports": [
+        "datetime",
+        "provenance",
+        "train_forecast"
+      ]
+    },
+    {
+      "path": "test_station_dataset.py",
+      "lines": 118,
+      "imports": [
+        "datetime",
+        "generate_station_dataset",
+        "merge_pi_dataset",
+        "storage"
+      ]
+    },
+    {
+      "path": "test_suite.py",
+      "lines": 1145,
+      "imports": [
+        "alerts",
+        "check_system",
+        "dashboard_data",
+        "datetime",
+        "forecasting",
+        "generate_weather_data",
+        "hardware",
+        "http.server",
+        "iot_dashboard",
+        "monitor",
+        "notifications",
+        "packaging.requirements",
+        "pathlib",
+        "pi_deploy",
+        "prepare_pi",
+        "provenance",
+        "runtime_settings",
+        "storage",
+        "train_forecast",
+        "types"
+      ]
+    },
+    {
+      "path": "train_forecast.py",
+      "lines": 185,
+      "imports": [
+        "common",
+        "forecasting",
+        "pathlib",
+        "provenance",
+        "storage",
+        "tensorflow"
+      ]
+    },
+    {
+      "path": "iot_dashboard/iot_dashboard.py",
+      "lines": 457,
+      "imports": [
+        "dashboard_data",
+        "datetime",
+        "runtime_settings",
+        "storage",
+        "typing"
+      ]
+    },
+    {
+      "path": "iot_dashboard/__init__.py",
+      "lines": 0,
+      "imports": []
+    },
+    {
+      "path": "scripts/qa_helpers.py",
+      "lines": 8,
+      "imports": []
+    },
+    {
+      "path": "scripts/verify_auth_ui.py",
+      "lines": 93,
+      "imports": [
+        "pathlib",
+        "playwright.async_api",
+        "qa_helpers"
+      ]
+    },
+    {
+      "path": "scripts/verify_dashboard.py",
+      "lines": 63,
+      "imports": [
+        "pathlib",
+        "playwright.async_api",
+        "qa_helpers"
+      ]
+    },
+    {
+      "path": "scripts/verify_pi_deployment.py",
+      "lines": 161,
+      "imports": [
+        "common",
+        "dashboard_auth",
+        "datetime",
+        "pathlib",
+        "pi_deploy",
+        "playwright.sync_api",
+        "runtime_settings",
+        "storage"
+      ]
+    },
+    {
+      "path": "scripts/verify_settings_ui.py",
+      "lines": 88,
+      "imports": [
+        "pathlib",
+        "playwright.async_api",
+        "qa_helpers"
+      ]
+    }
+  ],
+  "tests_passed": 139,
+  "runtime_data_and_private_settings_preserved": true,
+  "archives_validated": true,
+  "single_data_csv": true,
+  "single_runtime_db": true,
+  "pi_changed": false,
+  "model_weights_changed": false
+}

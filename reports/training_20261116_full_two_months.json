@@ -1,0 +1,75 @@
+{
+  "training_csv": "data/sensor_data.csv",
+  "csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "selected_rows": 87841,
+  "source_counts": {
+    "weather_sample": 73441,
+    "sensor": 14400
+  },
+  "started_at": "2026-11-16T01:38:30.502315",
+  "trained_at": "2026-11-16T01:42:08.579944",
+  "offline_data_cutoff": "2026-11-16T05:00:00",
+  "future_rows_at_training_start": 202,
+  "epochs_completed": 50,
+  "windows": [
+    1978,
+    416,
+    416
+  ],
+  "validation_rmse": [
+    1.2489368263382696,
+    7.758473574884963
+  ],
+  "baseline_validation_rmse": [
+    1.4638071424372772,
+    8.418048941634561
+  ],
+  "test_lstm": {
+    "rmse": [
+      3.4477249613988366,
+      13.105371696514851
+    ],
+    "mae": [
+      2.6421972646655627,
+      10.034920048216051
+    ],
+    "rmse_12h": [
+      4.482962904292825,
+      17.440285571987538
+    ]
+  },
+  "test_baseline": {
+    "rmse": [
+      6.294737095661107,
+      10.674938569851752
+    ],
+    "mae": [
+      5.254315986542807,
+      7.649250239100451
+    ],
+    "rmse_12h": [
+      7.645139683482359,
+      11.780520982883646
+    ]
+  },
+  "use_lstm": true,
+  "model_sha256": "db83324431c8d207463bfbda93adacf45794edbd2355b41354fb03469609d320",
+  "previous_model_sha256": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0",
+  "input_shape": [
+    null,
+    144,
+    4
+  ],
+  "output_shape": [
+    null,
+    72,
+    2
+  ],
+  "lstm_layers": 1,
+  "lstm_units": 48,
+  "finite_inference": true,
+  "runtime_forecast_engine": "LSTM nhiều bước · 12 giờ",
+  "targeted_tests_passed": 16,
+  "csv_unchanged": true,
+  "pi_changed": false
+}

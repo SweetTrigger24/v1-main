@@ -112,13 +112,14 @@ class Store:
         provenance_key = "provenance:" + str(path.resolve())
         previous = self.get(provenance_key, {})
         stat = path.stat()
-        fingerprint = [stat.st_size, stat.st_mtime_ns]
+        provenance = dataset_provenance(path)
+        fingerprint = [stat.st_size, stat.st_mtime_ns, provenance.get("sensor_label_assignment")]
         if self.get(marker) == fingerprint:
             return 0
-        provenance = dataset_provenance(path)
         sample_rows = provenance["sample_rows"]
         weather_rows = provenance.get("weather_rows", 0)
         sensor_start = provenance.get("sensor_row_start")
+        assignment = provenance.get("sensor_label_assignment")
         count = 0
         with path.open(encoding="utf-8-sig", newline="") as f, self.connection() as db:
             if previous and previous.get("dataset_id") != provenance["dataset_id"]:
@@ -136,10 +137,13 @@ class Store:
                     if not (math.isfinite(t) and math.isfinite(h) and -40 <= t <= 80 and 0 <= h <= 100):
                         continue
                     source = "weather_sample" if i < weather_rows else "sample" if i < sample_rows else "import"
-                    if sensor_start is not None and i >= sensor_start and row.get("label") == "sensor":
-                        if not include_sensor:
-                            continue
+                    if (assignment is not None and i < weather_rows and row.get("label") == "sensor"
+                            and assignment["start_exclusive"] < stamp <= assignment["end"]):
                         source = "sensor"
+                    if sensor_start is not None and i >= sensor_start and row.get("label") == "sensor":
+                        source = "sensor"
+                    if source == "sensor" and not include_sensor:
+                        continue
                     if stamp in protected or (source in {"sample", "weather_sample"} and stamp[:16] in sensor_minutes):
                         continue
                     if source == "sensor":

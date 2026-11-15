@@ -8,10 +8,46 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from common import (CONTEXT_STEPS, FORECAST_META, FORECAST_MODEL, FORECAST_STEP_MIN,
+from common import (CONTEXT_STEPS, DATA_FILE, FORECAST_META, FORECAST_MODEL, FORECAST_STEP_MIN,
                     FORECAST_STEPS, MIN_TRAIN_DAYS, now_local)
 from forecasting import features, regular_series, seasonal_values
 from storage import Store
+from provenance import dataset_provenance
+
+
+def csv_training_frame(path):
+    """Read the shared CSV using its verified, explicitly configured labels."""
+    path = Path(path)
+    provenance = dataset_provenance(path)
+    frame = pd.read_csv(path, encoding="utf-8-sig")
+    if not {"time", "temp", "hum"}.issubset(frame.columns):
+        raise ValueError("CSV cần các cột time,temp,hum")
+    positions = np.arange(len(frame))
+    frame["source"] = "import"
+    frame.loc[positions < provenance["sample_rows"], "source"] = "sample"
+    frame.loc[positions < provenance.get("weather_rows", 0), "source"] = "weather_sample"
+    boundary = provenance.get("sensor_row_start")
+    if boundary is not None and "label" in frame:
+        frame.loc[(positions >= boundary) & frame["label"].eq("sensor"), "source"] = "sensor"
+    frame["time"] = pd.to_datetime(frame["time"], errors="coerce")
+    assignment = provenance.get("sensor_label_assignment")
+    if assignment is not None and "label" in frame:
+        assigned = ((positions < provenance["weather_rows"]) & frame["label"].eq("sensor")
+                    & frame["time"].gt(pd.Timestamp(assignment["start_exclusive"]))
+                    & frame["time"].le(pd.Timestamp(assignment["end"])))
+        frame.loc[assigned, "source"] = "sensor"
+    for name in ("temp", "hum"):
+        frame[name] = pd.to_numeric(frame[name], errors="coerce")
+    valid = (frame["time"].notna() & np.isfinite(frame[["temp", "hum"]]).all(axis=1)
+             & frame["temp"].between(-40,80) & frame["hum"].between(0,100))
+    frame = frame.loc[valid, ["time", "temp", "hum", "source"]].copy()
+    # Sensor rows supersede generated rows in the same minute, just as SQLite.
+    minutes = frame["time"].dt.floor("min")
+    sensor_minutes = minutes[frame["source"].eq("sensor")]
+    frame = frame.loc[~(frame["source"].isin(["sample", "weather_sample"]) & minutes.isin(sensor_minutes))]
+    frame["_priority"] = frame["source"].map({"sample":0,"weather_sample":0,"import":1,"sensor":2})
+    return (frame.sort_values(["time", "_priority"], kind="stable")
+            .drop_duplicates("time", keep="last").drop(columns="_priority").reset_index(drop=True))
 
 
 def make_examples(series, lo, hi, target_start, target_end, stride=3):
@@ -49,24 +85,40 @@ def score(truth, pred):
 
 
 def eligible_training_frame(frame, include_weather_samples=False, cutoff=None):
-    """Không dùng thời điểm chưa xảy ra hoặc ngầm coi mô phỏng là cảm biến."""
+    """Opted-in weather simulation includes its full horizon; sensors stop at cutoff."""
     excluded = ["demo", "sample", "forecast_sample"] + ([] if include_weather_samples else ["weather_sample"])
-    return frame[(~frame["source"].isin(excluded)) & (frame["time"] <= pd.Timestamp(cutoff or now_local()))].copy()
+    allowed = (~frame["source"].isin(excluded)) & (frame["time"] <= pd.Timestamp(cutoff or now_local()))
+    if include_weather_samples:
+        # These remain simulations, including forecast-derived/future timestamps.
+        # Do not apply this exception to sensor/import or runtime forecast rows.
+        allowed |= frame["source"].eq("weather_sample") & frame["time"].notna()
+    return frame.loc[allowed].copy()
 
 
-def train(epochs=60, db_path=None, include_weather_samples=False, skip_csv_import=False, output_dir=None):
-    store = Store() if db_path is None else Store(db_path)
-    if not skip_csv_import:
-        store.import_csv()
-    frame = store.frame()
-    eligible = eligible_training_frame(frame, include_weather_samples)
-    future_excluded = int((frame["time"] > pd.Timestamp(now_local())).sum())
+def train(epochs=60, db_path=None, include_weather_samples=False, skip_csv_import=False, output_dir=None,
+          *, csv_path=None, data_cutoff=None):
+    path = Path(csv_path or DATA_FILE)
+    if db_path is None:
+        frame = csv_training_frame(path)
+    else:
+        # Optional recovery/QA path; no separate training database is created.
+        store = Store(db_path)
+        if not skip_csv_import:
+            store.import_csv(path)
+        frame = store.frame()
+    started_at = now_local()
+    cutoff = pd.Timestamp(data_cutoff or started_at)
+    eligible = eligible_training_frame(frame, include_weather_samples, cutoff)
+    future = frame["time"] > pd.Timestamp(cutoff)
+    future_excluded = int((future & ~frame.index.isin(eligible.index)).sum())
+    future_weather_included = int((eligible["time"].gt(pd.Timestamp(cutoff))
+                                  & eligible["source"].eq("weather_sample")).sum())
     series = regular_series(eligible)
     good_days = len(series.dropna()) / 144
     if good_days < MIN_TRAIN_DAYS:
         raise SystemExit(f"Cần ít nhất {MIN_TRAIN_DAYS} ngày số đo hợp lệ để huấn luyện 12 giờ; hiện có {good_days:.1f} ngày. "
                          "Giám sát vẫn chạy bằng dự báo chu kỳ. Nên thu 14–30 ngày dữ liệu thực.")
-    # Không huấn luyện với các đoạn im lặng dài hoặc dữ liệu giả lập được đánh dấu.
+    # Khoảng thiếu dài vẫn để trống; chỉ lấy các cửa sổ đầy đủ.
     n = len(series)
     a, b = int(n * .70), int(n * .85)
     lo, hi = series.iloc[:a].min().to_numpy(), series.iloc[:a].max().to_numpy()
@@ -98,6 +150,15 @@ def train(epochs=60, db_path=None, include_weather_samples=False, skip_csv_impor
     test_pred = model.predict(xte, verbose=0) * scale + lo
     test_base = baseline_predictions(series, ote)
     meta = {"schema": 2, "steps": FORECAST_STEPS, "context": CONTEXT_STEPS,
+            "training_input": {"csv":str(path), "db_override":str(db_path) if db_path else None,
+                               "eligible_rows":len(eligible), "cutoff":cutoff.isoformat(),
+                               "started_at":started_at.isoformat(),
+                               "explicit_data_cutoff":data_cutoff is not None,
+                               "offline_future_rows_included":int(eligible["time"].gt(pd.Timestamp(started_at)).sum()),
+                               "include_weather_samples":include_weather_samples,
+                               "future_weather_rows_included":future_weather_included,
+                               "source_assignment":dataset_provenance(path).get("source_assignment", "provenance"),
+                               "policy":"include all opted-in weather simulations, including forecast-derived/future rows; sensor/import rows must be at or before cutoff"},
             "training_data_kind": "weather_derived_simulation" if eligible["source"].eq("weather_sample").any() else "sensor_or_import",
             "source_counts": {str(k): int(v) for k,v in eligible["source"].value_counts().items()},
             "future_rows_excluded": future_excluded, "trained_at": now_local().isoformat(),
@@ -128,11 +189,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, default=60)
     parser.add_argument("--db", type=Path)
+    parser.add_argument("--csv", type=Path, default=DATA_FILE, help="CSV dùng chung; mặc định data/sensor_data.csv")
     parser.add_argument("--skip-csv-import", action="store_true", help="Dùng nguyên DB đã chuẩn bị, không nhập CSV mặc định vào snapshot")
     parser.add_argument("--output-dir", type=Path, help="Lưu cặp mô hình vào thư mục riêng trước khi triển khai")
+    parser.add_argument("--data-cutoff", type=pd.Timestamp,
+                        help="Mốc ISO8601 để train ngoại tuyến; mặc định giờ hiện tại, không đổi giờ train thực tế")
     parser.add_argument("--include-weather-samples", action="store_true",
-                        help="Cho phép dữ liệu mô phỏng từ khí tượng để thử nghiệm; không coi sai số là kết quả cảm biến thật")
+                        help="Dùng toàn bộ mô phỏng khí tượng, kể cả mốc dự báo/chưa đến; không coi là số đo cảm biến thật")
     args = parser.parse_args()
     if args.epochs < 1:
         parser.error("epochs phải >= 1")
-    train(args.epochs, args.db, args.include_weather_samples, args.skip_csv_import, args.output_dir)
+    train(args.epochs, args.db, args.include_weather_samples, args.skip_csv_import, args.output_dir,
+          csv_path=args.csv,data_cutoff=args.data_cutoff)

@@ -67,6 +67,10 @@ def synthesize(envelope, start, end, seed=20261110, sample_sec=SAMPLE_SEC):
 
 
 def write_dataset(frame, hourly, envelope, output, source_file, seed, latitude, longitude):
+    frame = frame.copy()
+    if "label" not in frame:
+        frame["label"] = "weather_simulated"
+    frame = frame[["time","temp","hum","label"]]
     output.parent.mkdir(parents=True, exist_ok=True)
     backup = None
     if output.exists():
@@ -112,9 +116,11 @@ def write_dataset(frame, hourly, envelope, output, source_file, seed, latitude, 
     daily = frame.assign(time=pd.to_datetime(frame.time)).set_index("time").resample("D").agg(
         temp_min=("temp", "min"), temp_mean=("temp", "mean"), temp_max=("temp", "max"),
         hum_min=("hum", "min"), hum_mean=("hum", "mean"), hum_max=("hum", "max"), samples=("temp", "count"))
-    daily.round(2).to_csv(output.parent / "weather_daily_summary.csv", index_label="date")
+    references = output.parent / "weather_sources" / "reference"
+    references.mkdir(parents=True,exist_ok=True)
+    daily.round(2).to_csv(references / "weather_daily_summary.csv", index_label="date")
     # Giữ nguyên số liệu nguồn từng giờ để kiểm tra độc lập với bộ dữ liệu phút.
-    hourly.to_csv(output.parent / "weather_hourly_reference.csv", index_label="time")
+    hourly.to_csv(references / "weather_hourly_reference.csv", index_label="time")
     project_dir = Path(__file__).resolve().parent
     source_command = source_file.relative_to(project_dir).as_posix() if source_file.is_relative_to(project_dir) else source_file.as_posix()
     report = f"""# Bộ dữ liệu thời tiết tham khảo · Hà Đông, Hà Nội
@@ -132,10 +138,10 @@ Các mẫu phút không tạo thêm thông tin quan trắc độc lập so với
 
 ## Các tệp
 
-- `sensor_data.csv`: định dạng tương thích `time,temp,hum`.
+- `sensor_data.csv`: định dạng tương thích `time,temp,hum,label`.
 - `sensor_data.provenance.json`: tọa độ, URL, phương pháp, seed, SHA-256 và phạm vi mẫu.
-- `weather_hourly_reference.csv`: số liệu giờ gốc, trước khi thêm nhiễu.
-- `weather_daily_summary.csv`: thống kê từng ngày (ngày đầu/cuối là ngày không đủ 24 giờ).
+- `weather_sources/reference/weather_hourly_reference.csv`: số liệu giờ gốc, trước khi thêm nhiễu.
+- `weather_sources/reference/weather_daily_summary.csv`: thống kê từng ngày (ngày đầu/cuối là ngày không đủ 24 giờ).
 - `weather_sources/`: JSON API gốc và bản tin METAR Nội Bài để đối chiếu vùng.
 - `backups/`: bản sao dữ liệu trước khi thay thế; bản vừa sao lưu: `{metadata['backup']}`.
 
@@ -147,7 +153,7 @@ Muốn thử huấn luyện trên dữ liệu này: `python train_forecast.py --
 
 Dữ liệu Open-Meteo cần ghi nguồn theo [CC BY 4.0](https://open-meteo.com/en/licence). Không thay nhãn nguồn khi xuất báo cáo.
 """
-    (output.parent / "WEATHER_DATA_README.md").write_text(report, encoding="utf-8")
+    (output.parent / "README_DATASET.md").write_text(report, encoding="utf-8")
     return metadata
 
 

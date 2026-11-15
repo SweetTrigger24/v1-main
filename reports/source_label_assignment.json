@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-11-16T01:27:13.644896",
+  "operation": "assign operational source from user-configured CSV labels",
+  "sensor_label_assignment": {
+    "start_exclusive": "2026-11-06T05:00:00",
+    "end": "2026-11-16T05:00:00",
+    "rows": 14400,
+    "label": "sensor"
+  },
+  "csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "source_counts": {
+    "sensor": 14400,
+    "weather_sample": 73441
+  },
+  "readings_values_preserved": true,
+  "private_settings_preserved": true,
+  "default_train_rows_at_check": 14187,
+  "with_weather_train_rows_at_check": 87628,
+  "default_train_rows_after_endpoint": 14400,
+  "with_weather_rows_after_endpoint": 87841,
+  "model_retrained": false,
+  "pi_changed": false,
+  "tests_passed": 143,
+  "model_restored_and_sha256_verified": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0"
+}

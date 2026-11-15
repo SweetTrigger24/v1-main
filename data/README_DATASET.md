@@ -1,37 +1,33 @@
-# Bộ dữ liệu hiện tại trên PC
+# Bộ dữ liệu đang dùng
 
-Bộ hai tháng 100% mô phỏng, từ 05:00 ngày 16/09 đến 05:00 ngày 16/11/2026, giờ Việt Nam.
+Chỉ dùng sensor_data.csv cho thu thập và train, gồm time,temp,hum,label. SQLite vận hành là iot.sqlite3; readings giữ time,temp,hum,state,reasons, nguồn phân loại nằm trong reading_origins.origin.
 
-## CSV đã rút gọn
+## Phân loại theo nhãn CSV
 
-Cả sensor_data.csv và training_data.csv chỉ có 4 cột:
+Nguồn vận hành được cấu hình theo nhãn do người dùng chọn:
 
-| Cột | Ý nghĩa |
-|---|---|
-| time | Thời gian Việt Nam, dạng YYYY-MM-DDTHH:MM:SS |
-| temp | Nhiệt độ, °C |
-| hum | Độ ẩm tương đối, %RH |
-| label | Nhóm kịch bản kiểm thử |
+| Phần dữ liệu | Nhãn CSV | Nguồn trong SQLite/code | Số dòng |
+|---|---|---|---|
+| 16/09/2026 05:00 đến 06/11/2026 05:00 | weather_simulated | weather_sample | 73.441 |
+| Sau 06/11/2026 05:00 đến hết 16/11/2026 05:00 | sensor | sensor | 14.400 |
 
-sensor_data.csv có 87.841 mẫu. training_data.csv có 86.041 mẫu, đã loại 1.800 mẫu dùng dự báo hoặc chưa xảy ra tại thời điểm lấy nguồn. Hai cột temp/hum và thời gian không đổi so với bộ đã train.
+Đây là cấu hình gán nhãn vận hành, không phải chứng từ thu thập phần cứng. Các mô tả nguồn mô phỏng theo dòng chỉ giữ cho phần weather_simulated. Thời gian, nhiệt độ, độ ẩm và nội dung CSV giữ nguyên.
 
-Tất cả dòng vẫn là mô phỏng. Nguồn weather_sample được ghi trong metadata và SQLite, không lặp lại thành cột trong CSV. Đúng 14.400 dòng trong (05:00 ngày 06/11, 05:00 ngày 16/11/2026] có label=sensor; nhãn này không có nghĩa số đo DHT22 thực. Các dòng còn lại có label=weather_simulated.
+sensor_data.provenance.json kiểm tra hash CSV và lưu sensor_label_assignment. dataset.provenance.json giữ thông tin nguồn của phần weather_simulated và quy tắc train. Khi chuyển CSV cần chuyển cả metadata để giữ cách phân loại. Monitor vẫn nối số đo mới vào cùng CSV với label=sensor.
 
-## Metadata và SQLite
+## Train
 
-- dataset.provenance.json ghi all_rows_are_simulated=true và source_counts thay cho các cột mô tả lặp lại; training_time_ranges ghi khoảng đủ điều kiện train; row_metadata_segments giữ chi tiết nguồn khí tượng và cờ dự báo theo các đoạn thời gian liên tiếp.
-- sensor_data.provenance.json giữ nguồn, cách tạo và hash CSV, tương thích với importer dự án.
-- iot.sqlite3 và training_data.sqlite3 có bảng readings với 5 cột: time, temp, hum, state, reasons; đã bỏ cột source. Nguồn được lưu riêng trong reading_origins(time, origin), liên kết theo time và tự xóa khi xóa số đo. Code Store.frame() ghép metadata thành trường source khi cần lọc dữ liệu; nhãn CSV không được dùng làm bằng chứng cảm biến thật.
-- weather_sources/, các tệp tham chiếu theo giờ, thống kê ngày và bản tin trạm thuộc cùng bộ hiện tại.
+Không có --include-weather-samples: dùng sensor/import đến thời điểm train; sau 05:00 ngày 16/11 có đủ 14.400 dòng sensor của bộ hiện tại. Trước giờ đó, dòng sensor có mốc chưa đến vẫn bị loại.
 
-Không cần train lại vì chỉ rút gọn cột mô tả. Mô hình PC vẫn là bản đã train tại artifacts/training/20261115_current_simulation; data_format_change.json trong thư mục đó đối chiếu hash cũ/mới và xác nhận giá trị dùng để train không đổi. Pi không bị thay đổi.
-
-## Lệnh train khi cần
-
-Khi chạy phần cứng thật, monitor nối số đo DHT22 vào chính sensor_data.csv với 4 cột cũ và label=sensor; không tạo live_sensor_data.csv. Trước lần ghi đầu tiên, code ghi ranh giới recorded_sensor_tail vào sensor_data.provenance.json, gồm số dòng và hash phần có sẵn. Vì vậy các nhãn sensor trong phần mô phỏng vẫn mang nguồn weather_sample; chỉ phần do monitor nối sau ranh giới mới được nhập vào SQLite với origin=sensor. Khi chép CSV sang máy khác cần chép cả manifest này.
-
-Các thống kê và hash trong dataset.provenance.json mô tả bộ mô phỏng ban đầu. Phần đầu CSV được giữ nguyên để kiểm tra hash; SQLite loại mẫu mô phỏng cùng phút có số đo thật khi nhập CSV. Chế độ demo không nối vào CSV và bỏ phần cảm biến khi nhập lịch sử. training_data.csv và training_data.sqlite3 là ảnh chụp bộ train đã lọc, không tự nhận số đo mới.
+Có --include-weather-samples: lấy thêm 73.441 dòng weather_sample. Sau mốc kết thúc có đủ 87.841 dòng; vẫn không dùng sensor/import có thời gian tương lai.
 
 ```powershell
-..\.venv\Scripts\python.exe -X utf8 train_forecast.py --epochs 120 --db data/training_data.sqlite3 --skip-csv-import --include-weather-samples --output-dir artifacts/training/current_simulation
+..\.venv\Scripts\python.exe train_forecast.py --epochs 60
+..\.venv\Scripts\python.exe train_forecast.py --epochs 60 --include-weather-samples
 ```
+
+Mô hình chính đã train lại ngày 16/11/2026 trên đủ 87.841 dòng, với --include-weather-samples và --data-cutoff 2026-11-16T05:00:00 cho lần train ngoại tuyến trước giờ kết thúc bộ dữ liệu. Giờ train thực tế vẫn ghi riêng trong metadata. Xem reports/training_20261116_full_two_months.json. reports/source_label_assignment.json ghi đối chiếu CSV, SQLite, bộ lọc train và số dòng. weather_sources/ giữ tài liệu khí tượng tham chiếu. Các báo cáo single_dataset_audit.json và training_policy_audit.json ghi các lần thay đổi trước đó.
+
+Các thay đổi này ở PC; chưa cập nhật Pi.
+
+--data-cutoff là tùy chọn cho train ngoại tuyến; không dùng tùy chọn này thì bộ lọc thời gian vẫn lấy giờ hiện tại.

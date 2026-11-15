@@ -5,12 +5,14 @@ import json
 import hashlib
 import os
 import uuid
+from pathlib import Path
+from datetime import datetime
 
 SENSOR_CSV_FIELDS = ["time", "temp", "hum", "label"]
 
 
 def prepare_sensor_csv(path):
-    """Declare the monitor-owned append boundary; labels alone never prove origin.
+    """Declare the monitor-owned append boundary, separate from assigned labels.
 
     The original bytes stay intact, including synthetic rows labelled sensor.
     One monitor owns this file (the service holds the GPIO process lock).
@@ -39,7 +41,7 @@ def prepare_sensor_csv(path):
         "writer": "monitor", "source": "sensor", "start_row": start_row,
         "prefix_bytes": len(content), "prefix_sha256": hashlib.sha256(content).hexdigest(),
         "columns": SENSOR_CSV_FIELDS,
-        "semantics": "Only monitor appends labelled sensor after this verified prefix are sensor readings; prefix labels do not establish origin."}
+        "semantics": "Monitor appends labelled sensor after this verified prefix; any user-assigned prefix labels are configured separately."}
     meta["simulation_summary_scope"] = "original_generated_prefix"
     temporary = manifest.with_name(manifest.name + "." + uuid.uuid4().hex + ".tmp")
     try:
@@ -49,6 +51,42 @@ def prepare_sensor_csv(path):
         temporary.unlink(missing_ok=True)
 
 import numpy as np
+
+
+def weather_training_ranges(path):
+    """Read the verified base CSV's eligibility policy, even after dates pass.
+
+    None means the older manifest has no per-period policy; [] permits no
+    generated rows. The policy never restricts subsequently measured sensors.
+    """
+    path = Path(path)
+    dataset_provenance(path)
+    manifest = path.with_suffix(".provenance.json")
+    if not manifest.exists():
+        return None
+    meta = json.loads(manifest.read_text(encoding="utf-8"))
+    if "training_time_ranges" in meta:
+        policy = meta
+    else:
+        reference = meta.get("row_metadata_file")
+        if not reference:
+            return None
+        details = (path.parent / reference).resolve()
+        if not details.is_relative_to(path.parent.resolve()) or not details.is_file():
+            raise ValueError("Không tìm thấy metadata lọc dữ liệu train trong thư mục CSV")
+        policy = json.loads(details.read_text(encoding="utf-8"))
+        expected = policy.get("files_sha256", {}).get(path.name)
+        if expected != meta.get("csv_prefix_sha256") or policy.get("rows") != meta.get("row_count"):
+            raise ValueError("Metadata lọc train không khớp phần dữ liệu mô phỏng của CSV")
+    if "training_time_ranges" not in policy:
+        raise ValueError("Metadata thiếu quy tắc lọc mẫu dùng dự báo khi train")
+    ranges = []
+    for period in policy["training_time_ranges"]:
+        start, end = period["start"], period["end"]
+        if start > end or start < meta["start"] or end > meta["end"]:
+            raise ValueError("Khoảng dữ liệu train nằm ngoài phần CSV đã xác minh")
+        ranges.append([start,end])
+    return ranges
 
 
 def generated_prefix(path):
@@ -80,7 +118,7 @@ def dataset_provenance(path):
     result = None
     if manifest.exists():
         meta = json.loads(manifest.read_text(encoding="utf-8"))
-        if meta.get("kind") == "weather_derived_synthetic":
+        if meta.get("kind") in {"weather_derived_synthetic", "user_labeled_mixed_dataset"}:
             size = int(meta["csv_prefix_bytes"])
             if size <= 0 or size > path.stat().st_size:
                 raise ValueError("Manifest khí tượng không khớp kích thước CSV")
@@ -92,6 +130,19 @@ def dataset_provenance(path):
                     "dataset_id": meta["dataset_id"], "start": meta["start"], "end": meta["end"],
                     "location": meta["location"], "provider": meta["source_provider"],
                     "source_url": meta["source_url"], "source": "weather_sample"}
+            assignment = meta.get("sensor_label_assignment")
+            if assignment is not None:
+                start = datetime.fromisoformat(assignment["start_exclusive"])
+                end = datetime.fromisoformat(assignment["end"])
+                if (meta.get("source_assignment") != "csv_label"
+                        or assignment.get("label") != "sensor"
+                        or not 0 < int(assignment["rows"]) <= result["weather_rows"]
+                        or not datetime.fromisoformat(meta["start"]) <= start < end <= datetime.fromisoformat(meta["end"])):
+                    raise ValueError("Khoảng gán nhãn sensor không hợp lệ")
+                result["sensor_label_assignment"] = assignment
+                result["source_assignment"] = "csv_label"
+                result["weather_source_rows"] = result["weather_rows"] - int(assignment["rows"])
+                result["source"] = "mixed"
     if result is None:
         rows = generated_prefix(path)
         result = {"sample_rows": rows, "weather_rows": 0,

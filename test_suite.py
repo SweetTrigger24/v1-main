@@ -255,15 +255,17 @@ def test_existing_csv_generated_prefix_is_tagged(store):
         if not provenance.get("weather_rows"):
             pytest.skip("CSV hiện tại không phải một bộ mô phỏng đã nhận diện")
         store.import_csv()
-        assert len(store.frame().query("source == 'weather_sample'")) == provenance["weather_rows"]
-        assert store.latest_live() is None
+        assignment = provenance.get("sensor_label_assignment")
+        assigned_rows = assignment["rows"] if assignment else 0
+        assert len(store.frame().query("source == 'weather_sample'")) == provenance["weather_rows"] - assigned_rows
+        assert (store.latest_live() is not None) == bool(assigned_rows)
         return
     store.import_csv()
     assert len(store.frame().query("source == 'sample'")) == prefix
     assert store.latest_live() is None
 
 
-def test_training_refuses_sample_data_without_loading_tensorflow(store):
+def test_training_refuses_sample_data_without_loading_tensorflow(store, tmp_path):
     from train_forecast import train
     frame = sample_frame()
     with store.connection() as db:
@@ -271,7 +273,8 @@ def test_training_refuses_sample_data_without_loading_tensorflow(store):
                        [(row.time.isoformat(), row.temp, row.hum) for row in frame.itertuples()])
         db.execute("INSERT INTO reading_origins SELECT time,'sample' FROM readings")
     with pytest.raises(SystemExit, match="hiện có 0.0 ngày"):
-        train(epochs=1, db_path=store.path)
+        train(epochs=1, db_path=store.path, skip_csv_import=True,
+              output_dir=tmp_path / "test-model")
 
 
 def test_large_history_preserves_extrema(store):
@@ -298,7 +301,7 @@ def test_keras_training_save_load_and_multistep_inference(store, tmp_path, monke
     model_path, meta_path = tmp_path / "qa.keras", tmp_path / "qa.json"
     monkeypatch.setattr(train_forecast, "FORECAST_MODEL", model_path)
     monkeypatch.setattr(train_forecast, "FORECAST_META", meta_path)
-    train_forecast.train(epochs=1, db_path=store.path)
+    train_forecast.train(epochs=1, db_path=store.path, skip_csv_import=True)
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
     assert meta["schema"] == 2 and len(meta["test_lstm"]["rmse_12h"]) == 2
     assert model_path.exists()
@@ -381,7 +384,7 @@ def test_delivered_weather_dataset_matches_manifest_and_minute_spacing():
         assert df["source"].eq("weather_sample").all()
     if "is_simulated" in df:
         assert df["is_simulated"].eq(1).all()
-    assert meta["source"] == "weather_sample"
+    assert meta["source"] == ("mixed" if meta.get("sensor_label_assignment") else "weather_sample")
 
 
 def test_replacing_weather_dataset_removes_old_generated_rows_only(store, tmp_path):
@@ -700,7 +703,8 @@ def test_pi_package_contains_static_build_but_no_runtime_secrets(tmp_path):
     import zipfile
     from prepare_pi import package
     make_prebuilt_root(tmp_path)
-    for name in (".env", "data/iot.sqlite3", "venv/binary", ".web/node_modules/binary", "model/private.keras"):
+    for name in (".env", "data/iot.sqlite3", "venv/binary", ".web/node_modules/binary", "model/private.keras",
+                 "backups/old.py", "reports/report.docx", "deliverables/note.md"):
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("private", encoding="utf-8")
@@ -709,6 +713,7 @@ def test_pi_package_contains_static_build_but_no_runtime_secrets(tmp_path):
         names = archive.namelist()
     assert any(name.endswith("deploy/frontend/index.html") for name in names)
     assert not any("sqlite3" in name or "node_modules" in name or name.endswith(".env") or "/model/" in name or "/venv/" in name for name in names)
+    assert not any('/'+part+'/' in name for name in names for part in ('backups','reports','deliverables'))
 
 
 def test_nginx_serves_static_and_proxies_websockets():
