@@ -805,7 +805,7 @@ def test_csv_failure_keeps_monitor_alerts_and_notifications(store, tmp_path, mon
     import monitor as service
     from types import SimpleNamespace
     monkeypatch.setattr(config, "MQTT_ENABLED", False)
-    monkeypatch.setattr(config, "LIVE_DATA_FILE", tmp_path / "sensor.csv")
+    monkeypatch.setattr(config, "DATA_FILE", tmp_path / "sensor.csv")
     monkeypatch.setattr(config, "LOG_FILE", tmp_path / "log.csv")
     original_append = service.append_csv
 

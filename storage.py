@@ -102,9 +102,11 @@ class Store:
             db.execute("INSERT INTO reading_origins VALUES (?,?) ON CONFLICT(time) DO UPDATE SET origin=excluded.origin",
                        (stamp.isoformat(timespec="seconds"),source))
 
-    def import_csv(self, path=DATA_FILE):
+    def import_csv(self, path=DATA_FILE, include_sensor=True):
         """Nhập CSV và cập nhật khi đổi bộ mẫu; luôn giữ số đo source=sensor."""
         marker = "import:" + str(path.resolve())
+        if not include_sensor:
+            marker += ":without-sensor"
         if not path.exists():
             return 0
         provenance_key = "provenance:" + str(path.resolve())
@@ -116,6 +118,7 @@ class Store:
         provenance = dataset_provenance(path)
         sample_rows = provenance["sample_rows"]
         weather_rows = provenance.get("weather_rows", 0)
+        sensor_start = provenance.get("sensor_row_start")
         count = 0
         with path.open(encoding="utf-8-sig", newline="") as f, self.connection() as db:
             if previous and previous.get("dataset_id") != provenance["dataset_id"]:
@@ -133,8 +136,18 @@ class Store:
                     if not (math.isfinite(t) and math.isfinite(h) and -40 <= t <= 80 and 0 <= h <= 100):
                         continue
                     source = "weather_sample" if i < weather_rows else "sample" if i < sample_rows else "import"
+                    if sensor_start is not None and i >= sensor_start and row.get("label") == "sensor":
+                        if not include_sensor:
+                            continue
+                        source = "sensor"
                     if stamp in protected or (source in {"sample", "weather_sample"} and stamp[:16] in sensor_minutes):
                         continue
+                    if source == "sensor":
+                        lower = datetime.fromisoformat(stamp).replace(second=0)
+                        upper = lower + timedelta(minutes=1)
+                        db.execute("DELETE FROM readings WHERE time IN (SELECT time FROM reading_origins WHERE origin IN ('sample','weather_sample') AND time>=? AND time<?)",
+                                   (lower.isoformat(timespec='seconds'),upper.isoformat(timespec='seconds')))
+                        sensor_minutes.add(stamp[:16])
                     # Cho phép thay dữ liệu nhập/mẫu tại cùng timestamp, không đè số đo thật/demo.
                     cur = db.execute("""INSERT INTO readings(time,temp,hum,state,reasons) VALUES (?, ?, ?, 'XANH', '[]')
                         ON CONFLICT(time) DO UPDATE SET temp=excluded.temp, hum=excluded.hum,

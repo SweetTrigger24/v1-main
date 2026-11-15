@@ -21,6 +21,7 @@ from hardware import DemoHardware, PiHardware
 from notifications import EmailNotifier
 from storage import Store, readings_with_origins_sql
 from runtime_settings import load_settings
+from provenance import prepare_sensor_csv, SENSOR_CSV_FIELDS
 
 LOG = logging.getLogger("iot")
 
@@ -113,12 +114,13 @@ class Monitor:
         data = {"time": now.isoformat(timespec="seconds"), "temp": temp, "hum": hum, "state": state, "source": source}
         if self.write_csv and not self.demo:
             try:
-                append_csv(config.LIVE_DATA_FILE, ["time", "temp", "hum", "source"],
+                prepare_sensor_csv(config.DATA_FILE)
+                append_csv(config.DATA_FILE, SENSOR_CSV_FIELDS,
                            [data["time"], round(temp, 1), round(hum, 1), "sensor"])
                 first = points[0] if points else {}
                 append_csv(config.LOG_FILE, ["time", "temp", "hum", "pred_temp", "pred_hum", "state"],
                            [data["time"], round(temp, 1), round(hum, 1), first.get("temp", ""), first.get("hum", ""), state])
-            except OSError:
+            except (OSError, ValueError):
                 LOG.exception("Không ghi được CSV; số đo đã lưu trong SQLite, tiếp tục xử lý cảnh báo")
         if self.mqtt:
             self.mqtt.publish(config.MQTT_TOPIC_SENSOR, json.dumps(data), qos=1)
@@ -164,7 +166,8 @@ def main():
         signal.signal(sig, lambda *_: stop.set())
     store = Store(args.db) if args.db else Store()
     store.put("database_role", "demo" if args.demo else "production")
-    LOG.info("Đã nhập %d mẫu lịch sử", store.import_csv())
+    imported = store.import_csv(include_sensor=False) if args.demo else store.import_csv()
+    LOG.info("Đã nhập %d mẫu lịch sử", imported)
     hardware = DemoHardware() if args.demo else PiHardware()
     monitor = None
     try:

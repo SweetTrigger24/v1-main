@@ -99,7 +99,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 
 | Đường dẫn | Nội dung |
 | --- | --- |
-| `data/sensor_data.csv` | Bộ mô phỏng hiện tại, có `time,temp,hum,label`; nguồn được ghi trong metadata/SQLite, monitor ghi số đo thật riêng vào `live_sensor_data.csv` |
+| `data/sensor_data.csv` | Có `time,temp,hum,label`; monitor nối số đo thật trực tiếp vào cuối với `label=sensor`; metadata phân biệt phần mô phỏng và phần cảm biến |
 | `data/sensor_data.provenance.json` | Nguồn, thời gian, số mẫu và hash phần mô phỏng khí tượng |
 | `data/weather_sources/` | JSON khí tượng gốc và dữ liệu đối chiếu vùng |
 | `data/weather_hourly_reference.csv` | Dữ liệu tham chiếu giờ |

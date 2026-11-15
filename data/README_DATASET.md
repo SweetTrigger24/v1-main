@@ -28,6 +28,10 @@ Không cần train lại vì chỉ rút gọn cột mô tả. Mô hình PC vẫn
 
 ## Lệnh train khi cần
 
+Khi chạy phần cứng thật, monitor nối số đo DHT22 vào chính sensor_data.csv với 4 cột cũ và label=sensor; không tạo live_sensor_data.csv. Trước lần ghi đầu tiên, code ghi ranh giới recorded_sensor_tail vào sensor_data.provenance.json, gồm số dòng và hash phần có sẵn. Vì vậy các nhãn sensor trong phần mô phỏng vẫn mang nguồn weather_sample; chỉ phần do monitor nối sau ranh giới mới được nhập vào SQLite với origin=sensor. Khi chép CSV sang máy khác cần chép cả manifest này.
+
+Các thống kê và hash trong dataset.provenance.json mô tả bộ mô phỏng ban đầu. Phần đầu CSV được giữ nguyên để kiểm tra hash; SQLite loại mẫu mô phỏng cùng phút có số đo thật khi nhập CSV. Chế độ demo không nối vào CSV và bỏ phần cảm biến khi nhập lịch sử. training_data.csv và training_data.sqlite3 là ảnh chụp bộ train đã lọc, không tự nhận số đo mới.
+
 ```powershell
 ..\.venv\Scripts\python.exe -X utf8 train_forecast.py --epochs 120 --db data/training_data.sqlite3 --skip-csv-import --include-weather-samples --output-dir artifacts/training/current_simulation
 ```
