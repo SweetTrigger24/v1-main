@@ -192,5 +192,22 @@
     "data_cutoff": "2026-11-16T05:00:00",
     "offline_training": true,
     "future_rows_at_start": 202
+  },
+  "current_dataset_revision": {
+    "csv_sha256": "4f4599af455a825e5546e0e0c64cde4dec1e96b4838a64bf7c428284717ed5a2",
+    "source_counts": {
+      "weather_sample": 59041,
+      "sensor": 28800
+    },
+    "sensor_label_assignment": {
+      "start_exclusive": "2026-10-27T05:00:00",
+      "end": "2026-11-16T05:00:00",
+      "rows": 28800,
+      "label": "sensor",
+      "days": 20
+    },
+    "feature_values_unchanged": true,
+    "resampled_model_inputs_unchanged": true,
+    "retraining_required_for_full_dataset": false
   }
 }

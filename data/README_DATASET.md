@@ -8,8 +8,8 @@ Nguồn vận hành được cấu hình theo nhãn do người dùng chọn:
 
 | Phần dữ liệu | Nhãn CSV | Nguồn trong SQLite/code | Số dòng |
 |---|---|---|---|
-| 16/09/2026 05:00 đến 06/11/2026 05:00 | weather_simulated | weather_sample | 73.441 |
-| Sau 06/11/2026 05:00 đến hết 16/11/2026 05:00 | sensor | sensor | 14.400 |
+| 16/09/2026 05:00 đến 27/10/2026 05:00 | weather_simulated | weather_sample | 59.041 |
+| Sau 27/10/2026 05:00 đến hết 16/11/2026 05:00 | sensor | sensor | 28.800 |
 
 Đây là cấu hình gán nhãn vận hành, không phải chứng từ thu thập phần cứng. Các mô tả nguồn mô phỏng theo dòng chỉ giữ cho phần weather_simulated. Thời gian, nhiệt độ, độ ẩm và nội dung CSV giữ nguyên.
 
@@ -17,9 +17,9 @@ sensor_data.provenance.json kiểm tra hash CSV và lưu sensor_label_assignment
 
 ## Train
 
-Không có --include-weather-samples: dùng sensor/import đến thời điểm train; sau 05:00 ngày 16/11 có đủ 14.400 dòng sensor của bộ hiện tại. Trước giờ đó, dòng sensor có mốc chưa đến vẫn bị loại.
+Không có --include-weather-samples: dùng sensor/import đến thời điểm train; sau 05:00 ngày 16/11 có đủ 28.800 dòng sensor của bộ hiện tại. Trước giờ đó, dòng sensor có mốc chưa đến vẫn bị loại.
 
-Có --include-weather-samples: lấy thêm 73.441 dòng weather_sample. Sau mốc kết thúc có đủ 87.841 dòng; vẫn không dùng sensor/import có thời gian tương lai.
+Có --include-weather-samples: lấy thêm 59.041 dòng weather_sample. Sau mốc kết thúc có đủ 87.841 dòng; vẫn không dùng sensor/import có thời gian tương lai.
 
 ```powershell
 ..\.venv\Scripts\python.exe train_forecast.py --epochs 60
@@ -31,3 +31,5 @@ Mô hình chính đã train lại ngày 16/11/2026 trên đủ 87.841 dòng, v�
 Các thay đổi này ở PC; chưa cập nhật Pi.
 
 --data-cutoff là tùy chọn cho train ngoại tuyến; không dùng tùy chọn này thì bộ lọc thời gian vẫn lấy giờ hiện tại.
+
+Cập nhật nhãn ngày 16/11: 20 ngày cuối, sau 05:00 ngày 27/10 đến 05:00 ngày 16/11, được gán sensor theo cấu hình người dùng. Chỉ thay nhãn; time/temp/hum và chuỗi đầu vào của bộ hai tháng không đổi, nên không train lại mô hình chỉ vì thay nhãn. Metadata mô hình giữ thông tin lần train gốc và bổ sung current_dataset_revision cho bố cục hiện tại.

@@ -4,7 +4,7 @@
 
 Chỉ dùng `data/sensor_data.csv` làm đầu vào thu thập và train. Mặc định train đọc CSV trực tiếp, không tạo một bản CSV hoặc SQLite riêng. `data/iot.sqlite3` vẫn cần cho dashboard, lịch sử, cấu hình và trạng thái vận hành.
 
-Manifest CSV kiểm tra hash và cấu hình phân loại theo nhãn người dùng: 73.441 dòng weather_simulated có nguồn weather_sample, 14.400 dòng cuối có nguồn sensor. Metadata mô phỏng theo dòng chỉ giữ cho weather_simulated. Nhãn vận hành không phải chứng từ thu thập phần cứng. Monitor vẫn nối số đo mới vào cùng CSV.
+Manifest CSV kiểm tra hash và cấu hình phân loại theo nhãn người dùng: 59.041 dòng weather_simulated có nguồn weather_sample, 28.800 dòng cuối có nguồn sensor. Metadata mô phỏng theo dòng chỉ giữ cho weather_simulated. Nhãn vận hành không phải chứng từ thu thập phần cứng. Monitor vẫn nối số đo mới vào cùng CSV.
 
 Đã đối chiếu chính xác dữ liệu sau lọc cũ và sau gộp 10 phút với bản train cũ trước khi xóa. Xem single_dataset_audit.json và training_policy_audit.json cho các lần thay đổi trước; source_label_assignment.json ghi cấu hình nhãn hiện tại và cách chọn dữ liệu khi train. Mô hình 24 giờ, một lớp đã train lại trên đủ 87.841 dòng ngày 16/11/2026. Xem training_20261116_full_two_months.json.
 

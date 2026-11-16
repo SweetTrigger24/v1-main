@@ -2,7 +2,7 @@
   "schema": 1,
   "kind": "user_labeled_mixed_dataset",
   "source": "mixed",
-  "dataset_id": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "dataset_id": "4f4599af455a825e5546e0e0c64cde4dec1e96b4838a64bf7c428284717ed5a2",
   "generated_at": "2026-11-15T12:20:13.955180",
   "seed": 20261116,
   "location": "Hà Đông, Hà Nội",
@@ -28,8 +28,8 @@
   "end": "2026-11-16T05:00:00",
   "row_count": 87841,
   "sample_sec": 60,
-  "csv_prefix_bytes": 4059053,
-  "csv_prefix_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "csv_prefix_bytes": 3900653,
+  "csv_prefix_sha256": "4f4599af455a825e5546e0e0c64cde4dec1e96b4838a64bf7c428284717ed5a2",
   "summary": {
     "temp_min": 13.2,
     "temp_max": 37.3,
@@ -53,13 +53,6 @@
   "station_observations": 314,
   "rejected_station_lines": 4,
   "last_station_observation": "2026-11-15T10:00:00",
-  "last_10_days": {
-    "start_exclusive": "2026-11-06T05:00:00",
-    "end": "2026-11-16T05:00:00",
-    "rows": 14400,
-    "label": "sensor",
-    "source": "sensor"
-  },
   "archived_previous_dataset": false,
   "csv_columns": [
     "time",
@@ -72,22 +65,31 @@
   "source_storage": "Configured CSV labels and reading_origins.origin",
   "source_assignment": "csv_label",
   "sensor_label_assignment": {
-    "start_exclusive": "2026-11-06T05:00:00",
+    "start_exclusive": "2026-10-27T05:00:00",
     "end": "2026-11-16T05:00:00",
-    "rows": 14400,
-    "label": "sensor"
+    "rows": 28800,
+    "label": "sensor",
+    "days": 20
   },
   "source_counts": {
-    "weather_sample": 73441,
-    "sensor": 14400
+    "weather_sample": 59041,
+    "sensor": 28800
   },
   "label_semantics": "Operational sources follow the explicitly configured CSV labels.",
   "weather_simulated_part": {
     "start": "2026-09-16T05:00:00",
-    "end": "2026-11-06T05:00:00",
-    "rows": 73441,
+    "end": "2026-10-27T05:00:00",
+    "rows": 59041,
     "label": "weather_simulated",
     "source": "weather_sample",
     "method": "Interpolate station-minus-model residuals between anchors <=12h apart; taper nearest residual to zero over 3h at gap edges; add to hourly interpolated model; small seeded correlated noise zero at full hours; round 0.1. Distant gaps use model. Future uses forecast, never sensor."
+  },
+  "last_20_days": {
+    "start_exclusive": "2026-10-27T05:00:00",
+    "end": "2026-11-16T05:00:00",
+    "rows": 28800,
+    "label": "sensor",
+    "days": 20,
+    "source": "sensor"
   }
 }

@@ -144,7 +144,7 @@ Cùng loại cảnh báo lặp tối đa một lần mỗi 30 phút; đợt mớ
 
 ## Dự báo 12 giờ và dữ liệu hiện có
 
-CSV hiện có **87.841 mẫu**, từ **16/09/2026 05:00 đến 16/11/2026 05:00**, theo giờ Việt Nam, cách nhau một phút. **sensor_data.csv là CSV duy nhất**. Theo cấu hình nhãn hiện tại, 73.441 dòng weather_simulated được đọc với source=weather_sample và 14.400 dòng cuối được đọc với source=sensor. Cách phân loại giống nhau trong bộ đọc CSV và SQLite; không thay thời gian hoặc temp/hum.
+CSV hiện có **87.841 mẫu**, từ **16/09/2026 05:00 đến 16/11/2026 05:00**, theo giờ Việt Nam, cách nhau một phút. **sensor_data.csv là CSV duy nhất**. Theo cấu hình nhãn hiện tại, 59.041 dòng weather_simulated được đọc với source=weather_sample và 28.800 dòng cuối được đọc với source=sensor. Cách phân loại giống nhau trong bộ đọc CSV và SQLite; không thay thời gian hoặc temp/hum.
 
 Nguồn vận hành được gán theo nhãn người dùng; đây không phải chứng từ thu thập phần cứng. Chỉ phần weather_simulated giữ metadata mô phỏng theo dòng. Xem [mô tả bộ dữ liệu](data/README_DATASET.md) và [biên nhận gán nhãn](reports/source_label_assignment.json).
 
@@ -160,7 +160,7 @@ Hệ thống kiểm tra hash và đọc cấu hình nhãn trong manifest, nhập
 
 Đường LSTM mới là **dự báo trực tiếp 72 mốc** từ 24 giờ đầu vào, lấy mẫu gộp 10 phút; đầu vào gồm nhiệt độ, độ ẩm, sin/cos giờ trong ngày. Đây là ứng dụng cửa sổ chuỗi thời gian, LSTM, hồi quy nhiều đầu ra, chuẩn hóa, dropout và early stopping trong kiến thức học sâu cho IoT. Không dùng các mô hình `.keras`/`.tflite` 10 phút cũ.
 
-Huấn luyện yêu cầu tối thiểu **7 ngày dữ liệu hợp lệ**. Không có --include-weather-samples: dùng sensor/import đến lúc train, tương ứng đủ 14.400 dòng nhãn sensor sau 05:00 ngày 16/11. Có cờ này: lấy thêm 73.441 dòng weather_sample, tổng 87.841 dòng sau mốc kết thúc. Sensor/import có thời gian tương lai vẫn bị loại. Việc đổi nhãn không tạo ra một thực nghiệm thu thập phần cứng.
+Huấn luyện yêu cầu tối thiểu **7 ngày dữ liệu hợp lệ**. Không có --include-weather-samples: dùng sensor/import đến lúc train, tương ứng đủ 28.800 dòng nhãn sensor sau 05:00 ngày 16/11. Có cờ này: lấy thêm 59.041 dòng weather_sample, tổng 87.841 dòng sau mốc kết thúc. Sensor/import có thời gian tương lai vẫn bị loại. Việc đổi nhãn không tạo ra một thực nghiệm thu thập phần cứng.
 
 ```bash
 # Cài phần học sâu tùy chọn ngay từ đầu:

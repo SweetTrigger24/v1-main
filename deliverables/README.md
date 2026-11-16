@@ -4,4 +4,4 @@
 - Du_lieu_hien_tai_20261116_0500.zip: CSV chung, metadata và SQLite đã bỏ cấu hình riêng.
 - Model_LSTM_hien_tai.zip: cặp mô hình train lại ngày 16/11 trên đủ 87.841 dòng và log/kiểm tra tương ứng.
 
-Nguồn vận hành của dữ liệu theo nhãn người dùng: 73.441 weather_sample và 14.400 sensor. Lần train mới dùng mốc cắt 05:00 ngày 16/11 cho train ngoại tuyến; giờ train thực tế ghi riêng. Đã cập nhật mô hình trên PC, chưa chuyển Pi. Chi tiết: ../reports/training_20261116_full_two_months.json.
+Nguồn vận hành của dữ liệu theo nhãn người dùng: 59.041 weather_sample và 28.800 sensor. Lần train mới dùng mốc cắt 05:00 ngày 16/11 cho train ngoại tuyến; giờ train thực tế ghi riêng. Đã cập nhật mô hình trên PC, chưa chuyển Pi. Chi tiết: ../reports/training_20261116_full_two_months.json.

@@ -114,7 +114,7 @@ GPIO trong mã dùng cách đánh số BCM. Cột chân vật lý chỉ vị tr�
 | `data/backups/` | Bản sao CSV cũ do chương trình sinh dữ liệu tạo khi thay bộ dữ liệu |
 | `.web/`, `.states/`, `__pycache__/` | Frontend phát triển, phiên Reflex và cache Python được sinh khi sử dụng |
 
-Bộ hiện tại có 87.841 mẫu phút, từ 16/09/2026 05:00 đến 16/11/2026 05:00. Cấu hình nhãn phân loại 73.441 dòng weather_simulated thành weather_sample và 14.400 dòng cuối thành sensor, giống nhau trong CSV và SQLite. Xem data/README_DATASET.md và reports/source_label_assignment.json.
+Bộ hiện tại có 87.841 mẫu phút, từ 16/09/2026 05:00 đến 16/11/2026 05:00. Cấu hình nhãn phân loại 59.041 dòng weather_simulated thành weather_sample và 28.800 dòng cuối thành sensor, giống nhau trong CSV và SQLite. Xem data/README_DATASET.md và reports/source_label_assignment.json.
 
 Trong SQLite, `readings` chỉ có `time,temp,hum,state,reasons`. Nguồn nằm riêng trong `reading_origins(time,origin)`; `Store.frame()` ghép thành trường `source` cho code đọc. `kv` lưu trạng thái monitor/dự báo, cấu hình, xác thực, nguồn và trạng thái email. Dashboard dùng trường `source=sensor/demo` cho số đo trực tiếp, đồng thời kiểm tra thời gian cập nhật và trạng thái monitor. Khi chuyển DB cấu trúc mới sang Pi, cần dùng cùng bản code mới; code mới tự chuyển DB cũ khi mở.
 
@@ -161,7 +161,7 @@ Bộ hiện có là dữ liệu phút mô phỏng từ khí tượng Hà Đông.
 ..\.venv\Scripts\python.exe train_forecast.py --epochs 60 --include-weather-samples
 ```
 
-Train mặc định đọc data/sensor_data.csv và chọn sensor/import đến lúc chạy. --include-weather-samples lấy thêm phần weather_sample; sensor/import tương lai vẫn bị loại. Sau 05:00 ngày 16/11, hai chế độ tương ứng có 14.400 và 87.841 dòng. Đây là cấu hình nhãn vận hành theo yêu cầu, không phải chứng từ thu thập phần cứng. Có thể thêm --output-dir artifacts/training/new_run để lưu mô hình thử riêng.
+Train mặc định đọc data/sensor_data.csv và chọn sensor/import đến lúc chạy. --include-weather-samples lấy thêm phần weather_sample; sensor/import tương lai vẫn bị loại. Sau 05:00 ngày 16/11, hai chế độ tương ứng có 28.800 và 87.841 dòng. Đây là cấu hình nhãn vận hành theo yêu cầu, không phải chứng từ thu thập phần cứng. Có thể thêm --output-dir artifacts/training/new_run để lưu mô hình thử riêng.
 
 ```powershell
 Get-Item .\model\forecast_12h.keras, .\model\forecast_12h.json

@@ -1,25 +1,31 @@
 {
-  "checked_at": "2026-11-16T01:27:13.644896",
-  "operation": "assign operational source from user-configured CSV labels",
+  "checked_at": "2026-11-16T07:08:26.116018",
+  "operation": "extend user-assigned operational sensor labels from 10 to 20 days",
   "sensor_label_assignment": {
-    "start_exclusive": "2026-11-06T05:00:00",
+    "start_exclusive": "2026-10-27T05:00:00",
     "end": "2026-11-16T05:00:00",
-    "rows": 14400,
-    "label": "sensor"
+    "rows": 28800,
+    "label": "sensor",
+    "days": 20
   },
-  "csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
   "source_counts": {
-    "sensor": 14400,
-    "weather_sample": 73441
+    "weather_sample": 59041,
+    "sensor": 28800
   },
+  "csv_sha256": "4f4599af455a825e5546e0e0c64cde4dec1e96b4838a64bf7c428284717ed5a2",
+  "previous_csv_sha256": "5fc26a74dc061b2ca114681983687fb7f153d9bd93dc350feb125c58e6cf4fdc",
+  "additional_sensor_label_rows": 14400,
   "readings_values_preserved": true,
   "private_settings_preserved": true,
-  "default_train_rows_at_check": 14187,
-  "with_weather_train_rows_at_check": 87628,
-  "default_train_rows_after_endpoint": 14400,
+  "time_temp_hum_unchanged": true,
+  "full_training_resampled_series_unchanged": true,
+  "default_train_rows_at_check": 28800,
+  "with_weather_train_rows_at_check": 87841,
+  "default_train_rows_after_endpoint": 28800,
   "with_weather_rows_after_endpoint": 87841,
+  "model_weights_sha256": "db83324431c8d207463bfbda93adacf45794edbd2355b41354fb03469609d320",
   "model_retrained": false,
+  "retraining_required_for_full_dataset": false,
   "pi_changed": false,
-  "tests_passed": 143,
-  "model_restored_and_sha256_verified": "59a31f2da9fb7ec7dcd73968c0b4292eb12360112b527761748e39b01e66cfe0"
+  "github_changed": false
 }
